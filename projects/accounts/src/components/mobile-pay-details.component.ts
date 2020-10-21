@@ -4,6 +4,7 @@ import {FormControl, Validators} from '@angular/forms';
 import {BillingApiService} from '../services/billing-api.service';
 import {LogService} from '@smartstocktz/core-libs';
 
+// @dynamic
 @Component({
   selector: 'smartstock-mobile-pay-details',
   template: `
@@ -118,7 +119,7 @@ import {LogService} from '@smartstocktz/core-libs';
 })
 export class MobilePayDetailsComponent implements OnInit {
   confirmPaymentFlag = false;
-  amountToPay: number;
+  amountToPay = 0;
   reference: string;
   amountControl = new FormControl(this.amountToPay, [Validators.nullValidator, Validators.required, Validators.min(1)]);
 

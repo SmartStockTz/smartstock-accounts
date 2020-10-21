@@ -3,9 +3,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterDialogComponent} from '../components/register-dialog.component';
-import {UserService} from '../services/user.service';
 import {UserModel} from '../models/user.model';
-import {LogService} from '@smartstocktz/core-libs';
+import {LogService, UserService} from '@smartstocktz/core-libs';
 import {MessageService} from '@smartstocktz/core-libs';
 
 @Component({
@@ -67,7 +66,7 @@ export class RegisterPage implements OnInit {
   loginFormGroup: FormGroup;
   registerProgress = false;
 
-  constructor(private readonly _formBuilder: FormBuilder,
+  constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router,
               private readonly dialog: MatDialog,
               private readonly logger: LogService,
@@ -80,20 +79,20 @@ export class RegisterPage implements OnInit {
   }
 
   initializeForm() {
-    this.personalFormGroup = this._formBuilder.group({
+    this.personalFormGroup = this.formBuilder.group({
       firstname: ['', [Validators.required, Validators.nullValidator]],
       lastname: ['', [Validators.required, Validators.nullValidator]],
       email: ['', [Validators.required, Validators.nullValidator, Validators.email]],
       mobile: ['', [Validators.required, Validators.nullValidator]]
     });
-    this.businessFormGroup = this._formBuilder.group({
+    this.businessFormGroup = this.formBuilder.group({
       businessName: ['', [Validators.required, Validators.nullValidator]],
       category: ['', [Validators.required, Validators.nullValidator]],
       country: ['', [Validators.required, Validators.nullValidator]],
       region: ['', [Validators.required, Validators.nullValidator]],
       street: ['', [Validators.required, Validators.nullValidator]]
     });
-    this.loginFormGroup = this._formBuilder.group({
+    this.loginFormGroup = this.formBuilder.group({
       username: ['', [Validators.required, Validators.nullValidator, Validators.email]],
       password: ['', [
         Validators.required,

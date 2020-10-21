@@ -5,8 +5,7 @@ import {CreateShopDialogComponent} from '../components/create-shop-dialog.compon
 import {Observable, of} from 'rxjs';
 import {Router} from '@angular/router';
 import {ShopModel} from '../models/shop.model';
-import {StorageService} from '@smartstocktz/core-libs';
-import {UserService} from '../services/user.service';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
   selector: 'smartstock-choose-shop',

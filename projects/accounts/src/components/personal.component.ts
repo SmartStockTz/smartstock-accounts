@@ -42,7 +42,7 @@ import {UserService} from '@smartstocktz/core-libs';
 
               <mat-form-field appearance="outline" class="btn-block">
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email" type="email">
+                <input style="color: gray" [readonly]="true" matInput formControlName="email" type="email">
                 <mat-error>email field required</mat-error>
               </mat-form-field>
 

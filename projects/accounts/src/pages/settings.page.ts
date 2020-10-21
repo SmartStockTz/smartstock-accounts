@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {EventService} from '@smartstocktz/core-libs';
-import {SettingsService} from '../services/settings.service';
-import {DeviceInfoUtil} from '@smartstocktz/core-libs';
-import {SsmEvents} from '@smartstocktz/core-libs';
+import {DeviceInfoUtil, EventService, SettingsService, SsmEvents} from '@smartstocktz/core-libs';
 
 @Component({
   selector: 'smartstock-setting',
@@ -135,18 +132,18 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     super();
   }
 
-  ngOnInit() {
-    this._getSettings();
+  ngOnInit(): void {
+    this.getSettings();
   }
 
-  private _getSettings() {
+  private getSettings(): void {
     this.getSettingsProgress = true;
     this.settings.getSettings().then(value => {
-      this._initiateSettingsForm(value);
+      this.initiateSettingsForm(value);
       this.getSettingsProgress = false;
     }).catch(reason => {
       // console.log(reason);
-      this._initiateSettingsForm({
+      this.initiateSettingsForm({
         saleWithoutPrinter: true,
         printerHeader: '',
         printerFooter: '',
@@ -157,17 +154,17 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  private _initiateSettingsForm(settings: any) {
+  private initiateSettingsForm(settings: any): void {
     this.settingsForm = this.formBuilder.group({
-      'saleWithoutPrinter': [settings.saleWithoutPrinter],
-      'printerHeader': [settings.printerHeader],
-      'printerFooter': [settings.printerFooter],
-      'allowRetail': [settings.allowRetail],
-      'allowWholesale': [settings.allowWholesale],
+      saleWithoutPrinter: [settings.saleWithoutPrinter],
+      printerHeader: [settings.printerHeader],
+      printerFooter: [settings.printerFooter],
+      allowRetail: [settings.allowRetail],
+      allowWholesale: [settings.allowWholesale],
     });
   }
 
-  saveSettings() {
+  saveSettings(): void {
     this.saveSettingProgress = true;
     this.settings.saveSettings(this.settingsForm.value).then(_ => {
       this.snack.open('Settings saved', 'Ok', {

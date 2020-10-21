@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {UserService} from '../services/user.service';
-import {LogService} from '@smartstocktz/core-libs';
+import {LogService, UserService} from '@smartstocktz/core-libs';
 import {MatDialog} from '@angular/material/dialog';
 import {ResetPasswordDialogComponent} from '../components/reset-password.component';
 
@@ -109,18 +108,18 @@ export class LoginPage implements OnInit {
               private readonly userDatabase: UserService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initializeForm();
   }
 
-  initializeForm() {
+  initializeForm(): void {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.nullValidator]],
       password: ['', [Validators.required, Validators.nullValidator]],
     });
   }
 
-  login(formElement: FormGroupDirective) {
+  login(formElement: FormGroupDirective): void {
     if (!this.loginForm.valid) {
       this.snack.open('Enter all required field', 'Ok', {duration: 3000});
     } else {
@@ -145,13 +144,13 @@ export class LoginPage implements OnInit {
     }
   }
 
-  private stopProgressAndCleanForm(formElement: FormGroupDirective) {
+  private stopProgressAndCleanForm(formElement: FormGroupDirective): void {
     this.showProgress = false;
     this.loginForm.reset();
     formElement.resetForm();
   }
 
-  private showMainUi(role: string, formElement: FormGroupDirective) {
+  private showMainUi(role: string, formElement: FormGroupDirective): void {
     if (role === 'admin') {
       this.routes.navigateByUrl('/dashboard').catch(reason => this.log.i(reason)).then(() => {
         this.loginForm.reset();
@@ -165,7 +164,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  reset($event: Event) {
+  reset($event: Event): void {
     $event.preventDefault();
     $event.stopPropagation();
     if (this.loginForm.value.username) {
@@ -191,12 +190,12 @@ export class LoginPage implements OnInit {
     }
   }
 
-  showPassword($event: MouseEvent) {
+  showPassword($event: MouseEvent): void {
     $event.preventDefault();
     this.showPasswordFlag = !this.showPasswordFlag;
   }
 
-  handleEnterKey($event: KeyboardEvent, formElement) {
+  handleEnterKey($event: KeyboardEvent, formElement): void {
     const keyCode = $event.code;
     if (keyCode === 'Enter') {
       this.login(formElement);

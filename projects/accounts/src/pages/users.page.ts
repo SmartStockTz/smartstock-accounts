@@ -4,8 +4,7 @@ import {MatMenuTrigger} from '@angular/material/menu';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormBuilder} from '@angular/forms';
-import {DeviceInfoUtil, LogService} from '@smartstocktz/core-libs';
-import {UserService} from '../services/user.service';
+import {DeviceInfoUtil, LogService, UserService} from '@smartstocktz/core-libs';
 import {UserModel} from '../models/user.model';
 import {UserCreateDialogComponent} from '../components/user-create-dialog.component';
 import {UserUpdateDialogComponent} from '../components/user-update-dialog.component';
@@ -223,7 +222,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // });
   }
 
-  updateUserDescription(user, matMenu: MatMenuTrigger) {
+  updateUserDescription(user, matMenu: MatMenuTrigger): void {
     // matMenu.toggleMenu();
     // if (user && user.value) {
     //   user.field = 'description';

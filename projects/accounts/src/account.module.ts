@@ -52,6 +52,8 @@ import {RegisterDialogComponent} from './components/register-dialog.component';
 import {LoginDetailsFormComponent} from './components/login-details-form.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {HttpClientModule} from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -94,7 +96,6 @@ const routes: Routes = [
   exports: [],
   imports: [
     CommonModule,
-    // RouterModule.forChild(routes),
     {
       ngModule: RouterModule,
       providers: [
@@ -131,6 +132,7 @@ const routes: Routes = [
     MatStepperModule,
     MatToolbarModule,
     MatProgressBarModule,
+    MatSnackBarModule
   ]
 })
 export class AccountModule {
