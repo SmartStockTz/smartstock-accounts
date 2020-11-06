@@ -100,7 +100,7 @@ export class AuthenticationComponent implements OnInit {
       this._initializeForm(this.currentUser);
       this.getUserProgress = false;
     }).catch(reason => {
-     // console.log(reason);
+      // console.log(reason);
       this.getUserProgress = false;
       this._snack.open('Error when trying to get user details', 'Ok', {
         duration: 3000
@@ -108,13 +108,13 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
-  changePassword() {
+  changePassword(): any {
     if (this.authForm.valid) {
       this.updateUserProgress = true;
       this._userApi.changePasswordFromOld({
         lastPassword: this.authForm.value.lastPassword,
         password: this.authForm.value.password,
-        user: this.currentUser
+        user: this.currentUser as any
       }).then(async user => {
         this.updateUserProgress = false;
         this._snack.open('Your password changed successful', 'Ok', {

@@ -119,10 +119,10 @@ export class PersonalComponent {
     });
   }
 
-  updatePersonalInformation() {
+  updatePersonalInformation(): void {
     if (this.personalForm.valid) {
       this.updateUserProgress = true;
-      this._userApi.updateUser(this.currentUser, this.personalForm.value).then(async user => {
+      this._userApi.updateUser(this.currentUser as any, this.personalForm.value).then(async user => {
         this.updateUserProgress = false;
         this._snack.open('Your personal information is updated', 'Ok', {
           duration: 3000

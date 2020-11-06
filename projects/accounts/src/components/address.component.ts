@@ -115,10 +115,10 @@ export class AddressComponent implements OnInit {
     });
   }
 
-  updatePersonalInformation() {
+  updatePersonalInformation(): void {
     if (this.businessForm.valid) {
       this.updateBusinessProgress = true;
-      this.userService.updateUser(this.currentUser, this.businessForm.value).then(async user => {
+      this.userService.updateUser(this.currentUser as any, this.businessForm.value).then(async user => {
         this.updateBusinessProgress = false;
         this.matSnackBar.open('Your shop information is updated', 'Ok', {
           duration: 3000

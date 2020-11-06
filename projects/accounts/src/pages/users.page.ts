@@ -137,11 +137,11 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     super();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getUsers();
   }
 
-  searchUser(query: string) {
+  searchUser(query: string): void {
     // if ($event && $event.query) {
     //   this.fetchUsersFlag = true;
     //   this.userDatabase.searchUser($event.query, {size: 20}).then(data => {
@@ -161,19 +161,21 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // }
   }
 
-  getUsers() {
+  getUsers(): void {
     this.fetchUsersFlag = true;
     this.userDatabase.getAllUser({size: 100, skip: 0}).then(data => {
+      this.fetchUsersFlag = false;
       this.usersArray = JSON.parse(JSON.stringify(data));
       this.usersDatasource = new MatTableDataSource<UserModel>(this.usersArray);
-      this.fetchUsersFlag = false;
     }).catch(reason => {
+      this.fetchUsersFlag = false;
       this.logger.i(reason);
+    }).finally(() => {
       this.fetchUsersFlag = false;
     });
   }
 
-  deleteUser(element: any) {
+  deleteUser(element: any): void {
     this.dialog.open(UserDeleteDialogComponent, {
       data: element,
       disableClose: true
@@ -192,7 +194,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  updateUserName(user, matMenu: MatMenuTrigger) {
+  updateUserName(user, matMenu: MatMenuTrigger): void {
     // matMenu.toggleMenu();
     // if (user && user.value) {
     //   user.field = 'username';
@@ -200,7 +202,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // }
   }
 
-  updateUser(user: { id: string, value: string, field: string }) {
+  updateUser(user: { id: string, value: string, field: string }): void {
     // this.snack.open('Update in progress..', 'Ok');
     // this.userDatabase.updateUser(user).then(data => {
     //   const editedObjectIndex = this.usersArray.findIndex(value => value.id === data.id);
@@ -230,7 +232,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // }
   }
 
-  openAddUserDialog() {
+  openAddUserDialog(): void {
     this.dialog.open(UserCreateDialogComponent, {
       closeOnNavigation: true,
       hasBackdrop: true
@@ -242,7 +244,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  updatePassword(element: any) {
+  updatePassword(element: any): void {
     this.dialog.open(UserUpdateDialogComponent, {
       data: element
     });

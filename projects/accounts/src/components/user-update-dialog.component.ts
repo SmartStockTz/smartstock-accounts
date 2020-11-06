@@ -48,10 +48,10 @@ export class UserUpdateDialogComponent implements OnInit {
   }
 
 
-  updatePassword() {
+  updatePassword(): void {
     if (this.updatePasswordFormGroup.valid) {
       this.updateProgress = true;
-      this._userApi.updatePassword(this.data, this.updatePasswordFormGroup.value.password).then(value => {
+      this._userApi.updatePassword(this.data as any, this.updatePasswordFormGroup.value.password).then(value => {
         this._snack.open('Password updated successful', 'Ok', {
           duration: 3000
         });

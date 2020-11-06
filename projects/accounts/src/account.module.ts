@@ -53,17 +53,17 @@ import {LoginDetailsFormComponent} from './components/login-details-form.compone
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {HttpClientModule} from '@angular/common/http';
+import {IndexPage} from './pages/index.page';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: 'profile', pathMatch: 'full'},
-  {path: 'settings', canActivate: [/*KeeperGuard,*/ ActiveShopGuard], component: SettingsPage},
+  {path: '', component: IndexPage},
+  {path: 'settings', canActivate: [AuthenticationGuard, ActiveShopGuard], component: SettingsPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ShopPage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
-  {path: 'bill', canActivate: [/*KeeperGuard,*/ ActiveShopGuard], component: BillingPage},
-  {path: 'users', canActivate: [/*KeeperGuard,*/ ActiveShopGuard], component: UsersPage},
+  {path: 'bill', canActivate: [AuthenticationGuard, ActiveShopGuard], component: BillingPage},
+  {path: 'users', canActivate: [AuthenticationGuard, ActiveShopGuard], component: UsersPage},
   {path: 'profile', canActivate: [AuthenticationGuard, ActiveShopGuard], component: ProfilePage},
 ];
 
@@ -91,7 +91,8 @@ const routes: Routes = [
     VerifyEMailDialogComponent,
     ResetPasswordDialogComponent,
     RegisterDialogComponent,
-    LoginDetailsFormComponent
+    LoginDetailsFormComponent,
+    IndexPage
   ],
   exports: [],
   imports: [

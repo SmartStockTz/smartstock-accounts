@@ -3,9 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterDialogComponent} from '../components/register-dialog.component';
-import {UserModel} from '../models/user.model';
-import {LogService, UserService} from '@smartstocktz/core-libs';
-import {MessageService} from '@smartstocktz/core-libs';
+import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
   selector: 'smartstock-register',
@@ -74,11 +72,11 @@ export class RegisterPage implements OnInit {
               private readonly messageService: MessageService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initializeForm();
   }
 
-  initializeForm() {
+  initializeForm(): void {
     this.personalFormGroup = this.formBuilder.group({
       firstname: ['', [Validators.required, Validators.nullValidator]],
       lastname: ['', [Validators.required, Validators.nullValidator]],
@@ -109,17 +107,15 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  openAccount() {
+  openAccount(): void {
     const valid = this.businessFormGroup.valid
       && this.personalFormGroup.valid
       && this.loginFormGroup.valid;
     if (valid) {
-      // @ts-ignore
-      const user: UserModel = {};
+      const user: any = {};
       Object.assign(user, this.personalFormGroup.value);
       Object.assign(user, this.businessFormGroup.value);
       Object.assign(user, this.loginFormGroup.value);
-      // @ts-ignore
       delete user.confPassword;
       this.registerProgress = true;
       this.userDatabase.register(user)
