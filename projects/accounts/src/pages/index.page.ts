@@ -22,12 +22,14 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                   {{page.icon}}
                 </mat-icon>
               </mat-card>
-              <p>{{page.name}}</p>
+              <p>
+                {{page.name}}
+              </p>
             </div>
           </div>
-<!--          <h1>Summary</h1>-->
-<!--          <div class="row">-->
-<!--          </div>-->
+          <!--          <h1>Summary</h1>-->
+          <!--          <div class="row">-->
+          <!--          </div>-->
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
@@ -52,9 +54,9 @@ export class IndexPage extends DeviceInfoUtil implements OnInit {
       icon: 'settings'
     },
     // {
-    //   name: 'Suppliers',
-    //   path: '/stock/suppliers',
-    //   icon: 'airport_shuttle'
+    //   name: 'Bills',
+    //   path: '/account/bill',
+    //   icon: 'payments'
     // }
   ];
 
