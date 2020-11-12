@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {DeviceInfoUtil} from '@smartstocktz/core-libs';
 
 @Component({
@@ -14,18 +14,57 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
         <div class="container col-xl-10 col-lg-10 col-sm-9 col-md-9 col-sm-12 col-10" style="padding: 16px 0">
           <h1>Go To</h1>
           <div class="row">
-            <div *ngFor="let page of pages" routerLink="{{page.path}}" style="margin: 5px; cursor: pointer">
-              <mat-card matRipple
-                        style="width: 150px; height: 150px; display: flex; justify-content: center;
+            <smartstock-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
+              <ng-template #profile>
+                <div routerLink="/account/profile" style="margin: 5px; cursor: pointer">
+                  <mat-card matRipple
+                            style="width: 150px; height: 150px; display: flex; justify-content: center;
                          align-items: center; flex-direction: column">
-                <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
-                  {{page.icon}}
-                </mat-icon>
-              </mat-card>
-              <p>
-                {{page.name}}
-              </p>
-            </div>
+                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
+                      face
+                    </mat-icon>
+                  </mat-card>
+                  <p>
+                    Profile
+                  </p>
+                </div>
+              </ng-template>
+            </smartstock-libs-rbac>
+
+            <smartstock-libs-rbac [groups]="['admin','manager']" [component]="users">
+              <ng-template #users>
+                <div routerLink="/account/users" style="margin: 5px; cursor: pointer">
+                  <mat-card matRipple
+                            style="width: 150px; height: 150px; display: flex; justify-content: center;
+                         align-items: center; flex-direction: column">
+                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
+                      supervised_user_circle
+                    </mat-icon>
+                  </mat-card>
+                  <p>
+                    Users
+                  </p>
+                </div>
+              </ng-template>
+            </smartstock-libs-rbac>
+
+            <smartstock-libs-rbac [groups]="['admin', 'manager']" [component]="settings">
+              <ng-template #settings>
+                <div routerLink="/account/settings" style="margin: 5px; cursor: pointer">
+                  <mat-card matRipple
+                            style="width: 150px; height: 150px; display: flex; justify-content: center;
+                         align-items: center; flex-direction: column">
+                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
+                      settings
+                    </mat-icon>
+                  </mat-card>
+                  <p>
+                    Settings
+                  </p>
+                </div>
+              </ng-template>
+            </smartstock-libs-rbac>
+
           </div>
           <!--          <h1>Summary</h1>-->
           <!--          <div class="row">-->
@@ -36,35 +75,10 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
   `
 })
 
-export class IndexPage extends DeviceInfoUtil implements OnInit {
-  pages = [
-    {
-      name: 'Profile',
-      path: '/account/profile',
-      icon: 'face'
-    },
-    {
-      name: 'Users',
-      path: '/account/users',
-      icon: 'supervised_user_circle'
-    },
-    {
-      name: 'Settings',
-      path: '/account/settings',
-      icon: 'settings'
-    },
-    // {
-    //   name: 'Bills',
-    //   path: '/account/bill',
-    //   icon: 'payments'
-    // }
-  ];
+export class IndexPage extends DeviceInfoUtil {
 
   constructor() {
     super();
-  }
-
-  ngOnInit(): void {
   }
 
 }

@@ -23,7 +23,7 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]=""
+        <smartstock-toolbar [heading]="'Users'"
                             [sidenav]="sidenav"
                             [showProgress]="false">
         </smartstock-toolbar>
