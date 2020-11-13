@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {FormControl, Validators} from '@angular/forms';
-import {BillingApiService} from '../services/billing-api.service';
+import {BillingService} from '../services/billing.service';
 import {LogService} from '@smartstocktz/core-libs';
 
 // @dynamic
@@ -124,7 +124,7 @@ export class MobilePayDetailsComponent implements OnInit {
   amountControl = new FormControl(this.amountToPay, [Validators.nullValidator, Validators.required, Validators.min(1)]);
 
   constructor(public bottomSheet: MatBottomSheetRef<MobilePayDetailsComponent>,
-              private readonly billApi: BillingApiService,
+              private readonly billApi: BillingService,
               private readonly changeDetectorRef: ChangeDetectorRef,
               private readonly logger: LogService,
               @Inject(MAT_BOTTOM_SHEET_DATA) public payData: { ref: string, amount: number }) {

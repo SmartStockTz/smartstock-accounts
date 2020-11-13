@@ -54,12 +54,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {IndexPage} from './pages/index.page';
+import {ShopsPage} from './pages/shops.page';
 
 
 const routes: Routes = [
   {path: '', component: IndexPage},
   {path: 'settings', canActivate: [AuthenticationGuard, ActiveShopGuard], component: SettingsPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ShopPage},
+  {path: 'shops', canActivate: [AuthenticationGuard, ActiveShopGuard], component: ShopsPage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
   {path: 'bill', canActivate: [AuthenticationGuard, ActiveShopGuard], component: BillingPage},
@@ -92,7 +94,8 @@ const routes: Routes = [
     ResetPasswordDialogComponent,
     RegisterDialogComponent,
     LoginDetailsFormComponent,
-    IndexPage
+    IndexPage,
+    ShopsPage
   ],
   exports: [],
   imports: [

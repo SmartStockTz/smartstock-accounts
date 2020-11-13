@@ -43,7 +43,7 @@ export class UserDeleteDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  deleteUser(user: any) {
+  deleteUser(user: any): void {
     this.errorUserMessage = undefined;
     this.deleteProgress = true;
     this.userDatabase.deleteUser(user).then(value => {
@@ -56,7 +56,7 @@ export class UserDeleteDialogComponent {
     });
   }
 
-  cancel() {
+  cancel(): void {
     this.dialogRef.close(null);
   }
 }

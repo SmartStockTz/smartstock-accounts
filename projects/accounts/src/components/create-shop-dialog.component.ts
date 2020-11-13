@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {StorageService} from '@smartstocktz/core-libs';
-import {ShopDatabaseService} from '../services/shop-database.service';
+import {ShopService} from '../services/shop.service';
 
 export interface DialogData {
   customer?: string;
@@ -75,7 +75,7 @@ export interface DialogData {
   `,
   styleUrls: ['../style/create-shop-dialog.style.scss'],
   providers: [
-    ShopDatabaseService
+    ShopService
   ]
 })
 export class CreateShopDialogComponent implements OnInit {
@@ -86,8 +86,8 @@ export class CreateShopDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateShopDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private readonly snack: MatSnackBar,
-              private readonly _storage: StorageService,
-              private readonly _shopApi: ShopDatabaseService,
+              private readonly storageService: StorageService,
+              private readonly _shopApi: ShopService,
               private readonly formBuilder: FormBuilder) {
   }
 
@@ -96,9 +96,9 @@ export class CreateShopDialogComponent implements OnInit {
       this.createShopProgress = true;
       this._shopApi.createShop(this.createShopForm.value).then(async value => {
         try {
-          const user = await this._storage.getActiveUser();
+          const user = await this.storageService.getActiveUser();
           user.shops.push(value);
-          await this._storage.saveActiveUser(user);
+          await this.storageService.saveActiveUser(user);
           this.dialogRef.close(value);
           this.snack.open('Shop created successful', 'Ok', {
             duration: 3000

@@ -1,6 +1,6 @@
 import {PaymentModel} from '../models/payment.model';
 import {Component, OnInit} from '@angular/core';
-import {BillingApiService} from '../services/billing-api.service';
+import {BillingService} from '../services/billing.service';
 import {LogService} from '@smartstocktz/core-libs';
 
 @Component({
@@ -25,7 +25,7 @@ export class ReceiptsComponent implements OnInit {
   receipts: PaymentModel[];
   receiptProgressFlag = false;
 
-  constructor(private readonly billingApi: BillingApiService,
+  constructor(private readonly billingApi: BillingService,
               private readonly logger: LogService) {
   }
 

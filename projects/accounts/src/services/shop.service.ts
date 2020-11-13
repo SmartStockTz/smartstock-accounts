@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {SettingsService, StorageService} from '@smartstocktz/core-libs';
 
 @Injectable()
-export class ShopDatabaseService {
+export class ShopService {
 
   constructor(private readonly httpClient: HttpClient,
               private readonly storageService: StorageService,

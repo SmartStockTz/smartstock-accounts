@@ -5,7 +5,7 @@ import {StorageService} from '@smartstocktz/core-libs';
 @Injectable({
   providedIn: 'root'
 })
-export class BillingApiService {
+export class BillingService {
 
   constructor(private readonly storage: StorageService) {
   }

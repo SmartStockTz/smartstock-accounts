@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {BillingApiService} from '../services/billing-api.service';
+import {BillingService} from '../services/billing.service';
 import {LogService} from '@smartstocktz/core-libs';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MobilePayDetailsComponent} from '../components/mobile-pay-details.component';
@@ -119,7 +119,7 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
   dueBill: number;
   unInvoicedBalance: number;
 
-  constructor(private readonly billingApi: BillingApiService,
+  constructor(private readonly billingApi: BillingService,
               private readonly bottomSheet: MatBottomSheet,
               private readonly logger: LogService) {
     super();
