@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceInfoUtil, EventService, SettingsService, SsmEvents} from '@smartstocktz/core-libs';
+import {DeviceInfoUtil, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'smartstock-setting',
@@ -16,7 +17,7 @@ import {DeviceInfoUtil, EventService, SettingsService, SsmEvents} from '@smartst
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'General'"
+        <smartstock-toolbar [heading]="'Settings'"
                             [sidenav]="sidenav"
                             [hasBackRoute]="isMobile"
                             [backLink]="'/account'"
@@ -24,41 +25,54 @@ import {DeviceInfoUtil, EventService, SettingsService, SsmEvents} from '@smartst
         </smartstock-toolbar>
 
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
-          <mat-progress-spinner *ngIf="getSettingsProgress" [diameter]="20" mode="indeterminate"
-                                [matTooltip]="'Fetch settings'"
-                                color="primary"></mat-progress-spinner>
+          <div *ngIf="getSettingsProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
+            <mat-progress-spinner [diameter]="30" mode="indeterminate"
+                                  [matTooltip]="'Fetch settings'"
+                                  color="primary">
+            </mat-progress-spinner>
+          </div>
           <form *ngIf="!getSettingsProgress && settingsForm" [formGroup]="settingsForm"
-                style="margin-top: 16px"
-                class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12">
+                style="margin-top: 16px; margin-bottom: 100px"
+                class="col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12">
 
-            <h4>Sales</h4>
-            <mat-card class="mat-elevation-z0">
-              <mat-card-content>
+            <h2 style="margin-top: 8px">Shop</h2>
+            <div style="display: flex;align-items: center">
+              <mat-card>
+                <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">store</mat-icon>
+              </mat-card>
+              <h1 style="margin-left: 8px">{{selectedShop}}</h1>
+            </div>
 
-                <div class="d-flex flex-row align-items-center">
-                  <mat-card-subtitle>Allow Retail</mat-card-subtitle>
-                  <span class="toolbar-spacer"></span>
-                  <mat-slide-toggle
-                    formControlName="allowRetail"
-                    matTooltip="If you disable you wont sale without printer" color="primary"
-                    labelPosition="after">
-                  </mat-slide-toggle>
-                </div>
-                <div style="height: 20px"></div>
-                <div class="d-flex flex-row align-items-center">
-                  <mat-card-subtitle>Allow Wholesale</mat-card-subtitle>
-                  <span class="toolbar-spacer"></span>
-                  <mat-slide-toggle
-                    formControlName="allowWholesale"
-                    matTooltip="If you disable you wont sale without printer" color="primary"
-                    labelPosition="after">
-                  </mat-slide-toggle>
-                </div>
-              </mat-card-content>
+            <h2 style="margin-top: 8px">Sales</h2>
+            <mat-card>
+              <mat-card class="mat-elevation-z0">
+                <mat-card-content>
+
+                  <div class="d-flex flex-row align-items-center">
+                    <mat-card-subtitle>Allow Retail</mat-card-subtitle>
+                    <span class="toolbar-spacer"></span>
+                    <mat-slide-toggle
+                      formControlName="allowRetail"
+                      matTooltip="If you disable you wont sale without printer" color="primary"
+                      labelPosition="after">
+                    </mat-slide-toggle>
+                  </div>
+                  <div style="height: 20px"></div>
+                  <div class="d-flex flex-row align-items-center">
+                    <mat-card-subtitle>Allow Wholesale</mat-card-subtitle>
+                    <span class="toolbar-spacer"></span>
+                    <mat-slide-toggle
+                      formControlName="allowWholesale"
+                      matTooltip="If you disable you wont sale without printer" color="primary"
+                      labelPosition="after">
+                    </mat-slide-toggle>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <div style="height: 20px"></div>
             </mat-card>
-            <div style="height: 20px"></div>
-            <h4>Printer</h4>
-            <mat-card class="mat-elevation-z0">
+            <h2 style="margin-top: 8px">Printer</h2>
+            <mat-card>
               <mat-card-content>
                 <div class="d-flex flex-row align-items-center">
                   <mat-card-subtitle>Allow to sale without printer</mat-card-subtitle>
@@ -96,7 +110,7 @@ import {DeviceInfoUtil, EventService, SettingsService, SsmEvents} from '@smartst
             </mat-card>
 
             <button [disabled]="saveSettingProgress || !settingsForm.dirty"
-                    style="margin-top: 16px; margin-bottom: 16px"
+                    style="margin-top: 16px"
                     color="primary"
                     mat-flat-button
                     (click)="saveSettings()"
@@ -124,10 +138,14 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
   saveSettingProgress = false;
 
   isMobile = false;
+  selectedShop = '';
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly snack: MatSnackBar,
               private readonly eventApi: EventService,
+              private readonly activatedRoute: ActivatedRoute,
+              private readonly router: Router,
+              private readonly userService: UserService,
               private readonly settings: SettingsService) {
     super();
   }
@@ -137,21 +155,42 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
   }
 
   private getSettings(): void {
-    this.getSettingsProgress = true;
-    this.settings.getSettings().then(value => {
-      this.initiateSettingsForm(value);
-      this.getSettingsProgress = false;
-    }).catch(reason => {
-      // console.log(reason);
-      this.initiateSettingsForm({
-        saleWithoutPrinter: true,
-        printerHeader: '',
-        printerFooter: '',
-        allowRetail: true,
-        allowWholesale: true,
-      });
-      this.getSettingsProgress = false;
+    this.activatedRoute.params.subscribe(params => {
+      if (params && params.shop) {
+        this.getSettingsProgress = true;
+        this.userService.getShops().then(shops => {
+          const shop = shops.filter(x => x.projectId === params.shop);
+          if (shop && shop[0] && shop[0].settings) {
+            this.selectedShop = shop[0].businessName;
+            return shop[0].settings;
+          } else {
+            this.goToIndex();
+            throw new Error('bad shop data');
+          }
+        }).then(value => {
+          this.initiateSettingsForm(value);
+          this.getSettingsProgress = false;
+        }).catch(_ => {
+          // console.log(reason);
+          this.initiateSettingsForm({
+            saleWithoutPrinter: true,
+            printerHeader: '',
+            printerFooter: '',
+            allowRetail: true,
+            allowWholesale: true,
+          });
+          this.getSettingsProgress = false;
+        });
+      } else {
+        this.goToIndex();
+      }
+    }, error => {
+      this.goToIndex();
     });
+  }
+
+  private goToIndex(): void {
+    this.router.navigateByUrl('/account').catch();
   }
 
   private initiateSettingsForm(settings: any): void {

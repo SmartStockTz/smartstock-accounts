@@ -55,13 +55,17 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {IndexPage} from './pages/index.page';
 import {ShopsPage} from './pages/shops.page';
+import {MatChipsModule} from '@angular/material/chips';
+import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
 
 
 const routes: Routes = [
   {path: '', component: IndexPage},
-  {path: 'settings', canActivate: [AuthenticationGuard, ActiveShopGuard], component: SettingsPage},
+  // {path: 'settings', canActivate: [AuthenticationGuard, ActiveShopGuard], component: SettingsPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ShopPage},
-  {path: 'shops', canActivate: [AuthenticationGuard, ActiveShopGuard], component: ShopsPage},
+  {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
+  {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
+  {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: SettingsPage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
   {path: 'bill', canActivate: [AuthenticationGuard, ActiveShopGuard], component: BillingPage},
@@ -95,7 +99,8 @@ const routes: Routes = [
     RegisterDialogComponent,
     LoginDetailsFormComponent,
     IndexPage,
-    ShopsPage
+    ShopsPage,
+    ShopsTableOptionsComponent
   ],
   exports: [],
   imports: [
@@ -136,7 +141,8 @@ const routes: Routes = [
     MatStepperModule,
     MatToolbarModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatChipsModule
   ]
 })
 export class AccountModule {

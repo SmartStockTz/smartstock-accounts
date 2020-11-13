@@ -65,22 +65,22 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
               </ng-template>
             </smartstock-libs-rbac>
 
-            <smartstock-libs-rbac [groups]="['admin', 'manager']" [component]="settings">
-              <ng-template #settings>
-                <div routerLink="/account/settings" style="margin: 5px; cursor: pointer">
-                  <mat-card matRipple
-                            style="width: 150px; height: 150px; display: flex; justify-content: center;
-                         align-items: center; flex-direction: column">
-                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
-                      settings
-                    </mat-icon>
-                  </mat-card>
-                  <p>
-                    Settings
-                  </p>
-                </div>
-              </ng-template>
-            </smartstock-libs-rbac>
+<!--            <smartstock-libs-rbac [groups]="['admin', 'manager']" [component]="settings">-->
+<!--              <ng-template #settings>-->
+<!--                <div routerLink="/account/settings" style="margin: 5px; cursor: pointer">-->
+<!--                  <mat-card matRipple-->
+<!--                            style="width: 150px; height: 150px; display: flex; justify-content: center;-->
+<!--                         align-items: center; flex-direction: column">-->
+<!--                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">-->
+<!--                      settings-->
+<!--                    </mat-icon>-->
+<!--                  </mat-card>-->
+<!--                  <p>-->
+<!--                    Settings-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--            </smartstock-libs-rbac>-->
 
           </div>
           <!--          <h1>Summary</h1>-->
