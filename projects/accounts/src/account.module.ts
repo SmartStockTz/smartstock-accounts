@@ -57,15 +57,16 @@ import {IndexPage} from './pages/index.page';
 import {ShopsPage} from './pages/shops.page';
 import {MatChipsModule} from '@angular/material/chips';
 import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
+import {EcommercePage} from './pages/ecommerce.page';
+import {ShopLogoFormComponent} from './components/shop-logo-form.component';
 
 
 const routes: Routes = [
   {path: '', component: IndexPage},
-  // {path: 'settings', canActivate: [AuthenticationGuard, ActiveShopGuard], component: SettingsPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ShopPage},
   {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
   {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
-  {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: SettingsPage},
+  {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
   {path: 'bill', canActivate: [AuthenticationGuard, ActiveShopGuard], component: BillingPage},
@@ -100,7 +101,9 @@ const routes: Routes = [
     LoginDetailsFormComponent,
     IndexPage,
     ShopsPage,
-    ShopsTableOptionsComponent
+    ShopsTableOptionsComponent,
+    EcommercePage,
+    ShopLogoFormComponent
   ],
   exports: [],
   imports: [

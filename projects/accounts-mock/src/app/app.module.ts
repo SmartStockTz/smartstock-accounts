@@ -17,6 +17,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {HttpClientModule} from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {LibModule} from '@smartstocktz/core-libs';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,9 @@ export class AppModule {
       applicationId: 'smartstock_lb',
       projectId: 'smartstock',
       appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG'
+    });
+    LibModule.start({
+      version: 'account-mock'
     });
   }
 }

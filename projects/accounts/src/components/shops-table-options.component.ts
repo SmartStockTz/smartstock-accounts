@@ -7,11 +7,11 @@ import {ShopModel} from '../models/shop.model';
   template: `
     <div style="margin-bottom: 24px">
       <mat-nav-list>
-        <!--        <mat-list-item (click)="dialogRef.dismiss()" routerLink="/account/shops/{{data.shop.projectId}}/ecommerce">-->
-        <!--          <h1 matLine>E-Commerce</h1>-->
-        <!--          <p matLine>E-commerce settings for this shop</p>-->
-        <!--          <mat-icon matListIcon>shopping_cart</mat-icon>-->
-        <!--        </mat-list-item>-->
+        <mat-list-item (click)="dialogRef.dismiss()" routerLink="/account/shops/{{data.shop.projectId}}/ecommerce">
+          <h1 matLine>E-Commerce</h1>
+          <p matLine>E-commerce settings for this shop</p>
+          <mat-icon matListIcon>shopping_cart</mat-icon>
+        </mat-list-item>
         <mat-list-item (click)="dialogRef.dismiss()" routerLink="/account/shops/{{data.shop.projectId}}/settings">
           <h1 matLine>Settings</h1>
           <p matLine>General shop settings</p>
