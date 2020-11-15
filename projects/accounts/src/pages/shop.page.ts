@@ -4,8 +4,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
 import {Observable, of} from 'rxjs';
 import {Router} from '@angular/router';
-import {ShopModel} from '../models/shop.model';
 import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {ShopModel} from '../models/shop.model';
 
 @Component({
   selector: 'smartstock-choose-shop',
@@ -33,7 +33,7 @@ import {StorageService, UserService} from '@smartstocktz/core-libs';
             </div>
           </div>
 
-<!--          <div class="ct_shop_profile">-->
+          <!--          <div class="ct_shop_profile">-->
           <!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
           <!--              <div class="add_shop_btn d-flex justify-content-center">-->
           <!--                <img alt="shop image" src="../../../../assets/img/plus_sign.svg">-->
@@ -52,16 +52,16 @@ import {StorageService, UserService} from '@smartstocktz/core-libs';
 export class ShopPage implements OnInit {
 
   shopDetails = {};
-  shops: Observable<ShopModel[]>;
+  shops: Observable<any[]>;
 
   constructor(public createShopDialog: MatDialog,
-              private readonly _snack: MatSnackBar,
-              private readonly _router: Router,
-              private readonly _storage: StorageService,
+              private readonly snackBar: MatSnackBar,
+              private readonly router: Router,
+              private readonly storageService: StorageService,
               private readonly userDatabase: UserService) {
   }
 
-  openCreateShopDialog() {
+  openCreateShopDialog(): void {
     const dialogRef = this.createShopDialog.open(CreateShopDialogComponent, {
       minWidth: 350,
       data: this.shopDetails,
@@ -71,34 +71,35 @@ export class ShopPage implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._getShops();
+        this.getShops();
       } else {
         // console.log('no shop to append');
       }
     });
   }
 
-  ngOnInit() {
-    this._getShops();
+  ngOnInit(): void {
+    this.getShops();
   }
 
-  private _getShops() {
-    this.userDatabase.getShops().then(shops => {
+  private getShops(): void {
+    this.userDatabase.currentUser().then(user => {
+      return this.userDatabase.getShops(user as any);
+    }).then(shops => {
       this.shops = of(shops);
     }).catch(reason => {
       // console.log(reason);
-      this._snack.open('Error when fetch available shops', 'Ok', {
+      this.snackBar.open('Error when fetch available shops', 'Ok', {
         duration: 3000
       });
     });
   }
 
-  setCurrentProject(shop: ShopModel) {
-    this.userDatabase.saveCurrentShop(shop).then(_ => {
-      this._router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
+  setCurrentProject(shop: ShopModel): void {
+    this.userDatabase.saveCurrentShop(shop as any).then(_ => {
+      this.router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
     }).catch(reason => {
-      // console.log(reason);
-      this._snack.open('Error when trying to save your current shop', 'Ok', {
+      this.snackBar.open('Error when trying to save your current shop', 'Ok', {
         duration: 3000
       });
     });

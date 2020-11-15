@@ -34,15 +34,15 @@ export class UserUpdateDialogComponent implements OnInit {
   updateProgress = false;
 
   constructor(public dialogRef: MatDialogRef<UserUpdateDialogComponent>,
-              private readonly _formBuilder: FormBuilder,
-              private readonly _snack: MatSnackBar,
+              private readonly formBuilder: FormBuilder,
+              private readonly snackBar: MatSnackBar,
               private readonly logger: LogService,
-              private readonly _userApi: UserService,
+              private readonly userService: UserService,
               @Inject(MAT_DIALOG_DATA) public data: UserModel) {
   }
 
   ngOnInit(): void {
-    this.updatePasswordFormGroup = this._formBuilder.group({
+    this.updatePasswordFormGroup = this.formBuilder.group({
       password: ['', [Validators.required, Validators.nullValidator]]
     });
   }
@@ -51,21 +51,21 @@ export class UserUpdateDialogComponent implements OnInit {
   updatePassword(): void {
     if (this.updatePasswordFormGroup.valid) {
       this.updateProgress = true;
-      this._userApi.updatePassword(this.data as any, this.updatePasswordFormGroup.value.password).then(value => {
-        this._snack.open('Password updated successful', 'Ok', {
+      this.userService.updatePassword(this.data as any, this.updatePasswordFormGroup.value.password).then(value => {
+        this.snackBar.open('Password updated successful', 'Ok', {
           duration: 3000
         });
         this.updateProgress = false;
         this.dialogRef.close();
       }).catch(reason => {
         this.logger.i(reason);
-        this._snack.open('Failure when try to update password, try again', 'Ok', {
+        this.snackBar.open('Failure when try to update password, try again', 'Ok', {
           duration: 3000
         });
         this.updateProgress = false;
       });
     } else {
-      this._snack.open('Please enter new password', 'Ok', {
+      this.snackBar.open('Please enter new password', 'Ok', {
         duration: 3000
       });
     }

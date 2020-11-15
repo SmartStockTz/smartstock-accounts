@@ -15,7 +15,7 @@ import {LogService} from '@smartstocktz/core-libs';
         </mat-list-item>
       </mat-list>
       <smartstock-data-not-ready style="padding: 16px" *ngIf="receiptProgressFlag"
-                          [isLoading]="receiptProgressFlag"></smartstock-data-not-ready>
+                                 [isLoading]="receiptProgressFlag"></smartstock-data-not-ready>
     </mat-card>
   `,
   styleUrls: ['../style/receipt.style.scss']
@@ -29,11 +29,11 @@ export class ReceiptsComponent implements OnInit {
               private readonly logger: LogService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getReceipts();
   }
 
-  getReceipts() {
+  getReceipts(): void {
     this.receiptProgressFlag = true;
     this.billingApi.getReceipt().then(value => {
       this.receiptProgressFlag = false;

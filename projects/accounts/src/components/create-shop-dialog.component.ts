@@ -87,17 +87,17 @@ export class CreateShopDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private readonly snack: MatSnackBar,
               private readonly storageService: StorageService,
-              private readonly _shopApi: ShopService,
+              private readonly shopService: ShopService,
               private readonly formBuilder: FormBuilder) {
   }
 
-  createShop() {
+  createShop(): void {
     if (this.createShopForm.valid) {
       this.createShopProgress = true;
-      this._shopApi.createShop(this.createShopForm.value).then(async value => {
+      this.shopService.createShop(this.createShopForm.value).then(async (value: any) => {
         try {
           const user = await this.storageService.getActiveUser();
-          user.shops.push(value);
+          user.shops.push(value as any);
           await this.storageService.saveActiveUser(user);
           this.dialogRef.close(value);
           this.snack.open('Shop created successful', 'Ok', {
@@ -119,7 +119,7 @@ export class CreateShopDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.createShopForm = this.formBuilder.group({
       businessName: ['', [Validators.nullValidator, Validators.required]],
       country: ['', [Validators.nullValidator, Validators.required]],
@@ -129,7 +129,7 @@ export class CreateShopDialogComponent implements OnInit {
     });
   }
 
-  closeDialog($event: Event) {
+  closeDialog($event: Event): void {
     $event.preventDefault();
     this.dialogRef.close(null);
   }

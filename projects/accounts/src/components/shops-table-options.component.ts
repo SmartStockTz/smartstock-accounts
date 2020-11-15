@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {ShopModel} from '../models/shop.model';
 
+// @dynamic
 @Component({
   selector: 'smartstock-account-shops-table-options',
   template: `

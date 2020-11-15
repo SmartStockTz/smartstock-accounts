@@ -39,7 +39,7 @@ export class LoginDetailsFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showPassword($event: MouseEvent) {
+  showPassword($event: MouseEvent): void {
     $event.preventDefault();
     this.showPasswordFlag = !this.showPasswordFlag;
   }

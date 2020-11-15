@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
-import {ShopModel} from '../models/shop.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
-import {LogService} from '@smartstocktz/core-libs';
+import {LogService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
@@ -62,7 +60,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class UserCreateDialogComponent implements OnInit {
   newUserForm: FormGroup;
   createUserProgress = false;
-  shops: Observable<ShopModel[]>;
+  shops: Observable<any[]>;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -74,11 +72,11 @@ export class UserCreateDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._getShops();
+    this.getShops();
     this.initiateForm();
   }
 
-  initiateForm() {
+  initiateForm(): void {
     this.newUserForm = this.formBuilder.group({
       username: ['', [Validators.nullValidator, Validators.required]],
       password: ['', [Validators.nullValidator, Validators.required]],
@@ -87,7 +85,7 @@ export class UserCreateDialogComponent implements OnInit {
     });
   }
 
-  createUser() {
+  createUser(): void {
     if (!this.newUserForm.valid) {
       this.snack.open('Please fll all details', 'Ok', {
         duration: 3000
@@ -115,14 +113,16 @@ export class UserCreateDialogComponent implements OnInit {
     });
   }
 
-  cancel($event: Event) {
+  cancel($event: Event): void {
     $event.preventDefault();
     this.dialogRef.close(null);
   }
 
-  private _getShops() {
-    this.userDatabase.getShops().then(value => {
-      this.shops = of(value);
+  private getShops(): void {
+    this.userDatabase.currentUser().then((user: any) => {
+      return this.userDatabase.getShops(user as any);
+    }).then(value => {
+      this.shops = of(value as any);
     }).catch(reason => {
       this.logger.e(reason, 'DialogUserNewComponent:203');
       this.shops = of([]);

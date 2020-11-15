@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormBuilder} from '@angular/forms';
 import {DeviceInfoUtil, LogService, MessageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
-import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ShopsTableOptionsComponent} from '../components/shops-table-options.component';
 
@@ -26,7 +24,7 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
                             [showProgress]="false">
         </smartstock-toolbar>
 
-        <div class="container col-xl-9 col-lg-10 col-sm-11 col-md-10 my-users-wrapper">
+        <div class="container col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12 my-users-wrapper">
 
           <mat-card-title class="d-flex flex-row">
             <!--            <button (click)="openAddShop()" color="primary" class="ft-button" mat-flat-button>-->
@@ -57,7 +55,7 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
                   <th mat-header-cell *matHeaderCellDef>Name</th>
                   <td mat-cell *matCellDef="let element">
                     {{element.businessName}}
-                    <mat-chip-list *ngIf="currentShop.projectId===element.projectId" style="display: inline-block">
+                    <mat-chip-list *ngIf="currentShop?.projectId===element.projectId" style="display: inline-block">
                       <mat-chip color="primary" selected>Selected</mat-chip>
                     </mat-chip-list>
                   </td>
@@ -122,7 +120,7 @@ export class ShopsPage extends DeviceInfoUtil implements OnInit {
   shopsDatasource: MatTableDataSource<ShopModel>;
   shopsTableColumns = ['name', 'appId', 'projectId', 'address', 'action'];
   shops: ShopModel[];
-  currentShop: ShopModel;
+  currentShop: ShopModel = {applicationId: '', businessName: '', projectId: '', projectUrlId: ''};
   fetchShopsFlag = false;
 
   isMobile = false;
@@ -142,11 +140,18 @@ export class ShopsPage extends DeviceInfoUtil implements OnInit {
   getShops(): void {
     this.fetchShopsFlag = true;
     this.userService.getCurrentShop().then(cShop => {
-      this.currentShop = cShop;
-      return this.userService.getShops();
+      if (cShop) {
+        this.currentShop = cShop as any;
+      }
+    }).catch(_ => {
+    });
+    // @ts-ignore
+    this.userService.currentUser().then(user => {
+      // @ts-ignore
+      return this.userService.getShops(user as any);
     }).then(data => {
       this.fetchShopsFlag = false;
-      this.shops = data;
+      this.shops = data as any;
       this.shopsDatasource = new MatTableDataSource<ShopModel>(this.shops);
     }).catch(reason => {
       this.fetchShopsFlag = false;

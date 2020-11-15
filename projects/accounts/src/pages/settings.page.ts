@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DeviceInfoUtil, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {SettingsModel} from '../models/settings.model';
 
 @Component({
   selector: 'smartstock-setting',
@@ -158,7 +159,9 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       if (params && params.shop) {
         this.getSettingsProgress = true;
-        this.userService.getShops().then(shops => {
+        this.userService.currentUser().then((user: any) => {
+          return this.userService.getShops(user as any);
+        }).then(shops => {
           const shop = shops.filter(x => x.projectId === params.shop);
           if (shop && shop[0] && shop[0].settings) {
             this.selectedShop = shop[0].businessName;
@@ -193,7 +196,7 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     this.router.navigateByUrl('/account').catch();
   }
 
-  private initiateSettingsForm(settings: any): void {
+  private initiateSettingsForm(settings: SettingsModel): void {
     this.settingsForm = this.formBuilder.group({
       saleWithoutPrinter: [settings.saleWithoutPrinter],
       printerHeader: [settings.printerHeader],

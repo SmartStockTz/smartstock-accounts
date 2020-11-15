@@ -3,7 +3,9 @@ import {ShopModel} from '../models/shop.model';
 import {HttpClient} from '@angular/common/http';
 import {SettingsService, StorageService} from '@smartstocktz/core-libs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'any'
+})
 export class ShopService {
 
   constructor(private readonly httpClient: HttpClient,

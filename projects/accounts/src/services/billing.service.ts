@@ -3,7 +3,7 @@ import {BFast} from 'bfastjs';
 import {StorageService} from '@smartstocktz/core-libs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
 export class BillingService {
 

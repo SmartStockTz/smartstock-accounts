@@ -140,7 +140,7 @@ export class MobilePayDetailsComponent implements OnInit {
     // this.getPaymentReference();
   }
 
-  getPaymentReference() {
+  getPaymentReference(): void {
     // this.billApi.getPaymentReference().then(value => {
     //   this.reference = value;
     //   this.changeDetectorRef.detectChanges();
@@ -151,7 +151,7 @@ export class MobilePayDetailsComponent implements OnInit {
     // });
   }
 
-  getAmountToPay() {
+  getAmountToPay(): void {
     return this.amountControl.value;
   }
 }

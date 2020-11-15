@@ -8,39 +8,36 @@ import {UserService} from '@smartstocktz/core-libs';
   selector: 'smartstock-profile-authentication',
   template: `
     <div class="profile-auth-wrapper">
-      <mat-card class="mat-elevation-z0">
+      <mat-card>
         <form *ngIf="!getUserProgress && authForm" [formGroup]="authForm"
               (ngSubmit)="changePassword()">
-          <div class="row">
+          <div>
+            <!--            <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">-->
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Last Password</mat-label>
+              <input matInput formControlName="lastPassword" [type]="showLastPassword?'text':'password'">
+              <button (click)="toggleLastPasswordVisibility()" mat-icon-button matSuffix>
+                <mat-icon *ngIf="showLastPassword">visibility_on</mat-icon>
+                <mat-icon *ngIf="!showLastPassword">visibility_off</mat-icon>
+              </button>
+              <mat-error>last password required</mat-error>
+            </mat-form-field>
 
-            <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>New Password</mat-label>
+              <input matInput formControlName="password" type="text" [type]="showPassword?'text':'password'">
+              <button (click)="togglePasswordVisibility()" mat-icon-button matSuffix>
+                <mat-icon *ngIf="showPassword">visibility_on</mat-icon>
+                <mat-icon *ngIf="!showPassword">visibility_off</mat-icon>
+              </button>
+              <mat-error>new password required, and must be at least 6 characters</mat-error>
+            </mat-form-field>
 
-              <mat-form-field appearance="outline" class="btn-block">
-                <mat-label>Last Password</mat-label>
-                <input matInput formControlName="lastPassword" [type]="showLastPassword?'text':'password'">
-                <button (click)="toggleLastPasswordVisibility()" mat-icon-button matSuffix>
-                  <mat-icon *ngIf="showLastPassword">visibility_on</mat-icon>
-                  <mat-icon *ngIf="!showLastPassword">visibility_off</mat-icon>
-                </button>
-                <mat-error>last password required</mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="btn-block">
-                <mat-label>New Password</mat-label>
-                <input matInput formControlName="password" type="text" [type]="showPassword?'text':'password'">
-                <button (click)="togglePasswordVisibility()" mat-icon-button matSuffix>
-                  <mat-icon *ngIf="showPassword">visibility_on</mat-icon>
-                  <mat-icon *ngIf="!showPassword">visibility_off</mat-icon>
-                </button>
-                <mat-error>new password required, and must be at least 6 characters</mat-error>
-              </mat-form-field>
-
-            </div>
-
+            <!--            </div>-->
           </div>
 
-          <div class="row">
-            <button [disabled]="updateUserProgress" class="ft-button btn-block" mat-flat-button color="primary">
+          <div>
+            <button [disabled]="updateUserProgress" class="" mat-flat-button color="primary">
               CHANGE
               <mat-progress-spinner *ngIf="updateUserProgress"
                                     style="display: inline-block" [diameter]="30"
@@ -77,32 +74,32 @@ export class AuthenticationComponent implements OnInit {
   showLastPassword = false;
   showPassword = false;
 
-  constructor(private readonly _formBuilder: FormBuilder,
-              private readonly _snack: MatSnackBar,
-              private readonly _userApi: UserService) {
+  constructor(private readonly formBuilder: FormBuilder,
+              private readonly snackBar: MatSnackBar,
+              private readonly userService: UserService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getCurrentUser();
   }
 
-  private _initializeForm(user: UserModel) {
-    this.authForm = this._formBuilder.group({
+  private _initializeForm(user: UserModel): void {
+    this.authForm = this.formBuilder.group({
       lastPassword: [''],
       password: [''],
     });
   }
 
-  getCurrentUser() {
+  getCurrentUser(): void {
     this.getUserProgress = true;
-    this._userApi.currentUser().then(user => {
+    this.userService.currentUser().then(user => {
       this.currentUser = user;
       this._initializeForm(this.currentUser);
       this.getUserProgress = false;
     }).catch(reason => {
       // console.log(reason);
       this.getUserProgress = false;
-      this._snack.open('Error when trying to get user details', 'Ok', {
+      this.snackBar.open('Error when trying to get user details', 'Ok', {
         duration: 3000
       });
     });
@@ -111,33 +108,33 @@ export class AuthenticationComponent implements OnInit {
   changePassword(): any {
     if (this.authForm.valid) {
       this.updateUserProgress = true;
-      this._userApi.changePasswordFromOld({
+      this.userService.changePasswordFromOld({
         lastPassword: this.authForm.value.lastPassword,
         password: this.authForm.value.password,
         user: this.currentUser as any
       }).then(async user => {
         this.updateUserProgress = false;
-        this._snack.open('Your password changed successful', 'Ok', {
+        this.snackBar.open('Your password changed successful', 'Ok', {
           duration: 3000
         });
-        await this._userApi.updateCurrentUser(user);
-        this._resetForm(true);
+        await this.userService.updateCurrentUser(user);
+        this.resetForm(true);
       }).catch(reason => {
         // console.log(reason);
         this.updateUserProgress = false;
-        this._snack.open('Fails to change password, try again or contact support', 'Ok', {
+        this.snackBar.open('Fails to change password, try again or contact support', 'Ok', {
           duration: 3000
         });
-        this._resetForm(true);
+        this.resetForm(true);
       });
     } else {
-      this._snack.open('Please fill all required fields', 'Ok', {
+      this.snackBar.open('Please fill all required fields', 'Ok', {
         duration: 3000
       });
     }
   }
 
-  private _resetForm(reset: boolean) {
+  private resetForm(reset: boolean): void {
     if (reset) {
       this.authForm.reset({
         lastPassword: '',
@@ -149,11 +146,11 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
-  toggleLastPasswordVisibility() {
+  toggleLastPasswordVisibility(): void {
     this.showLastPassword = !this.showLastPassword;
   }
 
-  togglePasswordVisibility() {
+  togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 }

@@ -15,7 +15,7 @@ import {LogService} from '@smartstocktz/core-libs';
         </mat-list-item>
       </mat-list>
       <smartstock-data-not-ready style="padding: 16px" *ngIf="invoiceProgressFlag"
-                          [isLoading]="invoiceProgressFlag"></smartstock-data-not-ready>
+                                 [isLoading]="invoiceProgressFlag"></smartstock-data-not-ready>
     </mat-card>
   `,
 })
@@ -27,11 +27,11 @@ export class InvoicesComponent implements OnInit {
               private readonly logger: LogService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getInvoices();
   }
 
-  getInvoices() {
+  getInvoices(): void {
     this.invoiceProgressFlag = true;
     this.billingApi.getInvoices().then(value => {
       this.invoiceProgressFlag = false;

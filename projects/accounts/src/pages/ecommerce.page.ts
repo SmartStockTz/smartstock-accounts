@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceInfoUtil, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
+import {DeviceInfoUtil, EventService, FileBrowserDialogComponent, MessageService, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {EcommerceModel} from '../models/ecommerce.model';
+import {ShopModel} from '../models/shop.model';
+import {EcommerceService} from '../services/ecommerce.service';
 
 @Component({
   selector: 'smartstock-setting',
@@ -18,13 +22,13 @@ import {ActivatedRoute, Router} from '@angular/router';
       </ng-template>
       <ng-template #body>
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
-          <div *ngIf="getSettingsProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
+          <div *ngIf="ecommerceGetProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner [diameter]="30" mode="indeterminate"
                                   [matTooltip]="'Fetch e-commerce settings'"
                                   color="primary">
             </mat-progress-spinner>
           </div>
-          <form *ngIf="!getSettingsProgress && settingsForm" [formGroup]="settingsForm"
+          <form *ngIf="!ecommerceGetProgress && ecommerceForm" [formGroup]="ecommerceForm"
                 style="margin-top: 16px; margin-bottom: 100px"
                 class="col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12">
 
@@ -33,59 +37,79 @@ import {ActivatedRoute, Router} from '@angular/router';
               <mat-card>
                 <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">store</mat-icon>
               </mat-card>
-              <h1 style="margin-left: 8px">{{selectedShop}}</h1>
+              <h1 style="margin-left: 8px">{{selectedShop.businessName}}</h1>
             </div>
 
             <h2 style="margin-top: 8px">Logo</h2>
             <mat-card>
-              <mat-card-content>
-
-              </mat-card-content>
+              <img alt="Logo" mat-card-image [src]="ecommerceForm.value.logo">
+              <mat-card-actions>
+                <button (click)="browseMedia('logo',$event)" mat-flat-button>
+                  Upload Logo
+                </button>
+              </mat-card-actions>
             </mat-card>
             <div style="height: 20px"></div>
-            <h2 style="margin-top: 8px">Printer</h2>
+
+            <h2 style="margin-top: 8px">Cover</h2>
             <mat-card>
-              <mat-card-content>
-                <div class="d-flex flex-row align-items-center">
-                  <mat-card-subtitle>Allow to sale without printer</mat-card-subtitle>
-                  <span class="toolbar-spacer"></span>
-                  <mat-slide-toggle
-                    formControlName="saleWithoutPrinter"
-                    matTooltip="If you disable you wont sale without printer" color="primary"
-                    labelPosition="after">
-                  </mat-slide-toggle>
-                </div>
-
-                <div style="margin-top: 16px">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Header</mat-label>
-                    <textarea matTooltip="This content will be shown on top of a receipt when printed"
-                              formControlName="printerHeader"
-                              placeholder="Type here..." matInput type="text" [rows]="6">
-                </textarea>
-                  </mat-form-field>
-                </div>
-
-                <div style="margin-top: 16px">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Footer</mat-label>
-                    <textarea matTooltip="This content will be shown on bottom of a receipt when printed"
-                              formControlName="printerFooter"
-                              placeholder="Type here..." matInput type="text" [rows]="6">
-                </textarea>
-                  </mat-form-field>
-                </div>
-
-              </mat-card-content>
+              <img alt="Logo" mat-card-image [src]="ecommerceForm.value.cover">
+              <mat-card-actions>
+                <button (click)="browseMedia('cover', $event)" mat-flat-button>
+                  Upload Cover Photo
+                </button>
+              </mat-card-actions>
             </mat-card>
+            <div style="height: 20px"></div>
 
-            <button [disabled]="saveSettingProgress || !settingsForm.dirty"
+            <h2 style="margin-top: 8px">Description</h2>
+            <mat-card>
+              <mat-dialog-content>
+                <mat-form-field appearance="outline">
+                  <mat-label>About</mat-label>
+                  <textarea matInput rows="3" formControlName="about"></textarea>
+                  <mat-error>About required and must be at least 50 words</mat-error>
+                </mat-form-field>
+              </mat-dialog-content>
+              <!--              <mat-card-actions>-->
+              <!--                <button (click)="browseMedia('cover')" mat-flat-button>-->
+              <!--                  Upload Cover Photo-->
+              <!--                </button>-->
+              <!--              </mat-card-actions>-->
+            </mat-card>
+            <div style="height: 20px"></div>
+
+            <h2 style="margin-top: 8px">Social</h2>
+            <mat-card formGroupName="social">
+              <mat-dialog-content>
+                <mat-form-field appearance="outline">
+                  <mat-label>Instagram</mat-label>
+                  <input matInput type="url" formControlName="instagram">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Twitter</mat-label>
+                  <input matInput type="url" formControlName="twitter">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Facebook</mat-label>
+                  <input matInput type="url" formControlName="facebook">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>WhatsApp</mat-label>
+                  <input matInput type="number" formControlName="whatsapp">
+                </mat-form-field>
+              </mat-dialog-content>
+            </mat-card>
+            <div style="height: 20px"></div>
+
+            <button [disabled]="ecommerceSaveProgress"
                     style="margin-top: 16px"
                     color="primary"
                     mat-flat-button
-                    (click)="saveSettings()"
-                    class="btn-block ft-button">Update
-              <mat-progress-spinner style="display: inline-block" *ngIf="saveSettingProgress" [diameter]="20"
+                    (click)="saveEcommerceDetails()"
+                    class="btn-block ft-button">
+              Update E-Commerce Details
+              <mat-progress-spinner style="display: inline-block" *ngIf="ecommerceSaveProgress" [diameter]="20"
                                     color="primary"
                                     mode="indeterminate">
               </mat-progress-spinner>
@@ -96,78 +120,64 @@ import {ActivatedRoute, Router} from '@angular/router';
         </div>
       </ng-template>
     </smartstock-layout-sidenav>
-    <!--    <mat-sidenav-container class="match-parent">-->
-    <!--      <mat-sidenav class="match-parent-side"-->
-    <!--                   [fixedInViewport]="true"-->
-    <!--                   #sidenav-->
-    <!--                   [mode]="enoughWidth()?'side':'over'"-->
-    <!--                   [opened]="!isMobile">-->
-    <!--        <smartstock-drawer></smartstock-drawer>-->
-    <!--      </mat-sidenav>-->
-
-    <!--      <mat-sidenav-content>-->
-    <!--        <smartstock-toolbar [heading]="'Settings'"-->
-    <!--                            [sidenav]="sidenav"-->
-    <!--                            [hasBackRoute]="isMobile"-->
-    <!--                            [backLink]="'/account'"-->
-    <!--                            [showProgress]="false">-->
-    <!--        </smartstock-toolbar>-->
-
-    <!--        -->
-    <!--      </mat-sidenav-content>-->
-
-    <!--    </mat-sidenav-container>-->
   `,
   styleUrls: ['../style/setting.style.scss']
 })
 export class EcommercePage extends DeviceInfoUtil implements OnInit {
-  settingsForm: FormGroup;
-  getSettingsProgress = false;
-  saveSettingProgress = false;
-
-  isMobile = false;
-  selectedShop = '';
+  ecommerceForm: FormGroup;
+  ecommerceGetProgress = false;
+  ecommerceSaveProgress = false;
+  selectedShop: ShopModel;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly snack: MatSnackBar,
               private readonly eventApi: EventService,
               private readonly activatedRoute: ActivatedRoute,
               private readonly router: Router,
+              private readonly dialog: MatDialog,
               private readonly userService: UserService,
-              private readonly settings: SettingsService) {
+              private readonly messageService: MessageService,
+              private readonly ecommerceService: EcommerceService) {
     super();
   }
 
   ngOnInit(): void {
-    this.getSettings();
+    this.getEcommerce();
   }
 
-  private getSettings(): void {
+  private getEcommerce(): void {
     this.activatedRoute.params.subscribe(params => {
       if (params && params.shop) {
-        this.getSettingsProgress = true;
-        this.userService.getShops().then(shops => {
+        this.ecommerceGetProgress = true;
+        this.userService.currentUser().then(user => {
+          return this.userService.getShops(user);
+        }).then((shops: ShopModel[]) => {
           const shop = shops.filter(x => x.projectId === params.shop);
-          if (shop && shop[0] && shop[0].settings) {
-            this.selectedShop = shop[0].businessName;
-            return shop[0].settings;
+          if (shop && shop[0] && shop[0].businessName) {
+            this.selectedShop = shop[0];
+            return this.selectedShop && this.selectedShop.ecommerce ? this.selectedShop.ecommerce : {
+              cover: '',
+              about: '',
+              logo: '',
+              social: {},
+              faq: []
+            };
           } else {
             this.goToIndex();
             throw new Error('bad shop data');
           }
-        }).then(value => {
-          this.initiateSettingsForm(value);
-          this.getSettingsProgress = false;
+        }).then((value: EcommerceModel) => {
+          this.initEcommerceForm(value);
+          this.ecommerceGetProgress = false;
         }).catch(_ => {
-          // console.log(reason);
-          this.initiateSettingsForm({
-            saleWithoutPrinter: true,
-            printerHeader: '',
-            printerFooter: '',
-            allowRetail: true,
-            allowWholesale: true,
+          this.initEcommerceForm({
+            cover: '',
+            about: '',
+            logo: '',
+            social: {},
+            // faq: []
           });
-          this.getSettingsProgress = false;
+          this.ecommerceGetProgress = false;
         });
       } else {
         this.goToIndex();
@@ -181,30 +191,76 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
     this.router.navigateByUrl('/account').catch();
   }
 
-  private initiateSettingsForm(settings: any): void {
-    this.settingsForm = this.formBuilder.group({
-      saleWithoutPrinter: [settings.saleWithoutPrinter],
-      printerHeader: [settings.printerHeader],
-      printerFooter: [settings.printerFooter],
-      allowRetail: [settings.allowRetail],
-      allowWholesale: [settings.allowWholesale],
+  private initEcommerceForm(ecommerce: EcommerceModel): void {
+    this.ecommerceForm = this.formBuilder.group({
+      logo: [ecommerce.logo, [Validators.required, Validators.nullValidator]],
+      about: [ecommerce.about, [Validators.nullValidator, Validators.required, Validators.minLength(50)]],
+      cover: [ecommerce.cover, [Validators.required, Validators.nullValidator]],
+      social: this.formBuilder.group({
+        instagram: [ecommerce.social?.instagram],
+        twitter: [ecommerce.social?.twitter],
+        facebook: [ecommerce.social?.facebook],
+        whatsapp: [ecommerce.social?.whatsapp],
+      }),
+      // faq: [this.formBuilder.array(
+      //   ecommerce.faq?.map(x => {
+      //     return this.formBuilder.group({
+      //       question: [x.question],
+      //       answer: [x.answer],
+      //     });
+      //   })
+      // )],
     });
   }
 
-  saveSettings(): void {
-    this.saveSettingProgress = true;
-    this.settings.saveSettings(this.settingsForm.value).then(_ => {
-      this.snack.open('Settings saved', 'Ok', {
-        duration: 3000
+  saveEcommerceDetails(): void {
+    if (this.ecommerceForm.valid) {
+      this.ecommerceSaveProgress = true;
+      this.ecommerceService.updateEcommerceDetails(this.ecommerceForm.value, this.selectedShop).then(value => {
+        this.messageService.showMobileInfoMessage('E-Commerce details updated', 4000, 'bottom');
+        this.updateEcommerceForSelectedShop(value, this.selectedShop);
+      }).finally(() => {
+        this.ecommerceSaveProgress = false;
       });
-      this.saveSettingProgress = false;
-      this.eventApi.broadcast(SsmEvents.SETTINGS_UPDATED);
-    }).catch(reason => {
-      console.warn(reason);
-      this.snack.open('Fails to save settings, try again later', 'Ok', {
-        duration: 3000
+    } else {
+      this.messageService.showMobileInfoMessage('Please fill all required detail and submit again',
+        2000, 'bottom');
+    }
+  }
+
+  browseMedia(controlName: string, $event: MouseEvent): void {
+    $event.preventDefault();
+    this.userService.getCurrentShop().then(shop => {
+      this.dialog.open(FileBrowserDialogComponent, {
+        closeOnNavigation: false,
+        disableClose: true,
+        data: {
+          shop
+        }
+      }).afterClosed().subscribe(value => {
+        if (value && value.url) {
+          this.ecommerceForm.get(controlName).setValue(value.url);
+        } else {
+          this.messageService.showMobileInfoMessage('Media not selected', 2000, 'bottom');
+        }
       });
-      this.saveSettingProgress = false;
+    });
+  }
+
+  private updateEcommerceForSelectedShop(ecommerceModel: EcommerceModel, selectedShop: ShopModel): void {
+    this.userService.currentUser().then(user => {
+      return this.userService.getShops(user);
+    }).then(async shops => {
+      selectedShop.ecommerce = ecommerceModel;
+      return this.userService.updateShops(shops.map(x => {
+          if (x.projectId === selectedShop.projectId) {
+            return this.selectedShop;
+          } else {
+            return x;
+          }
+        })
+        , await this.userService.currentUser());
+    }).catch(_ => {
     });
   }
 }

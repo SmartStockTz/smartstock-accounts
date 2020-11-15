@@ -87,11 +87,11 @@ export class AddressComponent implements OnInit {
               private readonly userService: UserService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getCurrentBusiness();
   }
 
-  private _initializeForm(user: UserModel) {
+  private _initializeForm(user: UserModel): void {
     this.businessFormControl.setValue(user.businessName);
     this.businessForm = this.formBuilder.group({
       country: [user.country, [Validators.nullValidator, Validators.required]],
@@ -100,7 +100,7 @@ export class AddressComponent implements OnInit {
     });
   }
 
-  getCurrentBusiness() {
+  getCurrentBusiness(): void {
     this.getBusinessProgress = true;
     this.storageService.getActiveUser().then(user => {
       this.currentUser = user;
