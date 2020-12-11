@@ -105,11 +105,13 @@ export class LoginPage implements OnInit {
               private readonly dialog: MatDialog,
               private readonly log: LogService,
               private readonly formBuilder: FormBuilder,
-              private readonly userDatabase: UserService) {
+              private readonly userService: UserService) {
   }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.userService.updateCurrentUser(null).catch(reason => {
+    });
   }
 
   initializeForm(): void {
@@ -124,9 +126,9 @@ export class LoginPage implements OnInit {
       this.snack.open('Enter all required field', 'Ok', {duration: 3000});
     } else {
       this.showProgress = true;
-      this.loginForm.value.username.trim();
-      this.loginForm.value.password.trim();
-      this.userDatabase.login(this.loginForm.value).then(user => {
+      const username = this.loginForm.value.username.trim();
+      const password = this.loginForm.value.password.trim();
+      this.userService.login({username, password}).then(user => {
         if (user.role === 'admin') {
           this.stopProgressAndCleanForm(formElement);
           this.showMainUi('admin', formElement);
@@ -169,7 +171,7 @@ export class LoginPage implements OnInit {
     $event.stopPropagation();
     if (this.loginForm.value.username) {
       this.showProgress = true;
-      this.userDatabase.resetPassword(this.loginForm.value.username).then(value => {
+      this.userService.resetPassword(this.loginForm.value.username).then(value => {
         this.showProgress = false;
         this.dialog.open(ResetPasswordDialogComponent, {
           data: {

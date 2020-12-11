@@ -1,6 +1,6 @@
 {
   "name": "@smartstocktz/accounts",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/smartstocktz"
   },
@@ -12,8 +12,8 @@
     "@angular/core": "^11.0.0",
     "@angular/cdk": "^11.0.0",
     "@angular/material": "^11.0.0",
-    "bfastjs": "^4.0.0-beta.25",
-    "@smartstocktz/core-libs": "^0.0.19"
+    "bfastjs": "^4.0.3",
+    "@smartstocktz/core-libs": "^0.0.22"
   },
   "dependencies": {
     "tslib": "^2.0.0"
