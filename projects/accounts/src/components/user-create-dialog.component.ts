@@ -65,8 +65,8 @@ export class UserCreateDialogComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly snack: MatSnackBar,
-    private readonly storage: StorageService,
-    private readonly userDatabase: UserService,
+    private readonly storageService: StorageService,
+    private readonly userService: UserService,
     private readonly logger: LogService,
     public dialogRef: MatDialogRef<UserCreateDialogComponent>) {
   }
@@ -93,9 +93,9 @@ export class UserCreateDialogComponent implements OnInit {
       return;
     }
     this.createUserProgress = true;
-    this.newUserForm.value.username.trim();
-    this.newUserForm.value.password.trim();
-    this.userDatabase.addUser(this.newUserForm.value).then(value => {
+    this.newUserForm.value.username = this.newUserForm.value.username.trim();
+    this.newUserForm.value.password = this.newUserForm.value.password.trim();
+    this.userService.addUser(this.newUserForm.value).then(value => {
       this.createUserProgress = false;
       value.username = this.newUserForm.value.username;
       value.role = this.newUserForm.value.role;
@@ -110,6 +110,8 @@ export class UserCreateDialogComponent implements OnInit {
         reason.error.message : 'User not created, try again', 'Ok', {
         duration: 3000
       });
+    }).finally(() => {
+      this.createUserProgress = false;
     });
   }
 
@@ -119,10 +121,10 @@ export class UserCreateDialogComponent implements OnInit {
   }
 
   private getShops(): void {
-    this.userDatabase.currentUser().then((user: any) => {
-      return this.userDatabase.getShops(user as any);
+    this.userService.currentUser().then((user: any) => {
+      return this.userService.getShops(user as any);
     }).then(value => {
-      this.shops = of(value as any);
+      this.shops = of(value && Array.isArray(value) ? value : []);
     }).catch(reason => {
       this.logger.e(reason, 'DialogUserNewComponent:203');
       this.shops = of([]);

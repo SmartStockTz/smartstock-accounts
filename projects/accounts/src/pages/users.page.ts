@@ -118,7 +118,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
 
   isMobile = false;
 
-  constructor(private readonly userDatabase: UserService,
+  constructor(private readonly userService: UserService,
               private readonly formBuilder: FormBuilder,
               private readonly dialog: MatDialog,
               private readonly logger: LogService,
@@ -133,7 +133,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
   searchUser(query: string): void {
     // if ($event && $event.query) {
     //   this.fetchUsersFlag = true;
-    //   this.userDatabase.searchUser($event.query, {size: 20}).then(data => {
+    //   this.userService.searchUser($event.query, {size: 20}).then(data => {
     //     this.usersArray = JSON.parse(JSON.stringify(data));
     //     // this.skip +=this.productsArray.length;
     //     this.usersDatasource = new MatTableDataSource(this.usersArray);
@@ -152,9 +152,9 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
 
   getUsers(): void {
     this.fetchUsersFlag = true;
-    this.userDatabase.getAllUser({size: 100, skip: 0}).then(data => {
+    this.userService.getAllUser({size: 1000, skip: 0}).then(data => {
       this.fetchUsersFlag = false;
-      this.usersArray = JSON.parse(JSON.stringify(data));
+      this.usersArray = data;
       this.usersDatasource = new MatTableDataSource<UserModel>(this.usersArray);
     }).catch(reason => {
       this.fetchUsersFlag = false;
@@ -193,7 +193,7 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
 
   updateUser(user: { id: string, value: string, field: string }): void {
     // this.snack.open('Update in progress..', 'Ok');
-    // this.userDatabase.updateUser(user).then(data => {
+    // this.userService.updateUser(user).then(data => {
     //   const editedObjectIndex = this.usersArray.findIndex(value => value.id === data.id);
     //   this.usersArray = this.usersArray.filter(value => value.id !== user.id);
     //   if (editedObjectIndex !== -1) {

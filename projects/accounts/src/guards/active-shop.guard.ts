@@ -9,9 +9,9 @@ import {EventService} from '@smartstocktz/core-libs';
   providedIn: 'root'
 })
 export class ActiveShopGuard implements CanActivate {
-  constructor(private readonly _storage: StorageService,
+  constructor(private readonly storageService: StorageService,
               private readonly eventService: EventService,
-              private readonly _router: Router) {
+              private readonly router: Router) {
   }
 
   canActivate(
@@ -19,17 +19,17 @@ export class ActiveShopGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise(async (resolve, reject) => {
       try {
-        const activeShop = await this._storage.getActiveShop();
-        if (activeShop && activeShop.projectId && activeShop.applicationId && activeShop.projectUrlId) {
+        const activeShop = await this.storageService.getActiveShop();
+        if (activeShop && activeShop.projectId && activeShop.applicationId) {
           resolve(true);
         } else {
           this.eventService.broadcast(SsmEvents.ACTIVE_SHOP_REMOVE);
-          this._router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
+          this.router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
           reject(false);
         }
       } catch (e) {
         this.eventService.broadcast(SsmEvents.ACTIVE_SHOP_REMOVE);
-        this._router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
+        this.router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
         reject(false);
       }
     });
