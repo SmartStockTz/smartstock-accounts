@@ -2,6 +2,7 @@ export interface PaymentModel {
   date: any;
   receipt: string;
   amount: number;
+  mobile: string;
   id: string;
 }
 

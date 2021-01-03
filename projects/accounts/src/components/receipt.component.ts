@@ -6,11 +6,11 @@ import {LogService} from '@smartstocktz/core-libs';
 @Component({
   selector: 'smartstock-billing-receipts',
   template: `
-    <mat-card class="mat-elevation-z0">
+    <mat-card class="">
       <mat-list *ngIf="!receiptProgressFlag">
         <mat-list-item *ngFor="let receipt of receipts">
           <h1 matLine>{{receipt.receipt}}</h1>
-          <p matLine>{{receipt.amount | currency:'TZS '}}</p>
+          <p matLine>{{receipt.amount | currency:'TZS '}} via {{receipt.mobile}}</p>
           <p matSuffix>{{receipt.date | date}}</p>
         </mat-list-item>
       </mat-list>
@@ -37,11 +37,12 @@ export class ReceiptsComponent implements OnInit {
     this.receiptProgressFlag = true;
     this.billingApi.getReceipt().then(value => {
       this.receiptProgressFlag = false;
-      this.receipts = value.payments.map<PaymentModel>(receipt => {
+      this.receipts = value.map<PaymentModel>(receipt => {
         return {
           amount: receipt.amount,
-          date: receipt.date.iso ? receipt.date.iso : receipt.date,
+          date: receipt.timestamp,
           id: receipt.id,
+          mobile: receipt.msisdn,
           receipt: receipt.receipt
         };
       });

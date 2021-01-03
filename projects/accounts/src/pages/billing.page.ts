@@ -28,25 +28,36 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
         <div [ngClass]="isMobile?'container-fluid':'container my-billing-wrapper'">
 
           <div [ngClass]="isMobile?'col-12':'col-12 col-lg-10 col-xl-10 offset-xl-1 offset-lg-1 offset-md-0 offset-sm-0'">
-
+            <div style="padding-top: 16px">
+              <h2>Your Month Total Payment For All Shops</h2>
+              <h1 *ngIf="!costFlag">{{monthCost | currency: 'TZS '}}</h1>
+              <mat-progress-spinner color="primary" diameter="30" mode="indeterminate" *ngIf="costFlag"></mat-progress-spinner>
+            </div>
+            <hr>
             <div>
-              <p style="padding: 10px 0">
-                Billing
-              </p>
+              <!--              <p style="padding: 10px 0">-->
+              <!--                Billing-->
+              <!--              </p>-->
             </div>
 
             <div class="row" style="margin-bottom: 16px">
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
-                <smartstock-dash-card [content]="dueBalance" [title]="'Balance'"
+                <smartstock-dash-card [content]="subscription" [title]="'Subscription'"
                                       [height]="250"
-                                      [description]="'If bill is negative means you have un paid invoices'">
-                  <ng-template #dueBalance>
+                                      [description]="'your subscription status'">
+                  <ng-template #subscription>
                     <div style="display: flex; height: 100%; justify-content: center; align-items: center">
-                  <span *ngIf="!getDueBalanceFlag" style="font-size: 30px; text-space: 2px">
-                    {{dueBill | currency:'TZS '}}
-                  </span>
-                      <smartstock-data-not-ready *ngIf="getDueBalanceFlag || dueBill===undefined"
-                                                 [isLoading]="getDueBalanceFlag"
+                      <span *ngIf="!subscriptionFlag" style="font-size: 30px; text-space: 2px">
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                            <span style="font-size: 20px; margin-right: 4px"
+                                  class="text-{{subStatus===true?'success':'danger'}}">{{subStatus === true ? 'ACTIVE' : 'NOT ACTIVE'}}</span>
+                            <div style="display: inline-block; width: 18px; height: 18px"
+                                 class="spinner-grow text-{{subStatus===true?'success':'danger'}}" role="status"></div>
+                            <span style="font-size: 15px; padding-top: 8px">{{subMessage}}</span>
+                        </div>
+                      </span>
+                      <smartstock-data-not-ready *ngIf="subscriptionFlag"
+                                                 [isLoading]="subscriptionFlag"
                                                  [height]="100"
                                                  [width]="100"></smartstock-data-not-ready>
                     </div>
@@ -54,17 +65,16 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
                 </smartstock-dash-card>
               </div>
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
-                <smartstock-dash-card [content]="unInvoiced" [title]="'Un Invoiced'"
+                <smartstock-dash-card [content]="reference" [title]="'Reference'"
                                       [height]="250"
-                                      [description]="'Your usage cost before billed, ' +
-                            'this is approximation actual cost will be billed end of the month'">
-                  <ng-template #unInvoiced>
+                                      [description]="'Your payment reference number'">
+                  <ng-template #reference>
                     <div style="display: flex; height: 100%; justify-content: center; align-items: center">
-                  <span *ngIf="!getUnInvoicedBalanceFlag" style="font-size: 30px; text-space: 2px">
-                    {{unInvoicedBalance | currency:'TZS '}}
+                  <span *ngIf="!referenceFetchFlag" style="font-size: 30px; text-space: 2px">
+                    {{referenceNumber}}
                   </span>
-                      <smartstock-data-not-ready *ngIf="getUnInvoicedBalanceFlag || !unInvoicedBalance"
-                                                 [isLoading]="getUnInvoicedBalanceFlag"
+                      <smartstock-data-not-ready *ngIf="referenceFetchFlag"
+                                                 [isLoading]="referenceFetchFlag"
                                                  [height]="100"
                                                  [width]="100"></smartstock-data-not-ready>
                     </div>
@@ -73,30 +83,31 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
               </div>
             </div>
 
-            <div *ngIf="dueBill!==undefined">
-              <div>
-                <p style="padding: 10px 0">
-                  Payments
-                </p>
-              </div>
+            <div>
+              <!--                            <div>-->
+              <!--                              <p style="padding: 10px 0">-->
+              <!--                                Payments-->
+              <!--                              </p>-->
+              <!--                            </div>-->
 
               <div style="margin-bottom: 16px" class="row">
-                <button (click)="mobilePay()" mat-flat-button class="ft-button" color="primary">
-                  Mobile Pay
+                <button *ngIf="!subscriptionFlag" (click)="getSubscription()" mat-flat-button class="btn-block" color="primary">
+                  Update Status
                 </button>
               </div>
             </div>
 
-            <div class="row" style="margin-bottom: 16px">
-              <mat-tab-group style="width: 100%">
-                <mat-tab label="Invoices">
-                  <smartstock-billing-invoices></smartstock-billing-invoices>
+            <div class="" style="margin-bottom: 16px">
+              <mat-tab-group>
+                <mat-tab label="How To Pay">
+                  <smartstock-billing-how-to-pay [cost]="monthCost" [reference]="referenceNumber"></smartstock-billing-how-to-pay>
                 </mat-tab>
                 <mat-tab label="Receipts">
                   <smartstock-billing-receipts></smartstock-billing-receipts>
                 </mat-tab>
               </mat-tab-group>
             </div>
+
           </div>
 
         </div>
@@ -113,10 +124,13 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
   isMobile = false;
   referenceNumber: string;
   getReferenceNumberFlag = false;
-  getUnInvoicedBalanceFlag = false;
-  getDueBalanceFlag = false;
+  referenceFetchFlag = false;
+  subscriptionFlag = false;
+  subStatus = false;
+  subMessage = '';
   dueBill: number;
-  unInvoicedBalance: number;
+  costFlag = false;
+  monthCost = 30000;
 
   constructor(private readonly billingApi: BillingService,
               private readonly bottomSheet: MatBottomSheet,
@@ -125,42 +139,41 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDueBalance();
-    this.getUnInvoicedBalance();
+    this.getCost();
+    this.getSubscription();
     this.getPaymentReference();
   }
 
   getPaymentReference(): void {
-    this.getReferenceNumberFlag = true;
+    this.referenceFetchFlag = true;
     this.billingApi.getPaymentReference().then(value => {
-      this.getReferenceNumberFlag = false;
-      this.referenceNumber = value;
+      this.referenceFetchFlag = false;
+      this.referenceNumber = value.reference;
     }).catch(_ => {
-      this.getReferenceNumberFlag = false;
+      this.referenceFetchFlag = false;
       this.logger.i(_);
     });
   }
 
-  getDueBalance(): void {
-    this.getDueBalanceFlag = true;
-    this.billingApi.getDueBalance('TZS').then(value => {
-      this.getDueBalanceFlag = false;
-      const CR = value.CR;
-      const DR = value.DR.map(due => due.total).reduce((a, b) => a + b, 0);
-      this.dueBill = CR - DR;
+  getSubscription(): void {
+    this.subscriptionFlag = true;
+    this.billingApi.subscription().then(value => {
+      this.subscriptionFlag = false;
+      this.subStatus = value.subscription;
+      this.subMessage = value.reason;
     }).catch(_ => {
-      this.getDueBalanceFlag = false;
+      this.subscriptionFlag = false;
       this.logger.i(_);
     });
   }
 
-  getUnInvoicedBalance(): void {
-    this.getUnInvoicedBalanceFlag = true;
-    this.billingApi.getUnInvoicesBalance('TZS').then(value => {
-      this.getUnInvoicedBalanceFlag = false;
-      this.unInvoicedBalance = value.map(v => v.total).reduce((a, b) => a + b, 0);
+  getCost(): void {
+    this.costFlag = true;
+    this.billingApi.monthlyCost().then(value => {
+      this.costFlag = false;
+      this.monthCost = value.cost;
     }).catch(_ => {
-      this.getUnInvoicedBalanceFlag = false;
+      this.costFlag = false;
       this.logger.i(_);
     });
   }
@@ -175,8 +188,8 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       }
     }).afterDismissed().subscribe(value => {
       if (value === true) {
-        this.getDueBalance();
-        this.getUnInvoicedBalance();
+        this.getSubscription();
+        //  this.getUnInvoicedBalance();
       }
     });
   }

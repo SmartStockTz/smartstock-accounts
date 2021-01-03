@@ -7,3 +7,4 @@ export * from './guards/active-shop.guard';
 export * from './guards/admin-role.guard';
 export * from './guards/authenticated-user.guard';
 export * from './guards/authentication.guard';
+export * from './services/billing.service';

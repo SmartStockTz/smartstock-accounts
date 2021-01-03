@@ -35,7 +35,7 @@ import {PersonalComponent} from './components/personal.component';
 import {AddressComponent} from './components/address.component';
 import {AuthenticationComponent} from './components/credentials.component';
 import {ReceiptsComponent} from './components/receipt.component';
-import {InvoicesComponent} from './components/invoice.component';
+import {HowToPayComponent} from './components/how-to-pay.component';
 import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
 import {UserCreateDialogComponent} from './components/user-create-dialog.component';
 import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
@@ -84,7 +84,7 @@ const routes: Routes = [
     AuthenticationComponent,
     MobilePayDetailsComponent,
     ReceiptsComponent,
-    InvoicesComponent,
+    HowToPayComponent,
     UserDeleteDialogComponent,
     UserCreateDialogComponent,
     UserUpdateDialogComponent,
