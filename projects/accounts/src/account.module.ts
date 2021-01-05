@@ -68,9 +68,9 @@ const routes: Routes = [
   {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
   {path: 'login', component: LoginPage},
   {path: 'register', component: RegisterPage},
-  {path: 'bill', canActivate: [AuthenticationGuard, ActiveShopGuard], component: BillingPage},
-  {path: 'users', canActivate: [AuthenticationGuard, ActiveShopGuard], component: UsersPage},
-  {path: 'profile', canActivate: [AuthenticationGuard, ActiveShopGuard], component: ProfilePage},
+  {path: 'bill', canActivate: [AuthenticationGuard], component: BillingPage},
+  {path: 'users', canActivate: [AuthenticationGuard], component: UsersPage},
+  {path: 'profile', canActivate: [AuthenticationGuard], component: ProfilePage},
 ];
 
 @NgModule({

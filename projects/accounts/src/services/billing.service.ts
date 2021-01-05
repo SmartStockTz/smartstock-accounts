@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BFast} from 'bfastjs';
+import {BFast, bfast} from 'bfastjs';
 import {StorageService} from '@smartstocktz/core-libs';
 
 @Injectable({
@@ -12,7 +12,13 @@ export class BillingService {
 
   async subscription(): Promise<any> {
     const owner = await this.storage.getActiveUser();
-    return BFast.functions().request(`/billing/${owner.id}/subscription`).get();
+    const payment = await BFast.functions().request(`/billing/${owner.id}/subscription`).get();
+    if (payment) {
+      bfast.cache({database: 'payment', collection: 'subscription'}).set('status', payment, {secure: true})
+        .catch(_ => {
+        });
+    }
+    return payment;
   }
 
   async monthlyCost(): Promise<any> {
