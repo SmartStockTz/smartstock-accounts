@@ -40,7 +40,6 @@ import {UserDeleteDialogComponent} from './components/user-delete-dialog.compone
 import {UserCreateDialogComponent} from './components/user-create-dialog.component';
 import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
 import {UsersPage} from './pages/users.page';
-import {ActiveShopGuard} from './guards/active-shop.guard';
 import {PersonalDetailsFormComponent} from './components/personal-details-form.component';
 import {BusinessDetailsFormComponent} from './components/business-details-form.component';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -58,6 +57,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
 import {EcommercePage} from './pages/ecommerce.page';
 import {ShopLogoFormComponent} from './components/shop-logo-form.component';
+import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
 
 
 const routes: Routes = [
@@ -66,8 +66,8 @@ const routes: Routes = [
   {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
   {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
   {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
-  {path: 'login', component: LoginPage},
-  {path: 'register', component: RegisterPage},
+  {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
+  {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
   {path: 'bill', canActivate: [AuthenticationGuard], component: BillingPage},
   {path: 'users', canActivate: [AuthenticationGuard], component: UsersPage},
   {path: 'profile', canActivate: [AuthenticationGuard], component: ProfilePage},

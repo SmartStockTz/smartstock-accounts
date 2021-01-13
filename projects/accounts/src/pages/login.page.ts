@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 import {MatDialog} from '@angular/material/dialog';
 import {ResetPasswordDialogComponent} from '../components/reset-password.component';
+import {BillingService} from '../services/billing.service';
 
 @Component({
   selector: 'smartstock-login',
@@ -103,6 +104,7 @@ export class LoginPage implements OnInit {
   constructor(private readonly snack: MatSnackBar,
               private readonly routes: Router,
               private readonly dialog: MatDialog,
+              private readonly billing: BillingService,
               private readonly log: LogService,
               private readonly formBuilder: FormBuilder,
               private readonly userService: UserService) {
@@ -110,8 +112,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.userService.updateCurrentUser(null).catch(reason => {
-    });
+    // this.userService.updateCurrentUser(null).catch(reason => {
+    // });
   }
 
   initializeForm(): void {
@@ -141,6 +143,9 @@ export class LoginPage implements OnInit {
         this.showProgress = false;
         this.snack.open('Invalid username/password try again', 'Ok', {
           duration: 5000
+        });
+      }).finally(() => {
+        this.billing.subscription().catch(_ => {
         });
       });
     }
