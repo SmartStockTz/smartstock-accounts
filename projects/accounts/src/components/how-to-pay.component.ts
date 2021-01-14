@@ -9,7 +9,7 @@ import {Component, Input, OnInit} from '@angular/core';
         <hr>
         <div class="row">
           <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6 col-12">
-            <img style="height: 80px" alt="M-PESA" src="/assets/img/mpesa.png">
+            <img style="height: 80px" alt="M-PESA" src="./assets/img/mpesa.png">
             <div style="padding-top: 8px">
                 <span style="">
                   1. Piga <b>*150*00#</b><br><br>

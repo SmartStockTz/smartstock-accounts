@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BillingService} from '../services/billing.service';
-import {DeviceInfoUtil, LogService} from '@smartstocktz/core-libs';
+import {DeviceInfoUtil, LogService, UserService} from '@smartstocktz/core-libs';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MobilePayDetailsComponent} from '../components/mobile-pay-details.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'smartstock-billing',
@@ -91,7 +92,7 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
               <!--                            </div>-->
 
               <div style="margin-bottom: 16px" class="row">
-                <button *ngIf="!subscriptionFlag" (click)="getSubscription()" mat-flat-button class="btn-block" color="primary">
+                <button *ngIf="!subscriptionFlag" (click)="refresh()" mat-stroked-button class="btn-block" color="primary">
                   Update Status
                 </button>
               </div>
@@ -100,7 +101,33 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
             <div class="" style="margin-bottom: 16px">
               <mat-tab-group>
                 <mat-tab label="How To Pay">
-                  <smartstock-billing-how-to-pay [cost]="monthCost" [reference]="referenceNumber"></smartstock-billing-how-to-pay>
+                  <div style="padding: 16px">
+                    <h3 style="margin-top: 16px">How To Pay With Visa & MasterCard</h3>
+                    <hr>
+                    <div class="row">
+                      <div class="col-12">
+                        <img style="height: 80px" alt="VISA" src="./assets/img/masterandvisacard.png">
+                        <div style="padding-top: 8px">
+                          <p>To pay using mastercard or visa, enter your valid phone number below and click "pay with card" button.
+                            After you successfull pay come after you press the button come back and press "Update status button".</p>
+                          <form (ngSubmit)="payByCard()" [formGroup]="cardForm">
+                            <mat-form-field appearance="outline" style="width: 100%">
+                              <mat-label>Mobile</mat-label>
+                              <input matInput type="number" min="0" required formControlName="mobile">
+                              <mat-error>Your mobile number required</mat-error>
+                            </mat-form-field>
+                            <button [disabled]="subscriptionFlag || cardPayUrlFlag" mat-raised-button color="primary">
+                              PAY WITH CARD
+                              <mat-progress-spinner *ngIf="cardPayUrlFlag" mode="indeterminate" color="primary" diameter="20"
+                                                    style="display: inline-block"></mat-progress-spinner>
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <smartstock-billing-how-to-pay [cost]="monthCost.toString()"
+                                                 [reference]="referenceNumber"></smartstock-billing-how-to-pay>
                 </mat-tab>
                 <mat-tab label="Receipts">
                   <smartstock-billing-receipts></smartstock-billing-receipts>
@@ -120,7 +147,6 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
 })
 export class BillingPage extends DeviceInfoUtil implements OnInit {
   isMobilePay = true;
-  amountFormControl = new FormControl(0);
   isMobile = false;
   referenceNumber: string;
   getReferenceNumberFlag = false;
@@ -130,15 +156,31 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
   subMessage = '';
   dueBill: number;
   costFlag = false;
-  monthCost = 30000;
+  monthCost = 0;
+  cardForm: FormGroup;
+  cardPayUrlFlag = false;
 
   constructor(private readonly billingApi: BillingService,
               private readonly bottomSheet: MatBottomSheet,
+              private readonly formBuilder: FormBuilder,
+              private readonly snack: MatSnackBar,
+              private readonly userService: UserService,
               private readonly logger: LogService) {
     super();
   }
 
   ngOnInit(): void {
+    this.cardForm = this.formBuilder.group({
+      mobile: ['', [Validators.minLength(9)]],
+      reference: ['0235'],
+      amount: ['0']
+    });
+    this.userService.currentUser().then(value => {
+      if (value && value.mobile) {
+        this.cardForm.get('mobile').setValue(value.mobile);
+      }
+    }).catch(_ => {
+    });
     this.getCost();
     this.getSubscription();
     this.getPaymentReference();
@@ -149,10 +191,17 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
     this.billingApi.getPaymentReference().then(value => {
       this.referenceFetchFlag = false;
       this.referenceNumber = value.reference;
+      this.cardForm.get('reference').setValue(value.reference);
     }).catch(_ => {
       this.referenceFetchFlag = false;
       this.logger.i(_);
     });
+  }
+
+  refresh(): void {
+    this.getSubscription();
+    this.getPaymentReference();
+    this.getCost();
   }
 
   getSubscription(): void {
@@ -172,6 +221,7 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
     this.billingApi.monthlyCost().then(value => {
       this.costFlag = false;
       this.monthCost = value.cost;
+      this.cardForm.get('amount').setValue(value.cost);
     }).catch(_ => {
       this.costFlag = false;
       this.logger.i(_);
@@ -192,5 +242,27 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
         //  this.getUnInvoicedBalance();
       }
     });
+  }
+
+  payByCard(): void {
+    if (this.referenceNumber && this.monthCost) {
+      if (this.cardForm.valid) {
+        this.cardPayUrlFlag = true;
+        this.billingApi.payByCard(this.cardForm.value).then(value => {
+          window.open(value, '_blank');
+        }).catch(reason => {
+          console.log(reason);
+        }).finally(() => {
+          this.cardPayUrlFlag = false;
+        });
+      }
+    } else {
+      this.snack.open('Reference number and/or monthly cost is unavailable, press "Update Status" button to refresh',
+        'Refresh Now', {
+          duration: 6000
+        }).onAction().subscribe(value => {
+        this.refresh();
+      });
+    }
   }
 }

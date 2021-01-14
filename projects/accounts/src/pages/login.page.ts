@@ -89,7 +89,7 @@ import {BillingService} from '../services/billing.service';
           <!--        Register-->
           <!--      </a>-->
         </div>
-        <p class="text-center" style="color: white; margin-top: 8px">FahamuTech © 2020</p>
+        <p class="text-center" style="color: white; margin-top: 8px">SmartStock Company Ltd © 2021</p>
       </footer>
     </div>
   `,

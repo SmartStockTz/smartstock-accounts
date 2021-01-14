@@ -21,6 +21,12 @@ export class BillingService {
     return payment;
   }
 
+  async payByCard(data: { amount: string, reference: string, mobile: string }): Promise<string> {
+    return bfast.functions().request('https://fahamupay-faas.bfast.fahamutech.com/functions/pay/card').get({
+      params: data
+    });
+  }
+
   async monthlyCost(): Promise<any> {
     const owner = await this.storage.getActiveUser();
     return BFast.functions().request(`/billing/${owner.id}/cost`).get();

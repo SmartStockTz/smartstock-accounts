@@ -38,7 +38,7 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                             style="width: 150px; height: 150px; display: flex; justify-content: center;
                          align-items: center; flex-direction: column">
                     <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">
-                      supervised_user_circle
+                      face
                     </mat-icon>
                   </mat-card>
                   <p>
