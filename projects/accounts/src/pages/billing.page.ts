@@ -248,8 +248,12 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
     if (this.referenceNumber && this.monthCost) {
       if (this.cardForm.valid) {
         this.cardPayUrlFlag = true;
-        this.billingApi.payByCard(this.cardForm.value).then(value => {
-          window.open(value, '_blank');
+        this.billingApi.payByCard(this.cardForm.value).then(async value => {
+          try {
+            await require('electron').shell.openExternal(value);
+          } catch (e) {
+            window.open(value, '_blank');
+          }
         }).catch(reason => {
           console.log(reason);
         }).finally(() => {

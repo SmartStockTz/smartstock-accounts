@@ -24,7 +24,7 @@ import {Component, Input, OnInit} from '@angular/core';
             </div>
           </div>
           <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6 col-12">
-            <img style="height: 80px" alt="TIGO PESA" src="/assets/img/tpesa.png">
+            <img style="height: 80px" alt="TIGO PESA" src="./assets/img/tpesa.png">
             <div style="padding-top: 8px">
                 <span style="">
                   1. Piga <b>*150*01#</b><br><br>
@@ -38,7 +38,7 @@ import {Component, Input, OnInit} from '@angular/core';
             </div>
           </div>
           <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6 col-12">
-            <img style="height: 80px" alt="HALOPESA" src="/assets/img/halopesa.png">
+            <img style="height: 80px" alt="HALOPESA" src="./assets/img/halopesa.png">
             <div style="padding-top: 8px">
                 <span style="">
                   1. Piga <b>*150*88#</b><br><br>
@@ -53,7 +53,7 @@ import {Component, Input, OnInit} from '@angular/core';
             </div>
           </div>
           <div class="col-sm-12 col-xl-6 col-lg-6 col-md-6 col-12">
-            <img style="height: 80px" alt="AIRTEL MONEY" src="/assets/img/airtelmoney.jpg">
+            <img style="height: 80px" alt="AIRTEL MONEY" src="./assets/img/airtelmoney.jpg">
             <div style="padding-top: 8px">
               <div>
                 <span style="">
