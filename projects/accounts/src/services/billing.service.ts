@@ -29,7 +29,9 @@ export class BillingService {
 
   async monthlyCost(): Promise<any> {
     const owner = await this.storage.getActiveUser();
-    return BFast.functions().request(`/billing/${owner.id}/cost`).get();
+    const value = await BFast.functions().request(`/billing/${owner.id}/cost`).get<{ cost: any }>();
+    value.cost = parseInt(value.cost).toFixed(0);
+    return value;
   }
 
   // async getDueBalance(currency: 'TZS' | 'USD'): Promise<any> {

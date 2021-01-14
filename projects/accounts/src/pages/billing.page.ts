@@ -249,9 +249,13 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       if (this.cardForm.valid) {
         this.cardPayUrlFlag = true;
         this.billingApi.payByCard(this.cardForm.value).then(async value => {
-          try {
-            await require('electron').shell.openExternal(value);
-          } catch (e) {
+          if (typeof process !== 'undefined' && process.env && process.env.IS_DESKTOP_SSM === '1') {
+            try {
+              await require('electron').shell.openExternal(value);
+            } catch (e) {
+              window.open(value, '_blank');
+            }
+          } else {
             window.open(value, '_blank');
           }
         }).catch(reason => {
