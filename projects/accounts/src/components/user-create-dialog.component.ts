@@ -6,7 +6,7 @@ import {LogService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
-  selector: 'smartstock-new-user',
+  selector: 'app-new-user',
   template: `
     <div style="min-width: 300px">
       <div mat-dialog-title>Create User</div>

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'smartstock-business-details-form',
+  selector: 'app-business-details-form',
   template: `
     <form [formGroup]="businessFormGroup">
       <div class="stepper-inputs">

@@ -4,7 +4,7 @@ import {ShopModel} from '../models/shop.model';
 
 // @dynamic
 @Component({
-  selector: 'smartstock-account-shops-table-options',
+  selector: 'app-account-shops-table-options',
   template: `
     <div style="margin-bottom: 24px">
       <mat-nav-list>

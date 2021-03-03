@@ -6,7 +6,7 @@ import {RegisterDialogComponent} from '../components/register-dialog.component';
 import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-register',
+  selector: 'app-register',
   template: `
     <mat-toolbar color="primary" class="mat-elevation-z2">
       <button routerLink="/" mat-icon-button>
@@ -20,18 +20,18 @@ import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
         <mat-vertical-stepper [linear]="true" #stepper>
           <mat-step [stepControl]="personalFormGroup">
             <ng-template matStepLabel>Fill personal details</ng-template>
-            <smartstock-personal-details-form [personalFormGroup]="personalFormGroup">
-            </smartstock-personal-details-form>
+            <app-personal-details-form [personalFormGroup]="personalFormGroup">
+            </app-personal-details-form>
           </mat-step>
           <mat-step [stepControl]="businessFormGroup">
             <ng-template matStepLabel>Fill your business details</ng-template>
-            <smartstock-business-details-form [businessFormGroup]="businessFormGroup">
-            </smartstock-business-details-form>
+            <app-business-details-form [businessFormGroup]="businessFormGroup">
+            </app-business-details-form>
           </mat-step>
           <mat-step [stepControl]="loginFormGroup">
             <ng-template matStepLabel>Login Information</ng-template>
-            <smartstock-login-details-form [loginFormGroup]="loginFormGroup">
-            </smartstock-login-details-form>
+            <app-login-details-form [loginFormGroup]="loginFormGroup">
+            </app-login-details-form>
             <div>
               <button mat-button
                       [disabled]="registerProgress"

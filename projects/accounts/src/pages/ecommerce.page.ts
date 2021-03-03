@@ -9,16 +9,16 @@ import {ShopModel} from '../models/shop.model';
 import {EcommerceService} from '../services/ecommerce.service';
 
 @Component({
-  selector: 'smartstock-setting',
+  selector: 'app-setting',
   template: `
-    <smartstock-layout-sidenav [leftDrawerOpened]="enoughWidth()"
+    <app-layout-sidenav [leftDrawerOpened]="enoughWidth()"
                                [leftDrawerMode]="enoughWidth()?'side':'over'"
                                [isMobile]="false"
                                [heading]="'E-Commerce'"
                                [body]="body"
                                [leftDrawer]="leftDrawer">
       <ng-template #leftDrawer>
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </ng-template>
       <ng-template #body>
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
@@ -119,7 +119,7 @@ import {EcommerceService} from '../services/ecommerce.service';
 
         </div>
       </ng-template>
-    </smartstock-layout-sidenav>
+    </app-layout-sidenav>
   `,
   styleUrls: ['../style/setting.style.scss']
 })

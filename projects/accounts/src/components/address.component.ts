@@ -6,7 +6,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {StorageService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-profile-address',
+  selector: 'app-profile-address',
   template: `
     <div class="profile-business-wrapper">
       <mat-card class="mat-elevation-z0">

@@ -7,7 +7,7 @@ import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ShopsTableOptionsComponent} from '../components/shops-table-options.component';
 
 @Component({
-  selector: 'smartstock-users',
+  selector: 'app-users',
   template: `
     <mat-sidenav-container *ngIf="!isMobile" class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -15,14 +15,14 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
                    #sidenav
                    [mode]="enoughWidth()?'side':'over'"
                    [opened]="true">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'Shops'"
+        <app-toolbar [heading]="'Shops'"
                             [sidenav]="sidenav"
                             [showProgress]="false">
-        </smartstock-toolbar>
+        </app-toolbar>
 
         <div class="container col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12 my-users-wrapper">
 

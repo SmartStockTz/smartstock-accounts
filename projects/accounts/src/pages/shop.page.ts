@@ -8,7 +8,7 @@ import {StorageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 
 @Component({
-  selector: 'smartstock-choose-shop',
+  selector: 'app-choose-shop',
   template: `
     <div class="main">
       <div class="container_shops d-flex flex-column justify-content-start justify-content-center align-items-center">

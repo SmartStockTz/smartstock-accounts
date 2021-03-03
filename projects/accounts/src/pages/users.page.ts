@@ -11,7 +11,7 @@ import {UserUpdateDialogComponent} from '../components/user-update-dialog.compon
 import {UserDeleteDialogComponent} from '../components/user-delete-dialog.component';
 
 @Component({
-  selector: 'smartstock-users',
+  selector: 'app-users',
   template: `
     <mat-sidenav-container *ngIf="!isMobile" class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -19,14 +19,14 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
                    #sidenav
                    [mode]="enoughWidth()?'side':'over'"
                    [opened]="true">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'Users'"
+        <app-toolbar [heading]="'Users'"
                             [sidenav]="sidenav"
                             [showProgress]="false">
-        </smartstock-toolbar>
+        </app-toolbar>
 
         <div class="container col-xl-9 col-lg-9 col-sm-11 col-md-10 my-users-wrapper">
           <mat-card-title class="d-flex flex-row">

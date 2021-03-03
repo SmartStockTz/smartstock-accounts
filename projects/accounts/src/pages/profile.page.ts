@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DeviceInfoUtil} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-profile',
+  selector: 'app-profile',
   template: `
     <mat-sidenav-container class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -10,20 +10,20 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                    #sidenav
                    [mode]="enoughWidth()?'side':'over'"
                    [opened]="true">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'Profile'"
+        <app-toolbar [heading]="'Profile'"
                             [sidenav]="sidenav"
                             [showProgress]="false">
-        </smartstock-toolbar>
+        </app-toolbar>
 
         <div style="margin-bottom: 50px" class="container col-xl-9 col-lg-9 col-sm-11 col-md-10 my-profile-wrapper">
           <h2 style="margin-top: 8px">Personal Information</h2>
-          <smartstock-profile-personal></smartstock-profile-personal>
+          <app-profile-personal></app-profile-personal>
           <h2 style="margin-top: 8px">Authentication</h2>
-          <smartstock-profile-authentication></smartstock-profile-authentication>
+          <app-profile-authentication></app-profile-authentication>
         </div>
 
       </mat-sidenav-content>

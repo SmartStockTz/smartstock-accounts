@@ -5,7 +5,7 @@ import {UserModel} from '../models/user.model';
 import {UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-profile-authentication',
+  selector: 'app-profile-authentication',
   template: `
     <div class="profile-auth-wrapper">
       <mat-card>

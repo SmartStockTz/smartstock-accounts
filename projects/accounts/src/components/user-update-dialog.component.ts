@@ -6,7 +6,7 @@ import {LogService, UserService} from '@smartstocktz/core-libs';
 import {UserModel} from '../models/user.model';
 
 @Component({
-  selector: 'smartstock-user-update-password',
+  selector: 'app-user-update-password',
   template: `
     <div style="min-width: 300px">
       <h4 mat-dialog-title>Password Update for : {{data.username}}</h4>

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'smartstock-account-shop-logo-form',
+  selector: 'app-account-shop-logo-form',
   template: `
     <div>
 

@@ -7,7 +7,7 @@ import {MobilePayDetailsComponent} from '../components/mobile-pay-details.compon
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'smartstock-billing',
+  selector: 'app-billing',
   template: `
     <mat-sidenav-container class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -15,16 +15,16 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                    #sidenav
                    [mode]="enoughWidth()?'side':'over'"
                    [opened]="!isMobile">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'Bills'"
+        <app-toolbar [heading]="'Bills'"
                             [sidenav]="sidenav"
                             [showProgress]="false"
                             [backLink]="'/account'"
                             [hasBackRoute]="isMobile">
-        </smartstock-toolbar>
+        </app-toolbar>
 
         <div [ngClass]="isMobile?'container-fluid':'container my-billing-wrapper'">
 
@@ -43,7 +43,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
             <div class="row" style="margin-bottom: 16px">
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
-                <smartstock-dash-card [content]="subscription" [title]="'Subscription'"
+                <app-dash-card [content]="subscription" [title]="'Subscription'"
                                       [height]="250"
                                       [description]="'your subscription status'">
                   <ng-template #subscription>
@@ -57,16 +57,16 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                             <span style="font-size: 15px; padding-top: 8px">{{subMessage}}</span>
                         </div>
                       </span>
-                      <smartstock-data-not-ready *ngIf="subscriptionFlag"
+                      <app-data-not-ready *ngIf="subscriptionFlag"
                                                  [isLoading]="subscriptionFlag"
                                                  [height]="100"
-                                                 [width]="100"></smartstock-data-not-ready>
+                                                 [width]="100"></app-data-not-ready>
                     </div>
                   </ng-template>
-                </smartstock-dash-card>
+                </app-dash-card>
               </div>
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
-                <smartstock-dash-card [content]="reference" [title]="'Reference'"
+                <app-dash-card [content]="reference" [title]="'Reference'"
                                       [height]="250"
                                       [description]="'Your payment reference number'">
                   <ng-template #reference>
@@ -74,13 +74,13 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                   <span *ngIf="!referenceFetchFlag" style="font-size: 30px; text-space: 2px">
                     {{referenceNumber}}
                   </span>
-                      <smartstock-data-not-ready *ngIf="referenceFetchFlag"
+                      <app-data-not-ready *ngIf="referenceFetchFlag"
                                                  [isLoading]="referenceFetchFlag"
                                                  [height]="100"
-                                                 [width]="100"></smartstock-data-not-ready>
+                                                 [width]="100"></app-data-not-ready>
                     </div>
                   </ng-template>
-                </smartstock-dash-card>
+                </app-dash-card>
               </div>
             </div>
 
@@ -126,11 +126,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                       </div>
                     </div>
                   </div>
-                  <smartstock-billing-how-to-pay [cost]="monthCost.toString()"
-                                                 [reference]="referenceNumber"></smartstock-billing-how-to-pay>
+                  <app-billing-how-to-pay [cost]="monthCost.toString()"
+                                                 [reference]="referenceNumber"></app-billing-how-to-pay>
                 </mat-tab>
                 <mat-tab label="Receipts">
-                  <smartstock-billing-receipts></smartstock-billing-receipts>
+                  <app-billing-receipts></app-billing-receipts>
                 </mat-tab>
               </mat-tab-group>
             </div>

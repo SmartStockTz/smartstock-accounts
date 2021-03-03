@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-dialog-user-delete',
+  selector: 'app-dialog-user-delete',
   template: `
     <div class="container">
       <div class="row">

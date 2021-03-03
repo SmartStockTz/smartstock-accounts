@@ -8,7 +8,7 @@ import {ResetPasswordDialogComponent} from '../components/reset-password.compone
 import {BillingService} from '../services/billing.service';
 
 @Component({
-  selector: 'smartstock-login',
+  selector: 'app-login',
   template: `
     <div class="login-wrapper">
 

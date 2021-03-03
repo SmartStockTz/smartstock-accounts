@@ -4,7 +4,7 @@ import {BillingService} from '../services/billing.service';
 import {LogService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-billing-receipts',
+  selector: 'app-billing-receipts',
   template: `
     <mat-card class="">
       <mat-list *ngIf="!receiptProgressFlag">
@@ -14,8 +14,8 @@ import {LogService} from '@smartstocktz/core-libs';
           <p matSuffix>{{receipt.date | date}}</p>
         </mat-list-item>
       </mat-list>
-      <smartstock-data-not-ready style="padding: 16px" *ngIf="receiptProgressFlag"
-                                 [isLoading]="receiptProgressFlag"></smartstock-data-not-ready>
+      <app-data-not-ready style="padding: 16px" *ngIf="receiptProgressFlag"
+                                 [isLoading]="receiptProgressFlag"></app-data-not-ready>
     </mat-card>
   `,
   styleUrls: ['../style/receipt.style.scss']

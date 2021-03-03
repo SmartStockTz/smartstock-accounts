@@ -2,19 +2,19 @@ import {Component} from '@angular/core';
 import {DeviceInfoUtil} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'smartstock-accounts-index',
+  selector: 'app-accounts-index',
   template: `
     <mat-sidenav-container>
       <mat-sidenav class="match-parent-side" #sidenav [mode]="enoughWidth()?'side': 'over'" [opened]="enoughWidth()">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
       <mat-sidenav-content style="min-height: 100vh">
-        <smartstock-toolbar searchPlaceholder="Filter product" [heading]="'Profile'"
-                            [sidenav]="sidenav"></smartstock-toolbar>
+        <app-toolbar searchPlaceholder="Filter product" [heading]="'Profile'"
+                            [sidenav]="sidenav"></app-toolbar>
         <div class="container col-xl-10 col-lg-10 col-sm-9 col-md-9 col-sm-12 col-10" style="padding: 16px 0">
           <h1>Go To</h1>
-          <div class="row">
-            <smartstock-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
+          <div class="d-flex">
+            <app-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
               <ng-template #profile>
                 <div routerLink="/account/profile" style="margin: 5px; cursor: pointer">
                   <mat-card matRipple
@@ -29,9 +29,9 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                   </p>
                 </div>
               </ng-template>
-            </smartstock-libs-rbac>
+            </app-libs-rbac>
 
-            <smartstock-libs-rbac [groups]="['admin','manager']" [component]="users">
+            <app-libs-rbac [groups]="['admin','manager']" [component]="users">
               <ng-template #users>
                 <div routerLink="/account/users" style="margin: 5px; cursor: pointer">
                   <mat-card matRipple
@@ -46,9 +46,9 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                   </p>
                 </div>
               </ng-template>
-            </smartstock-libs-rbac>
+            </app-libs-rbac>
 
-            <smartstock-libs-rbac [groups]="['admin']" [component]="shops">
+            <app-libs-rbac [groups]="['admin']" [component]="shops">
               <ng-template #shops>
                 <div routerLink="/account/shops" style="margin: 5px; cursor: pointer">
                   <mat-card matRipple
@@ -63,9 +63,9 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                   </p>
                 </div>
               </ng-template>
-            </smartstock-libs-rbac>
+            </app-libs-rbac>
 
-            <smartstock-libs-rbac [groups]="['admin']" [component]="bills">
+            <app-libs-rbac [groups]="['admin']" [component]="bills">
               <ng-template #bills>
                 <div routerLink="/account/bill" style="margin: 5px; cursor: pointer">
                   <mat-card matRipple
@@ -80,9 +80,9 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                   </p>
                 </div>
               </ng-template>
-            </smartstock-libs-rbac>
+            </app-libs-rbac>
 
-<!--            <smartstock-libs-rbac [groups]="['admin', 'manager']" [component]="settings">-->
+<!--            <app-libs-rbac [groups]="['admin', 'manager']" [component]="settings">-->
 <!--              <ng-template #settings>-->
 <!--                <div routerLink="/account/settings" style="margin: 5px; cursor: pointer">-->
 <!--                  <mat-card matRipple-->
@@ -97,7 +97,7 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
 <!--                  </p>-->
 <!--                </div>-->
 <!--              </ng-template>-->
-<!--            </smartstock-libs-rbac>-->
+<!--            </app-libs-rbac>-->
 
           </div>
           <!--          <h1>Summary</h1>-->

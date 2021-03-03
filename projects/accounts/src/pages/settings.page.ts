@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SettingsModel} from '../models/settings.model';
 
 @Component({
-  selector: 'smartstock-setting',
+  selector: 'app-setting',
   template: `
     <mat-sidenav-container class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -14,16 +14,16 @@ import {SettingsModel} from '../models/settings.model';
                    #sidenav
                    [mode]="enoughWidth()?'side':'over'"
                    [opened]="!isMobile">
-        <smartstock-drawer></smartstock-drawer>
+        <app-drawer></app-drawer>
       </mat-sidenav>
 
       <mat-sidenav-content>
-        <smartstock-toolbar [heading]="'Settings'"
+        <app-toolbar [heading]="'Settings'"
                             [sidenav]="sidenav"
                             [hasBackRoute]="isMobile"
                             [backLink]="'/account'"
                             [showProgress]="false">
-        </smartstock-toolbar>
+        </app-toolbar>
 
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
           <div *ngIf="getSettingsProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
@@ -129,7 +129,7 @@ import {SettingsModel} from '../models/settings.model';
 
     </mat-sidenav-container>
 
-    <!--<smartstock-settings-general *ngIf="isMobile"></smartstock-settings-general>-->
+    <!--<app-settings-general *ngIf="isMobile"></app-settings-general>-->
   `,
   styleUrls: ['../style/setting.style.scss']
 })

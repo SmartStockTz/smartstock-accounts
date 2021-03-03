@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'smartstock-billing-how-to-pay',
+  selector: 'app-billing-how-to-pay',
   template: `
     <mat-card class="mat-elevation-z0">
       <div style="">
