@@ -149,6 +149,7 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
               private readonly userService: UserService,
               private readonly settings: SettingsService) {
     super();
+    document.title = 'SmartStock - Settings';
   }
 
   ngOnInit(): void {

@@ -131,6 +131,7 @@ export class ShopsPage extends DeviceInfoUtil implements OnInit {
               private readonly logService: LogService,
               private readonly messageService: MessageService) {
     super();
+    document.title = 'SmartStock - My Shops';
   }
 
   ngOnInit(): void {

@@ -33,14 +33,14 @@ import {ShopModel} from '../models/shop.model';
             </div>
           </div>
 
-          <!--          <div class="ct_shop_profile">-->
-          <!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
-          <!--              <div class="add_shop_btn d-flex justify-content-center">-->
-          <!--                <img alt="shop image" src="../../../../assets/img/plus_sign.svg">-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--            <div class="shop_name d-flex justify-content-center">Add Shop</div>-->
-          <!--          </div>-->
+<!--          <div class="ct_shop_profile">-->
+<!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
+<!--              <div class="d-flex justify-content-center align-items-center">-->
+<!--                <mat-icon class="add_shop_btn">add</mat-icon>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="shop_name d-flex justify-content-center">Add Shop</div>-->
+<!--          </div>-->
 
         </div>
 
@@ -49,7 +49,7 @@ import {ShopModel} from '../models/shop.model';
   `,
   styleUrls: ['../style/shop.style.scss']
 })
-export class ShopPage implements OnInit {
+export class ChooseShopPage implements OnInit {
 
   shopDetails = {};
   shops: Observable<any[]>;
@@ -59,11 +59,13 @@ export class ShopPage implements OnInit {
               private readonly router: Router,
               private readonly storageService: StorageService,
               private readonly userDatabase: UserService) {
+    document.title = 'SmartStock - Choose Shop';
   }
 
   openCreateShopDialog(): void {
     const dialogRef = this.createShopDialog.open(CreateShopDialogComponent, {
       minWidth: 350,
+      maxWidth: 600,
       data: this.shopDetails,
       disableClose: true,
       closeOnNavigation: true

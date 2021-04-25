@@ -70,6 +70,7 @@ export class RegisterPage implements OnInit {
               private readonly logger: LogService,
               private readonly userDatabase: UserService,
               private readonly messageService: MessageService) {
+    document.title = 'SmartStock - Register';
   }
 
   ngOnInit(): void {

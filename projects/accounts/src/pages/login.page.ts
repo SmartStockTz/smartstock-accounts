@@ -108,6 +108,7 @@ export class LoginPage implements OnInit {
               private readonly log: LogService,
               private readonly formBuilder: FormBuilder,
               private readonly userService: UserService) {
+    document.title = 'SmartStock - Login';
   }
 
   ngOnInit(): void {

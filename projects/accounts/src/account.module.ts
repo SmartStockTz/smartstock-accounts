@@ -25,11 +25,11 @@ import {BillingPage} from './pages/billing.page';
 import {MobilePayDetailsComponent} from './components/mobile-pay-details.component';
 import {MatListModule} from '@angular/material/list';
 import {RouterModule, ROUTES, Routes} from '@angular/router';
-import {LibModule} from '@smartstocktz/core-libs';
+import {ConfigsService, LibModule} from '@smartstocktz/core-libs';
 import {LoginPage} from './pages/login.page';
 import {RegisterPage} from './pages/register.page';
 import {AuthenticationGuard} from './guards/authentication.guard';
-import {ShopPage} from './pages/shop.page';
+import {ChooseShopPage} from './pages/choose-shop.page';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {PersonalComponent} from './components/personal.component';
 import {AddressComponent} from './components/address.component';
@@ -62,7 +62,7 @@ import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
 
 const routes: Routes = [
   {path: '', component: IndexPage},
-  {path: 'shop', canActivate: [AuthenticationGuard], component: ShopPage},
+  {path: 'shop', canActivate: [AuthenticationGuard], component: ChooseShopPage},
   {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
   {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
   {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
@@ -93,7 +93,7 @@ const routes: Routes = [
     RegisterPage,
     LoginPage,
     CreateShopDialogComponent,
-    ShopPage,
+    ChooseShopPage,
     VerifyEMailDialogComponent,
     ResetPasswordDialogComponent,
     RegisterDialogComponent,
@@ -148,6 +148,35 @@ const routes: Routes = [
   ]
 })
 export class AccountModule {
-  constructor() {
+  constructor(private readonly configs: ConfigsService) {
+    this.configs.addMenu({
+      name: 'My Account',
+      link: '/account',
+      icon: 'supervisor_account',
+      roles: ['*'],
+      pages: [
+        {
+          name: 'profile',
+          roles: ['*'],
+          link: '/account/profile'
+        },
+        {
+          name: 'users',
+          roles: ['*'],
+          link: '/account/users'
+        },
+        {
+          name: 'shops',
+          roles: ['*'],
+          link: '/account/shops'
+        },
+        {
+          name: 'payments',
+          roles: ['*'],
+          link: '/account/bill'
+        }
+      ]
+    });
+    this.configs.selectedModuleName = 'my account';
   }
 }

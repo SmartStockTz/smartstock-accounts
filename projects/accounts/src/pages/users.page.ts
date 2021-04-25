@@ -24,8 +24,8 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
 
       <mat-sidenav-content>
         <app-toolbar [heading]="'Users'"
-                            [sidenav]="sidenav"
-                            [showProgress]="false">
+                     [sidenav]="sidenav"
+                     [showProgress]="false">
         </app-toolbar>
 
         <div class="container col-xl-9 col-lg-9 col-sm-11 col-md-10 my-users-wrapper">
@@ -124,30 +124,11 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
               private readonly logger: LogService,
               private readonly snack: MatSnackBar) {
     super();
+    document.title = 'SmartStock - Users';
   }
 
   ngOnInit(): void {
     this.getUsers();
-  }
-
-  searchUser(query: string): void {
-    // if ($event && $event.query) {
-    //   this.fetchUsersFlag = true;
-    //   this.userService.searchUser($event.query, {size: 20}).then(data => {
-    //     this.usersArray = JSON.parse(JSON.stringify(data));
-    //     // this.skip +=this.productsArray.length;
-    //     this.usersDatasource = new MatTableDataSource(this.usersArray);
-    //     this.fetchUsersFlag = false;
-    //     // this.size = 0;
-    //   }).catch(reason => {
-    //     this.snack.open(reason, 'Ok', {
-    //       duration: 3000
-    //     });
-    //     this.fetchUsersFlag = false;
-    //   });
-    // } else {
-    //   this.getUsers();
-    // }
   }
 
   getUsers(): void {

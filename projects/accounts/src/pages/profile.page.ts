@@ -36,6 +36,7 @@ export class ProfilePage extends DeviceInfoUtil implements OnInit {
 
   constructor() {
     super();
+    document.title = 'SmartStock - Profile';
   }
 
   ngOnInit(): void {

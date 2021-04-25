@@ -75,10 +75,21 @@
   transform: scale(1.1);
   background: #FFFFFF;
   cursor: pointer;
+  color: black;
 }
 
 .add_shop_btn {
+  color: white;
+  width: 100px;
+  height: 100px;
+  font-size: 100px
+}
 
+.add_shop_btn:hover {
+  width: 100px;
+  height: 100px;
+  font-size: 100px;
+  color: black;
 }
 
 .shop_name {

@@ -113,6 +113,7 @@ export class IndexPage extends DeviceInfoUtil {
 
   constructor() {
     super();
+    document.title = 'SmartStock - My Account';
   }
 
 }

@@ -20,10 +20,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
       <mat-sidenav-content>
         <app-toolbar [heading]="'Bills'"
-                            [sidenav]="sidenav"
-                            [showProgress]="false"
-                            [backLink]="'/account'"
-                            [hasBackRoute]="isMobile">
+                     [sidenav]="sidenav"
+                     [showProgress]="false"
+                     [backLink]="'/account'"
+                     [hasBackRoute]="isMobile">
         </app-toolbar>
 
         <div [ngClass]="isMobile?'container-fluid':'container my-billing-wrapper'">
@@ -44,8 +44,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
             <div class="row" style="margin-bottom: 16px">
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
                 <app-dash-card [content]="subscription" [title]="'Subscription'"
-                                      [height]="250"
-                                      [description]="'your subscription status'">
+                               [height]="250"
+                               [description]="'your subscription status'">
                   <ng-template #subscription>
                     <div style="display: flex; height: 100%; justify-content: center; align-items: center">
                       <span *ngIf="!subscriptionFlag" style="font-size: 30px; text-space: 2px">
@@ -58,26 +58,26 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                         </div>
                       </span>
                       <app-data-not-ready *ngIf="subscriptionFlag"
-                                                 [isLoading]="subscriptionFlag"
-                                                 [height]="100"
-                                                 [width]="100"></app-data-not-ready>
+                                          [isLoading]="subscriptionFlag"
+                                          [height]="100"
+                                          [width]="100"></app-data-not-ready>
                     </div>
                   </ng-template>
                 </app-dash-card>
               </div>
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
                 <app-dash-card [content]="reference" [title]="'Reference'"
-                                      [height]="250"
-                                      [description]="'Your payment reference number'">
+                               [height]="250"
+                               [description]="'Your payment reference number'">
                   <ng-template #reference>
                     <div style="display: flex; height: 100%; justify-content: center; align-items: center">
                   <span *ngIf="!referenceFetchFlag" style="font-size: 30px; text-space: 2px">
                     {{referenceNumber}}
                   </span>
                       <app-data-not-ready *ngIf="referenceFetchFlag"
-                                                 [isLoading]="referenceFetchFlag"
-                                                 [height]="100"
-                                                 [width]="100"></app-data-not-ready>
+                                          [isLoading]="referenceFetchFlag"
+                                          [height]="100"
+                                          [width]="100"></app-data-not-ready>
                     </div>
                   </ng-template>
                 </app-dash-card>
@@ -127,7 +127,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                     </div>
                   </div>
                   <app-billing-how-to-pay [cost]="monthCost.toString()"
-                                                 [reference]="referenceNumber"></app-billing-how-to-pay>
+                                          [reference]="referenceNumber"></app-billing-how-to-pay>
                 </mat-tab>
                 <mat-tab label="Receipts">
                   <app-billing-receipts></app-billing-receipts>
@@ -167,6 +167,7 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
               private readonly userService: UserService,
               private readonly logger: LogService) {
     super();
+    document.title = 'SmartStock - Bills';
   }
 
   ngOnInit(): void {

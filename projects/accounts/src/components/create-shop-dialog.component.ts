@@ -15,13 +15,13 @@ export interface DialogData {
   template: `
     <div>
       <form [formGroup]="createShopForm" (ngSubmit)="createShop()" class="create-shop-form-container">
-        <mat-form-field appearance="">
+        <mat-form-field appearance="" class="full-width">
           <mat-label>Shop Name</mat-label>
           <input matInput formControlName="businessName" placeholder="Shop Name">
           <mat-error>Shop name required</mat-error>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="full-width">
           <mat-label>Shop Category</mat-label>
           <mat-select formControlName="category" class="" required="">
             <mat-option value="atrists_photographers_creative">Artists, Photographers &amp; Creative Types</mat-option>
@@ -39,19 +39,19 @@ export interface DialogData {
           <mat-error>Choose category</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="">
+        <mat-form-field appearance="" class="full-width">
           <mat-label>Country</mat-label>
           <input matInput formControlName="country" placeholder="Country">
           <mat-error>Country required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="">
+        <mat-form-field appearance="" class="full-width">
           <mat-label>Region</mat-label>
           <input matInput formControlName="region" placeholder="Region">
           <mat-error>Region required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="">
+        <mat-form-field appearance="" class="full-width">
           <mat-label>Street</mat-label>
           <input matInput formControlName="street" placeholder="Street/ Location">
           <mat-error>Street required</mat-error>
@@ -73,7 +73,7 @@ export interface DialogData {
       </button>
     </div>
   `,
-  styleUrls: ['../style/create-shop-dialog.style.scss'],
+  styleUrls: ['../style/create-shop-dialog.style.scss', '../style/login.style.scss'],
   providers: [
     ShopService
   ]

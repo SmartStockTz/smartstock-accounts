@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ShopPage } from '../pages/shop.page';
+import { ChooseShopPage } from '../pages/choose-shop.page';
 
 describe('ChooseShopComponent', () => {
-  let component: ShopPage;
-  let fixture: ComponentFixture<ShopPage>;
+  let component: ChooseShopPage;
+  let fixture: ComponentFixture<ChooseShopPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShopPage ]
+      declarations: [ ChooseShopPage ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShopPage);
+    fixture = TestBed.createComponent(ChooseShopPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

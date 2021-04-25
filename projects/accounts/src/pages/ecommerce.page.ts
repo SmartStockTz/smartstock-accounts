@@ -139,6 +139,7 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
               private readonly messageService: MessageService,
               private readonly ecommerceService: EcommerceService) {
     super();
+    document.title = 'SmartStock - E-Commerce Settings';
   }
 
   ngOnInit(): void {
