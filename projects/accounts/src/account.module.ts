@@ -150,7 +150,7 @@ const routes: Routes = [
 export class AccountModule {
   constructor(private readonly configs: ConfigsService) {
     this.configs.addMenu({
-      name: 'My Account',
+      name: 'Account',
       link: '/account',
       icon: 'supervisor_account',
       roles: ['*'],
