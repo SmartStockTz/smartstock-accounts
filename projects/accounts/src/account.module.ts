@@ -102,7 +102,7 @@ const routes: Routes = [
     ShopsPage,
     ShopsTableOptionsComponent,
     EcommercePage,
-    ShopLogoFormComponent
+    ShopLogoFormComponent,
   ],
   exports: [],
   imports: [

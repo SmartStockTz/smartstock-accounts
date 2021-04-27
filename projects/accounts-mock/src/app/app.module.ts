@@ -18,6 +18,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {LibModule} from '@smartstocktz/core-libs';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {LibModule} from '@smartstocktz/core-libs';
     MatSnackBarModule,
     HttpClientModule,
     MatDialogModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -19,10 +19,10 @@ import {SettingsModel} from '../models/settings.model';
 
       <mat-sidenav-content>
         <app-toolbar [heading]="'Settings'"
-                            [sidenav]="sidenav"
-                            [hasBackRoute]="isMobile"
-                            [backLink]="'/account'"
-                            [showProgress]="false">
+                     [sidenav]="sidenav"
+                     [hasBackRoute]="isMobile"
+                     [backLink]="'/account'"
+                     [showProgress]="false">
         </app-toolbar>
 
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
@@ -32,7 +32,9 @@ import {SettingsModel} from '../models/settings.model';
                                   color="primary">
             </mat-progress-spinner>
           </div>
-          <form *ngIf="!getSettingsProgress && settingsForm" [formGroup]="settingsForm"
+          <form *ngIf="!getSettingsProgress && settingsForm"
+                (ngSubmit)="saveSettings()"
+                [formGroup]="settingsForm"
                 style="margin-top: 16px; margin-bottom: 100px"
                 class="col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12">
 
@@ -44,43 +46,49 @@ import {SettingsModel} from '../models/settings.model';
               <h1 style="margin-left: 8px">{{selectedShop}}</h1>
             </div>
 
-            <h2 style="margin-top: 8px">Sales</h2>
-            <mat-card>
-              <mat-card class="mat-elevation-z0">
-                <mat-card-content>
+            <h2 style="margin-top: 8px">Modules</h2>
+            <mat-card formGroupName="module">
+              <mat-card-content>
+                <div class="d-flex flex-row align-items-center">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Stock Module</mat-label>
+                    <mat-select formControlName="stock">
+                      <mat-option *ngFor="let stockModule of stockModules" [value]="stockModule">
+                        {{stockModule}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div style="height: 20px"></div>
+              </mat-card-content>
+            </mat-card>
 
-                  <div class="d-flex flex-row align-items-center">
-                    <mat-card-subtitle>Allow Retail</mat-card-subtitle>
-                    <span class="toolbar-spacer"></span>
-                    <mat-slide-toggle
-                      formControlName="allowRetail"
-                      matTooltip="If you disable you wont sale without printer" color="primary"
-                      labelPosition="after">
-                    </mat-slide-toggle>
-                  </div>
-                  <div style="height: 20px"></div>
-                  <div class="d-flex flex-row align-items-center">
-                    <mat-card-subtitle>Allow Wholesale</mat-card-subtitle>
-                    <span class="toolbar-spacer"></span>
-                    <mat-slide-toggle
-                      formControlName="allowWholesale"
-                      matTooltip="If you disable you wont sale without printer" color="primary"
-                      labelPosition="after">
-                    </mat-slide-toggle>
-                  </div>
-                </mat-card-content>
-              </mat-card>
+            <h2 style="margin-top: 8px">Currency</h2>
+            <mat-card>
+              <mat-card-content>
+                <div class="d-flex flex-row align-items-center">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Shop Currency</mat-label>
+                    <mat-select formControlName="currency">
+                      <mat-option *ngFor="let stockCurrency of shopCurrencies" [value]="stockCurrency">
+                        {{stockCurrency}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
               <div style="height: 20px"></div>
             </mat-card>
+
             <h2 style="margin-top: 8px">Printer</h2>
             <mat-card>
               <mat-card-content>
                 <div class="d-flex flex-row align-items-center">
-                  <mat-card-subtitle>Allow to sale without printer</mat-card-subtitle>
+                  <mat-card-subtitle>Disable Printer</mat-card-subtitle>
                   <span class="toolbar-spacer"></span>
                   <mat-slide-toggle
                     formControlName="saleWithoutPrinter"
-                    matTooltip="If you disable you wont sale without printer" color="primary"
+                    matTooltip="If you enable you won't be able sale without printer" color="primary"
                     labelPosition="after">
                   </mat-slide-toggle>
                 </div>
@@ -110,11 +118,10 @@ import {SettingsModel} from '../models/settings.model';
               </mat-card-content>
             </mat-card>
 
-            <button [disabled]="saveSettingProgress || !settingsForm.dirty"
+            <button [disabled]="saveSettingProgress"
                     style="margin-top: 16px"
                     color="primary"
                     mat-flat-button
-                    (click)="saveSettings()"
                     class="btn-block ft-button">Update
               <mat-progress-spinner style="display: inline-block" *ngIf="saveSettingProgress" [diameter]="20"
                                     color="primary"
@@ -140,6 +147,14 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
 
   isMobile = false;
   selectedShop = '';
+  stockModules = [
+    '@smartstocktz/stocks',
+    '@smartstocktz/stocks-real-estate'
+  ];
+  shopCurrencies = [
+    'TZS',
+    'USD'
+  ];
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly snack: MatSnackBar,
@@ -172,23 +187,26 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
             throw new Error('bad shop data');
           }
         }).then(value => {
-          this.initiateSettingsForm(value);
+          this.initiateSettingsForm(value as any);
           this.getSettingsProgress = false;
         }).catch(_ => {
-          // console.log(reason);
           this.initiateSettingsForm({
             saleWithoutPrinter: true,
             printerHeader: '',
             printerFooter: '',
             allowRetail: true,
             allowWholesale: true,
+            module: {
+              stock: '@smartstocktz/stocks'
+            },
+            currency: 'TZS'
           });
           this.getSettingsProgress = false;
         });
       } else {
         this.goToIndex();
       }
-    }, error => {
+    }, _234 => {
       this.goToIndex();
     });
   }
@@ -204,15 +222,18 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
       printerFooter: [settings.printerFooter],
       allowRetail: [settings.allowRetail],
       allowWholesale: [settings.allowWholesale],
+      module: this.formBuilder.group({
+        stock: [settings.module && settings.module.stock ? settings.module.stock : '@smartstocktz/stocks', []]
+      }),
+      currency: [settings.currency ? settings.currency : 'TZS', []]
     });
   }
 
   saveSettings(): void {
     this.saveSettingProgress = true;
     this.settings.saveSettings(this.settingsForm.value).then(_ => {
-      this.snack.open('Settings saved', 'Ok', {
-        duration: 3000
-      });
+      console.log(_);
+      this.snack.open('Settings saved', 'Ok', {duration: 3000});
       this.saveSettingProgress = false;
       this.eventApi.broadcast(SsmEvents.SETTINGS_UPDATED);
     }).catch(reason => {
