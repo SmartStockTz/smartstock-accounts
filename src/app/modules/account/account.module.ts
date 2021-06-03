@@ -177,6 +177,6 @@ export class AccountModule {
         }
       ]
     });
-    this.configs.selectedModuleName = 'my account';
-  }
+    this.configs.selectedModuleName = 'Account';
+  } // end
 }

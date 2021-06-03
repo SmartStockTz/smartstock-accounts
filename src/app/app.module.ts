@@ -1,12 +1,11 @@
+import {bfast} from 'bfastjs';
+import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
-import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {RouterModule} from '@angular/router';
+import {Routes} from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {WelcomePage} from './pages/welcome.page';
-import {LoginPageComponent} from './pages/login.page';
-import {BFast} from 'bfastjs';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
@@ -17,18 +16,19 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {HttpClientModule} from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {LibModule} from '@smartstocktz/core-libs';
 import {MatSelectModule} from '@angular/material/select';
 
+const routes: Routes = [
+   { path: 'account', canActivate: [  ], loadChildren: () => import('../../projects/accounts/src/public-api').then(mod => mod.AccountModule) },
+   { path: '', canActivate: [  ], loadChildren: () => import('./modules/mock/mock.module').then(mod => mod.MockModule) },
+];
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    WelcomePage,
-    LoginPageComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    CommonModule,
+    RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -40,20 +40,17 @@ import {MatSelectModule} from '@angular/material/select';
     HttpClientModule,
     MatDialogModule,
     MatBottomSheetModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor() {
-    BFast.init({
+    constructor(){
+        bfast.init({
       applicationId: 'smartstock_lb',
       projectId: 'smartstock',
-      appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG'
     });
-    LibModule.start({
-      version: 'account-mock'
-    });
-  }
+    }// end
 }
+

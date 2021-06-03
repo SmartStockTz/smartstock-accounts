@@ -6,7 +6,7 @@
     "accounts": {
       "projectType": "library",
       "root": "projects/accounts",
-      "sourceRoot": "projects/accounts/src",
+      "sourceRoot": "src/app/modules/account",
       "prefix": "lib",
       "architect": {
         "build": {
@@ -51,24 +51,24 @@
         }
       },
       "root": "projects/accounts-mock",
-      "sourceRoot": "projects/accounts-mock/src",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/accounts-mock",
-            "index": "projects/accounts-mock/src/index.html",
-            "main": "projects/accounts-mock/src/main.ts",
-            "polyfills": "projects/accounts-mock/src/polyfills.ts",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "projects/accounts-mock/src/favicon.ico",
-              "projects/accounts-mock/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "projects/accounts-mock/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -76,8 +76,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/accounts-mock/src/environments/environment.ts",
-                  "with": "projects/accounts-mock/src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -122,16 +122,16 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/accounts-mock/src/test.ts",
-            "polyfills": "projects/accounts-mock/src/polyfills.ts",
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.spec.json",
             "karmaConfig": "projects/accounts-mock/karma.conf.js",
             "assets": [
-              "projects/accounts-mock/src/favicon.ico",
-              "projects/accounts-mock/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "projects/accounts-mock/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -162,7 +162,8 @@
           }
         }
       }
-    }},
+    }
+  },
   "cli": {
     "analytics": "be859128-bac2-46bd-9bc5-e522b1ba8727"
   },

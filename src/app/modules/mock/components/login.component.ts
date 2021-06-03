@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {BFast} from 'bfastjs';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Router} from '@angular/router';
 import {StorageService} from '@smartstocktz/core-libs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+
 
 @Component({
   selector: 'app-login',
@@ -27,21 +29,21 @@ import {StorageService} from '@smartstocktz/core-libs';
           </form>
         </mat-card-content>
       </mat-card>
-    </div>
-  `
+    </div>`,
+  styleUrls: []
 })
-export class LoginPageComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   loginForm: FormGroup;
   isLogin = false;
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly router: Router,
-              private readonly storageService: StorageService,
-              private readonly snack: MatSnackBar) {
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly router: Router,
+              public readonly storageService: StorageService,
+              public readonly snack: MatSnackBar) {
   }
 
-  login(): void {
+  async login(): Promise<any> {
     if (!this.loginForm.valid) {
       this.snack.open('Please fill all required fields', 'Ok', {duration: 3000});
     } else {
@@ -64,10 +66,19 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<any> {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.nullValidator, Validators.required]],
       password: ['', [Validators.nullValidator, Validators.required]],
     });
   }
+
+  async ngAfterViewInit(): Promise<any> {
+
+  }
+
+  async ngOnDestroy(): Promise<any> {
+
+  }
 }
+
