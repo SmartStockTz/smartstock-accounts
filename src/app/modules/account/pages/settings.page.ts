@@ -138,7 +138,7 @@ import {SettingsModel} from '../models/settings.model';
 
     <!--<app-settings-general *ngIf="isMobile"></app-settings-general>-->
   `,
-  styleUrls: ['../style/setting.style.scss']
+  styleUrls: ['../styles/setting.style.scss']
 })
 export class SettingsPage extends DeviceInfoUtil implements OnInit {
   settingsForm: FormGroup;

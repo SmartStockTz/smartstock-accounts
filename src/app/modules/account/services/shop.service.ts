@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ShopModel} from '../models/shop.model';
 import {HttpClient} from '@angular/common/http';
 import {SettingsService, StorageService} from '@smartstocktz/core-libs';
-import bfast from 'bfastjs';
 
 @Injectable({
   providedIn: 'any'
@@ -14,8 +12,8 @@ export class ShopService {
               private readonly settingsService: SettingsService) {
   }
 
-  createShop(shop: ShopModel): Promise<ShopModel> {
-    return  undefined;
+  async createShop(shop: any): Promise<any> {
+    return undefined;
     // return bfast.functions().request('/shops')
     // return new Promise<ShopModel>(async (resolve, reject) => {
     //   try {

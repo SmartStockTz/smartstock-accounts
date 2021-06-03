@@ -30,7 +30,7 @@ import {LogService, UserService} from '@smartstocktz/core-libs';
       <p class="bg-danger" *ngIf="errorUserMessage">{{errorUserMessage}}</p>
     </div>
   `,
-  styleUrls: ['../style/users.style.scss']
+  styleUrls: ['../styles/users.style.scss']
 })
 export class UserDeleteDialogComponent {
   deleteProgress = false;

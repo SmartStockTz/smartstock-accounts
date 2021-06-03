@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {EcommerceModel} from '../models/ecommerce.model';
 import {BFast} from 'bfastjs';
-import {ShopModel} from '../models/shop.model';
 import {StorageService} from '@smartstocktz/core-libs';
 
 @Injectable({
@@ -12,7 +10,7 @@ export class EcommerceService {
   constructor(private readonly storageService: StorageService) {
   }
 
-  async updateEcommerceDetails(ecommerce: EcommerceModel, shop: ShopModel): Promise<any> {
+  async updateEcommerceDetails(ecommerce: any, shop: any): Promise<any> {
     return BFast.functions().request('/ecommerce/' + shop.projectId).put(ecommerce, {
       headers: {}
     }).then((_: any) => {

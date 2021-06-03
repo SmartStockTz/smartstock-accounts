@@ -27,7 +27,7 @@ import {UserModel} from '../models/user.model';
       </form>
     </div>
   `,
-  styleUrls: ['../style/users.style.scss']
+  styleUrls: ['../styles/users.style.scss']
 })
 export class UserUpdateDialogComponent implements OnInit {
   updatePasswordFormGroup: FormGroup;

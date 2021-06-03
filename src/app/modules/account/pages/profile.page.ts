@@ -30,7 +30,7 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
 
     </mat-sidenav-container>
   `,
-  styleUrls: ['../style/profile.style.scss']
+  styleUrls: ['../styles/profile.style.scss']
 })
 export class ProfilePage extends DeviceInfoUtil implements OnInit {
 

@@ -1,6 +1,40 @@
+import {bfast} from 'bfastjs';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
+import {Routes} from '@angular/router';
+import {ROUTES} from '@angular/router';
+import {ConfigsService} from './services/configs.service';
+import {AuthenticationGuard} from './guards/authentication.guard';
+import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
+import {AddressComponent} from './components/address.component';
+import {BusinessDetailsFormComponent} from './components/business-details-form.component';
+import {CreateShopDialogComponent} from './components/create-shop-dialog.component';
+import {CredentialsComponent} from './components/credentials.component';
+import {HowToPayComponent} from './components/how-to-pay.component';
+import {LoginDetailsFormComponent} from './components/login-details-form.component';
+import {MobilePayDetailsComponent} from './components/mobile-pay-details.component';
+import {PersonalDetailsFormComponent} from './components/personal-details-form.component';
+import {PersonalComponent} from './components/personal.component';
+import {ReceiptComponent} from './components/receipt.component';
+import {RegisterDialogComponent} from './components/register-dialog.component';
+import {ResetPasswordComponent} from './components/reset-password.component';
+import {ShopLogoFormComponent} from './components/shop-logo-form.component';
+import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
+import {UserCreateDialogComponent} from './components/user-create-dialog.component';
+import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
+import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
+import {VerifyDialogComponent} from './components/verify-dialog.component';
+import {BillingPage} from './pages/billing.page';
+import {ChooseShopPage} from './pages/choose-shop.page';
+import {EcommercePage} from './pages/ecommerce.page';
+import {IndexPage} from './pages/index.page';
+import {LoginPage} from './pages/login.page';
+import {ProfilePage} from './pages/profile.page';
+import {RegisterPage} from './pages/register.page';
 import {SettingsPage} from './pages/settings.page';
+import {ShopsPage} from './pages/shops.page';
+import {UsersPage} from './pages/users.page';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatRippleModule} from '@angular/material/core';
@@ -19,137 +53,339 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ProfilePage} from './pages/profile.page';
-import {BillingPage} from './pages/billing.page';
-import {MobilePayDetailsComponent} from './components/mobile-pay-details.component';
 import {MatListModule} from '@angular/material/list';
-import {RouterModule, ROUTES, Routes} from '@angular/router';
-import {ConfigsService, LibModule} from '@smartstocktz/core-libs';
-import {LoginPage} from './pages/login.page';
-import {RegisterPage} from './pages/register.page';
-import {AuthenticationGuard} from './guards/authentication.guard';
-import {ChooseShopPage} from './pages/choose-shop.page';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {PersonalComponent} from './components/personal.component';
-import {AddressComponent} from './components/address.component';
-import {AuthenticationComponent} from './components/credentials.component';
-import {ReceiptsComponent} from './components/receipt.component';
-import {HowToPayComponent} from './components/how-to-pay.component';
-import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
-import {UserCreateDialogComponent} from './components/user-create-dialog.component';
-import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
-import {UsersPage} from './pages/users.page';
-import {PersonalDetailsFormComponent} from './components/personal-details-form.component';
-import {BusinessDetailsFormComponent} from './components/business-details-form.component';
 import {MatStepperModule} from '@angular/material/stepper';
-import {CreateShopDialogComponent} from './components/create-shop-dialog.component';
-import {VerifyEMailDialogComponent} from './components/verify-dialog.component';
-import {ResetPasswordDialogComponent} from './components/reset-password.component';
-import {RegisterDialogComponent} from './components/register-dialog.component';
-import {LoginDetailsFormComponent} from './components/login-details-form.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {IndexPage} from './pages/index.page';
-import {ShopsPage} from './pages/shops.page';
 import {MatChipsModule} from '@angular/material/chips';
-import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
-import {EcommercePage} from './pages/ecommerce.page';
-import {ShopLogoFormComponent} from './components/shop-logo-form.component';
-import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
-
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ConfigsService} from '@smartstocktz/core-libs';
+import {LibModule} from '@smartstocktz/core-libs';
 
 const routes: Routes = [
-  {path: '', component: IndexPage},
-  {path: 'shop', canActivate: [AuthenticationGuard], component: ChooseShopPage},
-  {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
-  {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
-  {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
-  {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
-  {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
-  {path: 'bill', canActivate: [AuthenticationGuard], component: BillingPage},
-  {path: 'users', canActivate: [AuthenticationGuard], component: UsersPage},
-  {path: 'profile', canActivate: [AuthenticationGuard], component: ProfilePage},
+   { path: '', canActivate: [  ], component: IndexPage },
+   { path: 'shop', canActivate: [ AuthenticationGuard ], component: ChooseShopPage },
+   { path: 'shops', canActivate: [ AuthenticationGuard ], component: ShopsPage },
+   { path: 'shops/:shop/settings', canActivate: [ AuthenticationGuard ], component: SettingsPage },
+   { path: 'shops/:shop/ecommerce', canActivate: [ AuthenticationGuard ], component: EcommercePage },
+   { path: 'login', canActivate: [ AuthenticatedUserGuard ], component: LoginPage },
+   { path: 'register', canActivate: [ AuthenticatedUserGuard ], component: RegisterPage },
+   { path: 'bill', canActivate: [ AuthenticationGuard ], component: BillingPage },
+   { path: 'users', canActivate: [ AuthenticationGuard ], component: UsersPage },
+   { path: 'profile', canActivate: [ AuthenticationGuard ], component: ProfilePage },
 ];
 
 @NgModule({
   declarations: [
-    SettingsPage,
-    UsersPage,
-    ProfilePage,
-    BillingPage,
-    PersonalComponent,
-    AddressComponent,
-    AuthenticationComponent,
-    MobilePayDetailsComponent,
-    ReceiptsComponent,
-    HowToPayComponent,
-    UserDeleteDialogComponent,
-    UserCreateDialogComponent,
-    UserUpdateDialogComponent,
-    PersonalDetailsFormComponent,
-    BusinessDetailsFormComponent,
-    RegisterPage,
-    LoginPage,
-    CreateShopDialogComponent,
-    ChooseShopPage,
-    VerifyEMailDialogComponent,
-    ResetPasswordDialogComponent,
-    RegisterDialogComponent,
-    LoginDetailsFormComponent,
-    IndexPage,
-    ShopsPage,
-    ShopsTableOptionsComponent,
-    EcommercePage,
-    ShopLogoFormComponent,
+     BillingPage,
+     ChooseShopPage,
+     EcommercePage,
+     IndexPage,
+     LoginPage,
+     ProfilePage,
+     RegisterPage,
+     SettingsPage,
+     ShopsPage,
+     UsersPage,
+     AddressComponent,
+     BusinessDetailsFormComponent,
+     CreateShopDialogComponent,
+     CredentialsComponent,
+     HowToPayComponent,
+     LoginDetailsFormComponent,
+     MobilePayDetailsComponent,
+     PersonalDetailsFormComponent,
+     PersonalComponent,
+     ReceiptComponent,
+     RegisterDialogComponent,
+     ResetPasswordComponent,
+     ShopLogoFormComponent,
+     ShopsTableOptionsComponent,
+     UserCreateDialogComponent,
+     UserDeleteDialogComponent,
+     UserUpdateDialogComponent,
+     VerifyDialogComponent,
   ],
-  exports: [],
   imports: [
     CommonModule,
     {
       ngModule: RouterModule,
       providers: [
         {
-          useValue: routes,
           multi: true,
-          provide: ROUTES
+          provide: ROUTES,
+          useValue: routes
         }
       ]
     },
-    MatSidenavModule,
-    LibModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSlideToggleModule,
-    MatTooltipModule,
-    MatInputModule,
-    ReactiveFormsModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTableModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSelectModule,
+    MatCardModule,
     MatRippleModule,
+    MatDialogModule,
     MatDividerModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
-    FormsModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatTabsModule,
+    MatTooltipModule,
     MatListModule,
     MatBottomSheetModule,
     MatStepperModule,
     MatToolbarModule,
     MatProgressBarModule,
     MatSnackBarModule,
+    MatChipsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ConfigsService,
+    LibModule,
+  ],
+  exports: [
+    imports: [
+    CommonModuleComponent,
+    {
+      ngModule: RouterModuleComponent,
+    providers: [
+        {
+          useValue: routesComponent,
+    multi: trueComponent,
+    provide: ROUTES
+        }
+      ]
+    }Component,
+    MatSidenavModuleComponent,
+    LibModuleComponent,
+    MatCardModuleComponent,
+    MatFormFieldModuleComponent,
+    MatSlideToggleModuleComponent,
+    MatTooltipModuleComponent,
+    MatInputModuleComponent,
+    ReactiveFormsModuleComponent,
+    MatButtonModuleComponent,
+    MatProgressSpinnerModuleComponent,
+    MatTabsModuleComponent,
+    MatMenuModuleComponent,
+    MatIconModuleComponent,
+    MatTableModuleComponent,
+    MatExpansionModuleComponent,
+    MatDialogModuleComponent,
+    MatSelectModuleComponent,
+    MatRippleModuleComponent,
+    MatDividerModuleComponent,
+    MatRadioModuleComponent,
+    FormsModuleComponent,
+    MatListModuleComponent,
+    MatBottomSheetModuleComponent,
+    MatStepperModuleComponent,
+    MatToolbarModuleComponent,
+    MatProgressBarModuleComponent,
+    MatSnackBarModuleComponent,
     MatChipsModule
   ]
 })
 export class AccountModule {
   constructor(private readonly configs: ConfigsService) {
     this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    constructor(private readonly configs: ConfigsService){
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
+      name: 'Account'Component,
+    link: '/account'Component,
+    icon: 'supervisor_account'Component,
+    roles: ['*'Component,
+  ],
+})
+export class AccountModule {
+    
+        this.configs.addMenu({
       name: 'Account',
       link: '/account',
       icon: 'supervisor_account',
@@ -178,5 +414,6 @@ export class AccountModule {
       ]
     });
     this.configs.selectedModuleName = 'Account';
-  } // end
+    }// end
 }
+

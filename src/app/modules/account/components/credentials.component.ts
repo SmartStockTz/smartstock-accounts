@@ -64,7 +64,7 @@ import {UserService} from '@smartstocktz/core-libs';
       </mat-card>
     </div>
   `,
-  styleUrls: ['../style/profile.style.scss']
+  styleUrls: ['../styles/profile.style.scss']
 })
 export class AuthenticationComponent implements OnInit {
   authForm: FormGroup;

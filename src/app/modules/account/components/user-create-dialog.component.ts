@@ -55,7 +55,7 @@ import {MatDialogRef} from '@angular/material/dialog';
       </div>
     </div>
   `,
-  styleUrls: ['../style/users.style.scss'],
+  styleUrls: ['../styles/users.style.scss'],
 })
 export class UserCreateDialogComponent implements OnInit {
   newUserForm: FormGroup;

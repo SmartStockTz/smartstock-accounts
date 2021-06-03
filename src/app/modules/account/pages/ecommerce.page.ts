@@ -121,7 +121,7 @@ import {EcommerceService} from '../services/ecommerce.service';
       </ng-template>
     </app-layout-sidenav>
   `,
-  styleUrls: ['../style/setting.style.scss']
+  styleUrls: ['../styles/setting.style.scss']
 })
 export class EcommercePage extends DeviceInfoUtil implements OnInit {
   ecommerceForm: FormGroup;

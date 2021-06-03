@@ -47,7 +47,7 @@ import {ShopModel} from '../models/shop.model';
       </div>
     </div>
   `,
-  styleUrls: ['../style/shop.style.scss']
+  styleUrls: ['../styles/shop.style.scss']
 })
 export class ChooseShopPage implements OnInit {
 

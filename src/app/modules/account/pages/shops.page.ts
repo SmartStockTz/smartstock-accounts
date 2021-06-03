@@ -113,7 +113,7 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
 
     </mat-sidenav-container>
   `,
-  styleUrls: ['../style/users.style.scss']
+  styleUrls: ['../styles/users.style.scss']
 })
 export class ShopsPage extends DeviceInfoUtil implements OnInit {
 

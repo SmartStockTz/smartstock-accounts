@@ -93,7 +93,7 @@ import {BillingService} from '../services/billing.service';
       </footer>
     </div>
   `,
-  styleUrls: ['../style/login.style.scss']
+  styleUrls: ['../styles/login.style.scss']
 })
 export class LoginPage implements OnInit {
   showProgress = false;

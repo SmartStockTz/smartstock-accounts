@@ -56,7 +56,7 @@ import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
       </div>
     </div>
   `,
-  styleUrls: ['../style/register.style.scss']
+  styleUrls: ['../styles/register.style.scss']
 })
 export class RegisterPage implements OnInit {
   personalFormGroup: FormGroup;

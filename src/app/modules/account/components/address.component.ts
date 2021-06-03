@@ -1,107 +1,113 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {bfast, BFast} from 'bfastjs';
+import {Component, AfterViewInit, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+
 import {UserModel} from '../models/user.model';
 import {ShopModel} from '../models/shop.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {FormBuilder} from '@angular/forms';
+import {FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
+import {Validators} from '@angular/forms';
+import {StorageService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
+
 
 @Component({
-  selector: 'app-profile-address',
-  template: `
-    <div class="profile-business-wrapper">
-      <mat-card class="mat-elevation-z0">
-        <form *ngIf="!getBusinessProgress && businessForm" [formGroup]="businessForm"
-              (ngSubmit)="updatePersonalInformation()">
-          <div class="row">
-            <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">
+    selector: 'app-address',
+    template: `<div class="profile-business-wrapper">
+  <mat-card class="mat-elevation-z0">
+    <form *ngIf="!getBusinessProgress && businessForm" [formGroup]="businessForm"
+      (ngSubmit)="updatePersonalInformation()">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">
 
-              <mat-form-field appearance="outline" class="btn-block" matTooltip="read only field">
-                <mat-label>Principal Shop</mat-label>
-                <input style="color: gray" matInput [formControl]="businessFormControl" type="text" [readonly]="true">
+          <mat-form-field appearance="outline" class="btn-block" matTooltip="read only field">
+            <mat-label>Principal Shop</mat-label>
+            <input style="color: gray" matInput [formControl]="businessFormControl" type="text" [readonly]="true">
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="btn-block">
-                <mat-label>Country</mat-label>
-                <input matInput formControlName="country" type="text">
-                <mat-error>country field required</mat-error>
-              </mat-form-field>
+          <mat-form-field appearance="outline" class="btn-block">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" type="text">
+            <mat-error>country field required</mat-error>
+          </mat-form-field>
 
-              <mat-form-field appearance="outline" class="btn-block">
-                <mat-label>Region</mat-label>
-                <input matInput formControlName="region" type="text">
-                <mat-error>last name field required</mat-error>
-              </mat-form-field>
+          <mat-form-field appearance="outline" class="btn-block">
+            <mat-label>Region</mat-label>
+            <input matInput formControlName="region" type="text">
+            <mat-error>last name field required</mat-error>
+          </mat-form-field>
 
-            </div>
+        </div>
 
-            <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">
+        <div class="col-12 col-sm-12 col-md-6 col-xl-6 col-lg-6">
 
-              <mat-form-field appearance="outline" class="btn-block">
-                <mat-label>street</mat-label>
-                <textarea [rows]="3" matInput formControlName="street" type="text"></textarea>
-                <mat-error>street field required</mat-error>
-              </mat-form-field>
+          <mat-form-field appearance="outline" class="btn-block">
+            <mat-label>street</mat-label>
+            <textarea [rows]="3" matInput formControlName="street" type="text"></textarea>
+            <mat-error>street field required</mat-error>
+          </mat-form-field>
 
-            </div>
-          </div>
-          <div class="row">
-            <button [disabled]="updateBusinessProgress" class="ft-button" mat-flat-button color="primary">
+        </div>
+      </div>
+      <div class="row">
+        <button [disabled]="updateBusinessProgress" class="ft-button" mat-flat-button color="primary">
               SAVE
               <mat-progress-spinner *ngIf="updateBusinessProgress"
                                     style="display: inline-block" [diameter]="30"
                                     mode="indeterminate"
                                     color="primary"></mat-progress-spinner>
             </button>
-          </div>
-        </form>
+      </div>
+    </form>
 
-        <mat-progress-spinner *ngIf="getBusinessProgress" mode="indeterminate" color="primary"
-                              [diameter]="25"></mat-progress-spinner>
+    <mat-progress-spinner *ngIf="getBusinessProgress" mode="indeterminate" color="primary" [diameter]="25">
+    </mat-progress-spinner>
 
-        <div *ngIf="!getBusinessProgress && !businessForm">
-          <mat-card-subtitle>
-            Failure when try to fetch your business information, try to refresh
-          </mat-card-subtitle>
-          <button (click)="getCurrentBusiness()" mat-icon-button>
+    <div *ngIf="!getBusinessProgress && !businessForm">
+      <mat-card-subtitle>
+        Failure when try to fetch your business information, try to refresh
+      </mat-card-subtitle>
+      <button (click)="getCurrentBusiness()" mat-icon-button>
             <mat-icon color="primary">
               refresh
             </mat-icon>
           </button>
-        </div>
-      </mat-card>
     </div>
-  `,
-  styleUrls: ['../style/profile.style.scss']
+  </mat-card>
+</div>`,
+    styleUrls: ['../styles/profile.style.scss']
 })
-export class AddressComponent implements OnInit {
-  businessForm: FormGroup;
-  currentUser: UserModel;
-  currentShop: ShopModel;
-  getBusinessProgress = false;
-  updateBusinessProgress = false;
-  businessFormControl = new FormControl('', [Validators.nullValidator, Validators.required]);
+export class AddressComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly matSnackBar: MatSnackBar,
-              private readonly storageService: StorageService,
-              private readonly userService: UserService) {
-  }
+    businessForm: FormGroup;
+    currentUser: UserModel;
+    currentShop: ShopModel;
+    getBusinessProgress = false;
+    updateBusinessProgress = false;
+    businessFormControl = new FormControl('', [Validators.nullValidator, Validators.required]);
+    
+    constructor(public readonly formBuilder: FormBuilder,
+                public readonly matSnackBar: MatSnackBar,
+                public readonly storageService: StorageService,
+                public readonly userService: UserService){
+    }
+    
+    async ngOnInit(): Promise<any> {
+        await this.getCurrentBusiness();
+    }
 
-  ngOnInit(): void {
-    this.getCurrentBusiness();
-  }
-
-  private _initializeForm(user: UserModel): void {
-    this.businessFormControl.setValue(user.businessName);
+    async _initializeForm(user: UserModel): Promise<any> {
+        this.businessFormControl.setValue(user.businessName);
     this.businessForm = this.formBuilder.group({
       country: [user.country, [Validators.nullValidator, Validators.required]],
       street: [user.street, [Validators.nullValidator, Validators.required]],
       region: [user.region, [Validators.nullValidator, Validators.required]],
     });
-  }
+    }
 
-  getCurrentBusiness(): void {
-    this.getBusinessProgress = true;
+    async getCurrentBusiness(): Promise<any> {
+        this.getBusinessProgress = true;
     this.storageService.getActiveUser().then(user => {
       this.currentUser = user;
       this._initializeForm(this.currentUser);
@@ -113,10 +119,10 @@ export class AddressComponent implements OnInit {
         duration: 3000
       });
     });
-  }
+    }
 
-  updatePersonalInformation(): void {
-    if (this.businessForm.valid) {
+    async updatePersonalInformation(): Promise<any> {
+        if (this.businessForm.valid) {
       this.updateBusinessProgress = true;
       this.userService.updateUser(this.currentUser as any, this.businessForm.value).then(async user => {
         this.updateBusinessProgress = false;
@@ -146,5 +152,14 @@ export class AddressComponent implements OnInit {
         duration: 3000
       });
     }
-  }
+    }
+
+    async ngAfterViewInit(): Promise<any> {
+        
+    }
+
+    async ngOnDestroy(): Promise<any> {
+        
+    }
 }
+

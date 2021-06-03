@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 // @dynamic
 @Component({
-  styleUrls: ['../style/login.style.scss'],
+  styleUrls: ['../styles/login.style.scss'],
   template: `
     <div>
       <h5 mat-dialog-title>Password Reset</h5>

@@ -73,7 +73,7 @@ export interface DialogData {
       </button>
     </div>
   `,
-  styleUrls: ['../style/create-shop-dialog.style.scss', '../style/login.style.scss'],
+  styleUrls: ['../styles/create-shop-dialog.style.scss', '../styles/login.style.scss'],
   providers: [
     ShopService
   ]

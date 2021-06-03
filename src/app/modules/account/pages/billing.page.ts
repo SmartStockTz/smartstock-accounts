@@ -143,7 +143,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
     </mat-sidenav-container>
   `,
-  styleUrls: ['../style/billing.style.scss']
+  styleUrls: ['../styles/billing.style.scss']
 })
 export class BillingPage extends DeviceInfoUtil implements OnInit {
   isMobilePay = true;

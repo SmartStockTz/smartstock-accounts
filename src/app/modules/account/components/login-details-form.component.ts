@@ -27,7 +27,7 @@ import {FormGroup} from '@angular/forms';
       </div>
     </form>
   `,
-  styleUrls: ['../style/register.style.scss']
+  styleUrls: ['../styles/register.style.scss']
 })
 export class LoginDetailsFormComponent implements OnInit {
   @Input() loginFormGroup: FormGroup;

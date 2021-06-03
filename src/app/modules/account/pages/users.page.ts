@@ -107,7 +107,7 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
 
     </mat-sidenav-container>
   `,
-  styleUrls: ['../style/users.style.scss']
+  styleUrls: ['../styles/users.style.scss']
 })
 export class UsersPage extends DeviceInfoUtil implements OnInit {
 

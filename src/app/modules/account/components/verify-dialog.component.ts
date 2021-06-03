@@ -17,7 +17,7 @@ import {MatDialogRef} from '@angular/material/dialog';
       </div>
     </div>
   `,
-  styleUrls: ['../style/login.style.scss']
+  styleUrls: ['../styles/login.style.scss']
 })
 export class VerifyEMailDialogComponent {
   constructor(public readonly dialogRef: MatDialogRef<VerifyEMailDialogComponent>) {

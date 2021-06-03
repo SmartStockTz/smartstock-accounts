@@ -16,7 +16,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
       </div>
     </div>
   `,
-  styleUrls: ['../style/register.style.scss']
+  styleUrls: ['../styles/register.style.scss']
 })
 export class RegisterDialogComponent {
   constructor(public readonly dialogRef: MatDialogRef<RegisterDialogComponent>,

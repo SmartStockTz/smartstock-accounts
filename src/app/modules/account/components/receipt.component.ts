@@ -18,7 +18,7 @@ import {LogService} from '@smartstocktz/core-libs';
                                  [isLoading]="receiptProgressFlag"></app-data-not-ready>
     </mat-card>
   `,
-  styleUrls: ['../style/receipt.style.scss']
+  styleUrls: ['../styles/receipt.style.scss']
 })
 export class ReceiptsComponent implements OnInit {
 
