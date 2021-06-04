@@ -1,20 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BillingService} from '../services/billing.service';
-import {DeviceInfoUtil, LogService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, UserService} from '@smartstocktz/core-libs';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MobilePayDetailsComponent} from '../components/mobile-pay-details.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-billing',
+  selector: 'app-billing-page',
   template: `
     <mat-sidenav-container class="match-parent">
       <mat-sidenav class="match-parent-side"
                    [fixedInViewport]="true"
                    #sidenav
-                   [mode]="enoughWidth()?'side':'over'"
-                   [opened]="!isMobile">
+                   [mode]="(deviceState.enoughWidth | async) ===true?'side':'over'"
+                   [opened]="(deviceState.enoughWidth | async) ===true">
         <app-drawer></app-drawer>
       </mat-sidenav>
 
@@ -108,17 +108,21 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                       <div class="col-12">
                         <img style="height: 80px" alt="VISA" src="./assets/img/masterandvisacard.png">
                         <div style="padding-top: 8px">
-                          <p>To pay using mastercard or visa, enter your valid phone number below and click "pay with card" button.
-                            After you successfull pay come after you press the button come back and press "Update status button".</p>
+                          <p>To pay using mastercard or visa, enter your valid phone number below and click "pay
+                            with card" button.
+                            After you successfull pay come after you press the button come back and press "Update
+                            status button".</p>
                           <form (ngSubmit)="payByCard()" [formGroup]="cardForm">
                             <mat-form-field appearance="outline" style="width: 100%">
                               <mat-label>Mobile</mat-label>
                               <input matInput type="number" min="0" required formControlName="mobile">
                               <mat-error>Your mobile number required</mat-error>
                             </mat-form-field>
-                            <button [disabled]="subscriptionFlag || cardPayUrlFlag" mat-raised-button color="primary">
+                            <button [disabled]="subscriptionFlag || cardPayUrlFlag" mat-raised-button
+                                    color="primary">
                               PAY WITH CARD
-                              <mat-progress-spinner *ngIf="cardPayUrlFlag" mode="indeterminate" color="primary" diameter="20"
+                              <mat-progress-spinner *ngIf="cardPayUrlFlag" mode="indeterminate" color="primary"
+                                                    diameter="20"
                                                     style="display: inline-block"></mat-progress-spinner>
                             </button>
                           </form>
@@ -126,11 +130,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                       </div>
                     </div>
                   </div>
-                  <app-billing-how-to-pay [cost]="monthCost.toString()"
-                                          [reference]="referenceNumber"></app-billing-how-to-pay>
+                  <app-how-to-pay [cost]="monthCost.toString()"
+                                  [reference]="referenceNumber"></app-how-to-pay>
                 </mat-tab>
                 <mat-tab label="Receipts">
-                  <app-billing-receipts></app-billing-receipts>
+                  <app-receipt></app-receipt>
                 </mat-tab>
               </mat-tab-group>
             </div>
@@ -145,7 +149,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   `,
   styleUrls: ['../styles/billing.style.scss']
 })
-export class BillingPage extends DeviceInfoUtil implements OnInit {
+export class BillingPage implements OnInit, OnDestroy {
   isMobilePay = true;
   isMobile = false;
   referenceNumber: string;
@@ -160,17 +164,17 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
   cardForm: FormGroup;
   cardPayUrlFlag = false;
 
-  constructor(private readonly billingApi: BillingService,
-              private readonly bottomSheet: MatBottomSheet,
-              private readonly formBuilder: FormBuilder,
-              private readonly snack: MatSnackBar,
-              private readonly userService: UserService,
-              private readonly logger: LogService) {
-    super();
+  constructor(public readonly billingApi: BillingService,
+              public readonly matBottomSheet: MatBottomSheet,
+              public readonly formBuilder: FormBuilder,
+              public readonly matSnackBar: MatSnackBar,
+              public readonly userService: UserService,
+              public readonly deviceState: DeviceState,
+              public readonly logService: LogService) {
     document.title = 'SmartStock - Bills';
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.cardForm = this.formBuilder.group({
       mobile: ['', [Validators.minLength(9)]],
       reference: ['0235'],
@@ -182,8 +186,8 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       }
     }).catch(_ => {
     });
-    this.getCost();
-    this.getSubscription();
+    await this.getCost();
+    await this.getSubscription();
     this.getPaymentReference();
   }
 
@@ -195,17 +199,17 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       this.cardForm.get('reference').setValue(value.reference);
     }).catch(_ => {
       this.referenceFetchFlag = false;
-      this.logger.i(_);
+      this.logService.i(_);
     });
   }
 
-  refresh(): void {
-    this.getSubscription();
-    this.getPaymentReference();
-    this.getCost();
+  async refresh(): Promise<void> {
+    await this.getSubscription();
+    await this.getPaymentReference();
+    await this.getCost();
   }
 
-  getSubscription(): void {
+  async getSubscription(): Promise<void> {
     this.subscriptionFlag = true;
     this.billingApi.subscription().then(value => {
       this.subscriptionFlag = false;
@@ -213,11 +217,11 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       this.subMessage = value.reason;
     }).catch(_ => {
       this.subscriptionFlag = false;
-      this.logger.i(_);
+      this.logService.i(_);
     });
   }
 
-  getCost(): void {
+  async getCost(): Promise<void> {
     this.costFlag = true;
     this.billingApi.monthlyCost().then(value => {
       this.costFlag = false;
@@ -225,12 +229,12 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
       this.cardForm.get('amount').setValue(value.cost);
     }).catch(_ => {
       this.costFlag = false;
-      this.logger.i(_);
+      this.logService.i(_);
     });
   }
 
-  mobilePay(): void {
-    this.bottomSheet.open(MobilePayDetailsComponent, {
+  async mobilePay(): Promise<void> {
+    this.matBottomSheet.open(MobilePayDetailsComponent, {
       autoFocus: true,
       closeOnNavigation: false,
       data: {
@@ -245,7 +249,7 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  payByCard(): void {
+  async payByCard(): Promise<void> {
     if (this.referenceNumber && this.monthCost) {
       if (this.cardForm.valid) {
         this.cardPayUrlFlag = true;
@@ -261,7 +265,7 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
           // }
         }).catch(reason => {
           console.log(reason);
-          this.snack.open(reason && reason.message ? reason.message : reason.toString(), 'Ok', {
+          this.matSnackBar.open(reason && reason.message ? reason.message : reason.toString(), 'Ok', {
             duration: 2000
           });
         }).finally(() => {
@@ -269,12 +273,15 @@ export class BillingPage extends DeviceInfoUtil implements OnInit {
         });
       }
     } else {
-      this.snack.open('Reference number and/or monthly cost is unavailable, press "Update Status" button to refresh',
+      this.matSnackBar.open('Reference number and/or monthly cost is unavailable, press "Update Status" button to refresh',
         'Refresh Now', {
           duration: 6000
         }).onAction().subscribe(value => {
         this.refresh();
       });
     }
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

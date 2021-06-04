@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceInfoUtil, EventService, FileBrowserDialogComponent, MessageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, EventService, FileBrowserDialogComponent, MessageService, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {EcommerceModel} from '../models/ecommerce.model';
@@ -9,14 +9,14 @@ import {ShopModel} from '../models/shop.model';
 import {EcommerceService} from '../services/ecommerce.service';
 
 @Component({
-  selector: 'app-setting',
+  selector: 'app-ecommerce-page',
   template: `
-    <app-layout-sidenav [leftDrawerOpened]="enoughWidth()"
-                               [leftDrawerMode]="enoughWidth()?'side':'over'"
-                               [isMobile]="false"
-                               [heading]="'E-Commerce'"
-                               [body]="body"
-                               [leftDrawer]="leftDrawer">
+    <app-layout-sidenav [leftDrawerOpened]="(deviceState.isSmallScreen | async)===false"
+                        [leftDrawerMode]="(deviceState.isSmallScreen | async)===false?'side':'over'"
+                        [isMobile]="false"
+                        [heading]="'E-Commerce'"
+                        [body]="body"
+                        [leftDrawer]="leftDrawer">
       <ng-template #leftDrawer>
         <app-drawer></app-drawer>
       </ng-template>
@@ -24,7 +24,7 @@ import {EcommerceService} from '../services/ecommerce.service';
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
           <div *ngIf="ecommerceGetProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner [diameter]="30" mode="indeterminate"
-                                  [matTooltip]="'Fetch e-commerce settings'"
+                                  [matTooltip]="'Fetch e-commerce settingsService'"
                                   color="primary">
             </mat-progress-spinner>
           </div>
@@ -123,30 +123,30 @@ import {EcommerceService} from '../services/ecommerce.service';
   `,
   styleUrls: ['../styles/setting.style.scss']
 })
-export class EcommercePage extends DeviceInfoUtil implements OnInit {
+export class EcommercePage implements OnInit, OnDestroy {
   ecommerceForm: FormGroup;
   ecommerceGetProgress = false;
   ecommerceSaveProgress = false;
   selectedShop: ShopModel;
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly snack: MatSnackBar,
-              private readonly eventApi: EventService,
-              private readonly activatedRoute: ActivatedRoute,
-              private readonly router: Router,
-              private readonly dialog: MatDialog,
-              private readonly userService: UserService,
-              private readonly messageService: MessageService,
-              private readonly ecommerceService: EcommerceService) {
-    super();
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly snack: MatSnackBar,
+              public readonly eventApi: EventService,
+              public readonly activatedRoute: ActivatedRoute,
+              public readonly router: Router,
+              public readonly dialog: MatDialog,
+              public readonly userService: UserService,
+              public readonly deviceState: DeviceState,
+              public readonly messageService: MessageService,
+              public readonly ecommerceService: EcommerceService) {
     document.title = 'SmartStock - E-Commerce Settings';
   }
 
-  ngOnInit(): void {
-    this.getEcommerce();
+  async ngOnInit(): Promise<void> {
+    await this.getEcommerce();
   }
 
-  private getEcommerce(): void {
+  async getEcommerce(): Promise<void> {
     this.activatedRoute.params.subscribe(params => {
       if (params && params.shop) {
         this.ecommerceGetProgress = true;
@@ -188,11 +188,11 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  private goToIndex(): void {
+  async goToIndex(): Promise<void> {
     this.router.navigateByUrl('/account').catch();
   }
 
-  private initEcommerceForm(ecommerce: EcommerceModel): void {
+  async initEcommerceForm(ecommerce: EcommerceModel): Promise<void> {
     this.ecommerceForm = this.formBuilder.group({
       logo: [ecommerce.logo, [Validators.required, Validators.nullValidator]],
       about: [ecommerce.about, [Validators.nullValidator, Validators.required, Validators.minLength(50)]],
@@ -214,7 +214,7 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  saveEcommerceDetails(): void {
+  async saveEcommerceDetails(): Promise<void> {
     if (this.ecommerceForm.valid) {
       this.ecommerceSaveProgress = true;
       this.ecommerceService.updateEcommerceDetails(this.ecommerceForm.value, this.selectedShop).then(value => {
@@ -229,7 +229,7 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
     }
   }
 
-  browseMedia(controlName: string, $event: MouseEvent): void {
+  async browseMedia(controlName: string, $event: MouseEvent): Promise<void> {
     $event.preventDefault();
     this.userService.getCurrentShop().then(shop => {
       this.dialog.open(FileBrowserDialogComponent, {
@@ -248,7 +248,7 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  private updateEcommerceForSelectedShop(ecommerceModel: EcommerceModel, selectedShop: ShopModel): void {
+  async updateEcommerceForSelectedShop(ecommerceModel: EcommerceModel, selectedShop: ShopModel): Promise<void> {
     this.userService.currentUser().then(user => {
       return this.userService.getShops(user);
     }).then(async shops => {
@@ -263,5 +263,8 @@ export class EcommercePage extends DeviceInfoUtil implements OnInit {
         , await this.userService.currentUser());
     }).catch(_ => {
     });
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

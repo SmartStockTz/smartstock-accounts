@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 @Component({
   selector: 'app-login-page',
   template: `
-    <app-login></app-login>
+      <app-login-page></app-login-page>
   `
 })
 export class LoginPage implements OnInit, OnDestroy {

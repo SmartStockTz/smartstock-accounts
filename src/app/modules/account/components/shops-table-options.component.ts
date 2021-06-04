@@ -1,10 +1,9 @@
-import {Component, Inject} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom-sheet';
-import {ShopModel} from '../models/shop.model';
 
 // @dynamic
 @Component({
-  selector: 'app-account-shops-table-options',
+  selector: 'app-shops-table-options',
   template: `
     <div style="margin-bottom: 24px">
       <mat-nav-list>
@@ -22,11 +21,18 @@ import {ShopModel} from '../models/shop.model';
     </div>
   `
 })
-export class ShopsTableOptionsComponent {
+export class ShopsTableOptionsComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(public readonly dialogRef: MatBottomSheetRef<ShopsTableOptionsComponent>,
-              @Inject(MAT_BOTTOM_SHEET_DATA) public readonly data: {
-                shop: ShopModel
-              }) {
+              @Inject(MAT_BOTTOM_SHEET_DATA) public readonly data: any) {
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
+  }
+
+  async ngOnInit(): Promise<void> {
   }
 
 }

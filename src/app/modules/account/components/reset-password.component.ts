@@ -1,8 +1,9 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 // @dynamic
 @Component({
+  selector: 'app-reset-password',
   styleUrls: ['../styles/login.style.scss'],
   template: `
     <div>
@@ -16,20 +17,24 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
   `
 })
 
-export class ResetPasswordDialogComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy, AfterViewInit {
 
   message = `Please enter your <b>username</b> to reset your password`;
 
-  constructor(private readonly dialogRef: MatDialogRef<ResetPasswordDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) private readonly data: {
-                message: string
-              }) {
+  constructor(public readonly dialogRef: MatDialogRef<ResetPasswordComponent>,
+              @Inject(MAT_DIALOG_DATA) public readonly data: any) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (this.data && this.data.message) {
       this.message = this.data.message;
     }
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 
 }

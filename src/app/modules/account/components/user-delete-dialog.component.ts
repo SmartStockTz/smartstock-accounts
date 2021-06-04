@@ -1,9 +1,9 @@
-import {Component, Inject} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-dialog-user-delete',
+  selector: 'app-user-delete-dialog',
   template: `
     <div class="container">
       <div class="row">
@@ -32,7 +32,7 @@ import {LogService, UserService} from '@smartstocktz/core-libs';
   `,
   styleUrls: ['../styles/users.style.scss']
 })
-export class UserDeleteDialogComponent {
+export class UserDeleteDialogComponent implements OnInit, OnDestroy, AfterViewInit {
   deleteProgress = false;
   errorUserMessage: string;
 
@@ -43,7 +43,7 @@ export class UserDeleteDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  deleteUser(user: any): void {
+  async deleteUser(user: any): Promise<void> {
     this.errorUserMessage = undefined;
     this.deleteProgress = true;
     this.userDatabase.deleteUser(user).then(value => {
@@ -56,7 +56,16 @@ export class UserDeleteDialogComponent {
     });
   }
 
-  cancel(): void {
+  async cancel(): Promise<void> {
     this.dialogRef.close(null);
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
+  }
+
+  async ngOnInit(): Promise<void> {
   }
 }

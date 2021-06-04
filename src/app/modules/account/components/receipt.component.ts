@@ -1,10 +1,10 @@
 import {PaymentModel} from '../models/payment.model';
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {BillingService} from '../services/billing.service';
 import {LogService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-billing-receipts',
+  selector: 'app-receipt',
   template: `
     <mat-card class="">
       <mat-list *ngIf="!receiptProgressFlag">
@@ -15,25 +15,25 @@ import {LogService} from '@smartstocktz/core-libs';
         </mat-list-item>
       </mat-list>
       <app-data-not-ready style="padding: 16px" *ngIf="receiptProgressFlag"
-                                 [isLoading]="receiptProgressFlag"></app-data-not-ready>
+                          [isLoading]="receiptProgressFlag"></app-data-not-ready>
     </mat-card>
   `,
   styleUrls: ['../styles/receipt.style.scss']
 })
-export class ReceiptsComponent implements OnInit {
+export class ReceiptComponent implements OnInit, OnDestroy, AfterViewInit {
 
   receipts: PaymentModel[];
   receiptProgressFlag = false;
 
-  constructor(private readonly billingApi: BillingService,
-              private readonly logger: LogService) {
+  constructor(public readonly billingApi: BillingService,
+              public readonly logger: LogService) {
+  } // end
+
+  async ngOnInit(): Promise<void> {
+    await this.getReceipts();
   }
 
-  ngOnInit(): void {
-    this.getReceipts();
-  }
-
-  getReceipts(): void {
+  async getReceipts(): Promise<void> {
     this.receiptProgressFlag = true;
     this.billingApi.getReceipt().then(value => {
       this.receiptProgressFlag = false;
@@ -50,6 +50,12 @@ export class ReceiptsComponent implements OnInit {
       this.receiptProgressFlag = false;
       this.logger.i(reason);
     });
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 
 }

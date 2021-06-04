@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -41,13 +41,19 @@ import {FormGroup} from '@angular/forms';
   styleUrls: ['../styles/register.style.scss']
 })
 
-export class PersonalDetailsFormComponent implements OnInit {
+export class PersonalDetailsFormComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() personalFormGroup: FormGroup;
 
   constructor() {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 
 

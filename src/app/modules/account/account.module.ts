@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {Routes} from '@angular/router';
 import {ROUTES} from '@angular/router';
-import {ConfigsService} from './services/configs.service';
+import {ConfigService} from './services/config.service';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
 import {AddressComponent} from './components/address.component';
@@ -35,41 +35,37 @@ import {RegisterPage} from './pages/register.page';
 import {SettingsPage} from './pages/settings.page';
 import {ShopsPage} from './pages/shops.page';
 import {UsersPage} from './pages/users.page';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {MatRippleModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatTableModule} from '@angular/material/table';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatListModule} from '@angular/material/list';
-import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatChipsModule} from '@angular/material/chips';
-import {FormsModule} from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
-import {ConfigsService} from '@smartstocktz/core-libs';
 import {LibModule} from '@smartstocktz/core-libs';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatOptionModule} from '@angular/material/core';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatTableModule} from '@angular/material/table';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatLineModule} from '@angular/material/core';
+import {MatRippleModule} from '@angular/material/core';
 
 const routes: Routes = [
    { path: '', canActivate: [  ], component: IndexPage },
    { path: 'shop', canActivate: [ AuthenticationGuard ], component: ChooseShopPage },
    { path: 'shops', canActivate: [ AuthenticationGuard ], component: ShopsPage },
-   { path: 'shops/:shop/settings', canActivate: [ AuthenticationGuard ], component: SettingsPage },
+   { path: 'shops/:shop/settingsService', canActivate: [ AuthenticationGuard ], component: SettingsPage },
    { path: 'shops/:shop/ecommerce', canActivate: [ AuthenticationGuard ], component: EcommercePage },
    { path: 'login', canActivate: [ AuthenticatedUserGuard ], component: LoginPage },
    { path: 'register', canActivate: [ AuthenticatedUserGuard ], component: RegisterPage },
@@ -121,271 +117,39 @@ const routes: Routes = [
         }
       ]
     },
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
     MatButtonModule,
     MatCardModule,
-    MatRippleModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSlideToggleModule,
-    MatTableModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatListModule,
-    MatBottomSheetModule,
-    MatStepperModule,
-    MatToolbarModule,
-    MatProgressBarModule,
-    MatSnackBarModule,
-    MatChipsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ConfigsService,
     LibModule,
+    MatListModule,
+    MatIconModule,
+    MatDialogModule,
+    MatOptionModule,
+    MatExpansionModule,
+    MatStepperModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatSlideToggleModule,
+    MatMenuModule,
+    MatTableModule,
+    MatChipsModule,
+    MatLineModule,
+    MatRippleModule,
   ],
   exports: [
-    imports: [
-    CommonModuleComponent,
-    {
-      ngModule: RouterModuleComponent,
-    providers: [
-        {
-          useValue: routesComponent,
-    multi: trueComponent,
-    provide: ROUTES
-        }
-      ]
-    }Component,
-    MatSidenavModuleComponent,
-    LibModuleComponent,
-    MatCardModuleComponent,
-    MatFormFieldModuleComponent,
-    MatSlideToggleModuleComponent,
-    MatTooltipModuleComponent,
-    MatInputModuleComponent,
-    ReactiveFormsModuleComponent,
-    MatButtonModuleComponent,
-    MatProgressSpinnerModuleComponent,
-    MatTabsModuleComponent,
-    MatMenuModuleComponent,
-    MatIconModuleComponent,
-    MatTableModuleComponent,
-    MatExpansionModuleComponent,
-    MatDialogModuleComponent,
-    MatSelectModuleComponent,
-    MatRippleModuleComponent,
-    MatDividerModuleComponent,
-    MatRadioModuleComponent,
-    FormsModuleComponent,
-    MatListModuleComponent,
-    MatBottomSheetModuleComponent,
-    MatStepperModuleComponent,
-    MatToolbarModuleComponent,
-    MatProgressBarModuleComponent,
-    MatSnackBarModuleComponent,
-    MatChipsModule
-  ]
-})
-export class AccountModule {
-  constructor(private readonly configs: ConfigsService) {
-    this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    constructor(private readonly configs: ConfigsService){
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
     
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
   ],
 })
 export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
-      name: 'Account'Component,
-    link: '/account'Component,
-    icon: 'supervisor_account'Component,
-    roles: ['*'Component,
-  ],
-})
-export class AccountModule {
-    
-        this.configs.addMenu({
+    constructor(private readonly configService: ConfigService){
+        this.configService.addMenu({
       name: 'Account',
       link: '/account',
       icon: 'supervisor_account',
@@ -412,8 +176,8 @@ export class AccountModule {
           link: '/account/bill'
         }
       ]
-    });
-    this.configs.selectedModuleName = 'Account';
+    }).catch(console.log);
+    this.configService.selectedModuleName('Account').catch(console.log);
     }// end
 }
 

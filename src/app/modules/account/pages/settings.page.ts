@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceInfoUtil, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SettingsModel} from '../models/settings.model';
 
 @Component({
-  selector: 'app-setting',
+  selector: 'app-setting-page',
   template: `
     <mat-sidenav-container class="match-parent">
       <mat-sidenav class="match-parent-side"
                    [fixedInViewport]="true"
                    #sidenav
-                   [mode]="enoughWidth()?'side':'over'"
-                   [opened]="!isMobile">
+                   [mode]="(deviceState.isSmallScreen | async)===false?'side':'over'"
+                   [opened]="(deviceState.isSmallScreen | async)===false">
         <app-drawer></app-drawer>
       </mat-sidenav>
 
@@ -28,7 +28,7 @@ import {SettingsModel} from '../models/settings.model';
         <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
           <div *ngIf="getSettingsProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner [diameter]="30" mode="indeterminate"
-                                  [matTooltip]="'Fetch settings'"
+                                  [matTooltip]="'Fetch settingsService'"
                                   color="primary">
             </mat-progress-spinner>
           </div>
@@ -140,38 +140,31 @@ import {SettingsModel} from '../models/settings.model';
   `,
   styleUrls: ['../styles/setting.style.scss']
 })
-export class SettingsPage extends DeviceInfoUtil implements OnInit {
+export class SettingsPage implements OnInit, OnDestroy {
   settingsForm: FormGroup;
   getSettingsProgress = false;
   saveSettingProgress = false;
-
   isMobile = false;
   selectedShop = '';
-  stockModules = [
-    '@smartstocktz/stocks',
-    '@smartstocktz/stocks-real-estate'
-  ];
-  shopCurrencies = [
-    'TZS',
-    'USD'
-  ];
+  stockModules = ['@smartstocktz/stocks', '@smartstocktz/stocks-real-estate'];
+  shopCurrencies = ['TZS', 'USD'];
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly snack: MatSnackBar,
-              private readonly eventApi: EventService,
-              private readonly activatedRoute: ActivatedRoute,
-              private readonly router: Router,
-              private readonly userService: UserService,
-              private readonly settings: SettingsService) {
-    super();
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly matSnackBar: MatSnackBar,
+              public readonly eventService: EventService,
+              public readonly activatedRoute: ActivatedRoute,
+              public readonly router: Router,
+              public readonly userService: UserService,
+              public readonly deviceState: DeviceState,
+              public readonly settingsService: SettingsService) {
     document.title = 'SmartStock - Settings';
   }
 
-  ngOnInit(): void {
-    this.getSettings();
+  async ngOnInit(): Promise<void> {
+    await this.getSettings();
   }
 
-  private getSettings(): void {
+  async getSettings(): Promise<void> {
     this.activatedRoute.params.subscribe(params => {
       if (params && params.shop) {
         this.getSettingsProgress = true;
@@ -211,11 +204,11 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  private goToIndex(): void {
+  async goToIndex(): Promise<void> {
     this.router.navigateByUrl('/account').catch();
   }
 
-  private initiateSettingsForm(settings: SettingsModel): void {
+  async initiateSettingsForm(settings: SettingsModel): Promise<void> {
     this.settingsForm = this.formBuilder.group({
       saleWithoutPrinter: [settings.saleWithoutPrinter],
       printerHeader: [settings.printerHeader],
@@ -229,19 +222,22 @@ export class SettingsPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  saveSettings(): void {
+  async saveSettings(): Promise<void> {
     this.saveSettingProgress = true;
-    this.settings.saveSettings(this.settingsForm.value).then(_ => {
+    this.settingsService.saveSettings(this.settingsForm.value).then(_ => {
       console.log(_);
-      this.snack.open('Settings saved', 'Ok', {duration: 3000});
+      this.matSnackBar.open('Settings saved', 'Ok', {duration: 3000});
       this.saveSettingProgress = false;
-      this.eventApi.broadcast(SsmEvents.SETTINGS_UPDATED);
+      this.eventService.broadcast(SsmEvents.SETTINGS_UPDATED);
     }).catch(reason => {
       console.warn(reason);
-      this.snack.open('Fails to save settings, try again later', 'Ok', {
+      this.matSnackBar.open('Fails to save settingsService, try again later', 'Ok', {
         duration: 3000
       });
       this.saveSettingProgress = false;
     });
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

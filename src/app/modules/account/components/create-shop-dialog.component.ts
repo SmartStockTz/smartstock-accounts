@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -12,6 +12,7 @@ export interface DialogData {
 }
 
 @Component({
+  selector: 'app-create-shop-dialog',
   template: `
     <div>
       <form [formGroup]="createShopForm" (ngSubmit)="createShop()" class="create-shop-form-container">
@@ -24,7 +25,7 @@ export interface DialogData {
         <mat-form-field class="full-width">
           <mat-label>Shop Category</mat-label>
           <mat-select formControlName="category" class="" required="">
-            <mat-option value="atrists_photographers_creative">Artists, Photographers &amp; Creative Types</mat-option>
+            <mat-option value="artists_photographers_creative">Artists, Photographers &amp; Creative Types</mat-option>
             <mat-option value="consultants_professionals">Consultants &amp; Professionals</mat-option>
             <mat-option value="finance_insurance">Financial Services</mat-option>
             <mat-option value="product_provider">General: I make or sell a PRODUCT</mat-option>
@@ -78,20 +79,20 @@ export interface DialogData {
     ShopService
   ]
 })
-export class CreateShopDialogComponent implements OnInit {
+export class CreateShopDialogComponent implements OnInit, OnDestroy, AfterViewInit {
 
   createShopForm: FormGroup;
   createShopProgress = false;
 
   constructor(public dialogRef: MatDialogRef<CreateShopDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private readonly snack: MatSnackBar,
-              private readonly storageService: StorageService,
-              private readonly shopService: ShopService,
-              private readonly formBuilder: FormBuilder) {
+              public readonly snack: MatSnackBar,
+              public readonly storageService: StorageService,
+              public readonly shopService: ShopService,
+              public readonly formBuilder: FormBuilder) {
   }
 
-  createShop(): void {
+  async createShop(): Promise<void> {
     if (this.createShopForm.valid) {
       this.createShopProgress = true;
       this.shopService.createShop(this.createShopForm.value).then(async (value: any) => {
@@ -119,7 +120,7 @@ export class CreateShopDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.createShopForm = this.formBuilder.group({
       businessName: ['', [Validators.nullValidator, Validators.required]],
       country: ['', [Validators.nullValidator, Validators.required]],
@@ -129,8 +130,14 @@ export class CreateShopDialogComponent implements OnInit {
     });
   }
 
-  closeDialog($event: Event): void {
+  async closeDialog($event: Event): Promise<void> {
     $event.preventDefault();
     this.dialogRef.close(null);
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

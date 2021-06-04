@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -6,7 +6,7 @@ import {LogService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-new-user',
+  selector: 'app-user-create-dialog',
   template: `
     <div style="min-width: 300px">
       <div mat-dialog-title>Create User</div>
@@ -57,7 +57,7 @@ import {MatDialogRef} from '@angular/material/dialog';
   `,
   styleUrls: ['../styles/users.style.scss'],
 })
-export class UserCreateDialogComponent implements OnInit {
+export class UserCreateDialogComponent implements OnInit, OnDestroy, AfterViewInit {
   newUserForm: FormGroup;
   createUserProgress = false;
   shops: Observable<any[]>;
@@ -71,12 +71,12 @@ export class UserCreateDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<UserCreateDialogComponent>) {
   }
 
-  ngOnInit(): void {
-    this.getShops();
-    this.initiateForm();
+  async ngOnInit(): Promise<void> {
+    await this.getShops();
+    await this.initiateForm();
   }
 
-  initiateForm(): void {
+  async initiateForm(): Promise<void> {
     this.newUserForm = this.formBuilder.group({
       username: ['', [Validators.nullValidator, Validators.required]],
       password: ['', [Validators.nullValidator, Validators.required]],
@@ -85,7 +85,7 @@ export class UserCreateDialogComponent implements OnInit {
     });
   }
 
-  createUser(): void {
+  async createUser(): Promise<void> {
     if (!this.newUserForm.valid) {
       this.snack.open('Please fll all details', 'Ok', {
         duration: 3000
@@ -115,12 +115,12 @@ export class UserCreateDialogComponent implements OnInit {
     });
   }
 
-  cancel($event: Event): void {
+  async cancel($event: Event): Promise<void> {
     $event.preventDefault();
     this.dialogRef.close(null);
   }
 
-  private getShops(): void {
+  async getShops(): Promise<void> {
     this.userService.currentUser().then((user: any) => {
       return this.userService.getShops(user as any);
     }).then(value => {
@@ -129,5 +129,11 @@ export class UserCreateDialogComponent implements OnInit {
       this.logger.e(reason, 'DialogUserNewComponent:203');
       this.shops = of([]);
     });
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

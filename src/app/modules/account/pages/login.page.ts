@@ -1,29 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 import {MatDialog} from '@angular/material/dialog';
-import {ResetPasswordDialogComponent} from '../components/reset-password.component';
 import {BillingService} from '../services/billing.service';
+import {ResetPasswordComponent} from '../components/reset-password.component';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-page',
   template: `
     <div class="login-wrapper">
-
       <div class="container login-sec">
-
         <div class="login-title text-center">
           Login
         </div>
         <div class="col-sm-12 col-12 col-md-6 col-xl-4 col-lg-6 offset-xl-4 offset-lg-3 offset-md-3">
-
           <mat-progress-bar *ngIf="showProgress"
                             class="full-width rounded-top"
                             mode="indeterminate">
           </mat-progress-bar>
-
           <form [formGroup]="loginForm" #formElement="ngForm" (ngSubmit)="login(formElement)">
             <mat-card>
               <mat-card-content>
@@ -61,23 +57,9 @@ import {BillingService} from '../services/billing.service';
               </mat-card-actions>
             </mat-card>
           </form>
-
         </div>
-
       </div>
-
       <footer>
-        <!--      <div class="social">-->
-        <!--        <a target="_blank" href="https://www.instagram.com/smartstockmanager/">-->
-        <!--          <i class="icon ion-social-instagram"></i>-->
-        <!--        </a>-->
-        <!--        <a target="_blank" href="https://twitter.com/smartstockmanag">-->
-        <!--          <i class="icon ion-social-twitter"></i>-->
-        <!--        </a>-->
-        <!--        <a target="_blank" href="https://fb.me/smartstockmanager">-->
-        <!--          <i class="icon ion-social-facebook"></i>-->
-        <!--        </a>-->
-        <!--      </div>-->
         <div style="display: flex; flex-direction: row; padding: 8px; align-items: center;">
           <a *ngIf="isBrowser" style="color: white; padding: 8px" routerLink="/">
             Go Back Home
@@ -85,9 +67,6 @@ import {BillingService} from '../services/billing.service';
           <a style="color: white; padding: 8px" href="#" (click)="reset($event)">
             Reset Password
           </a>
-          <!--      <a style="color: white; padding: 8px" (click)="$event.preventDefault()" routerLink="/account/register">-->
-          <!--        Register-->
-          <!--      </a>-->
         </div>
         <p class="text-center" style="color: white; margin-top: 8px">SmartStock Company Ltd © 2021</p>
       </footer>
@@ -95,36 +74,34 @@ import {BillingService} from '../services/billing.service';
   `,
   styleUrls: ['../styles/login.style.scss']
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   showProgress = false;
   loginForm: FormGroup;
   showPasswordFlag = false;
   isBrowser = true;
 
-  constructor(private readonly snack: MatSnackBar,
-              private readonly routes: Router,
-              private readonly dialog: MatDialog,
-              private readonly billing: BillingService,
-              private readonly log: LogService,
-              private readonly formBuilder: FormBuilder,
-              private readonly userService: UserService) {
+  constructor(public readonly snack: MatSnackBar,
+              public readonly routes: Router,
+              public readonly dialog: MatDialog,
+              public readonly billing: BillingService,
+              public readonly log: LogService,
+              public readonly formBuilder: FormBuilder,
+              public readonly userService: UserService) {
     document.title = 'SmartStock - Login';
   }
 
-  ngOnInit(): void {
-    this.initializeForm();
-    // this.userService.updateCurrentUser(null).catch(reason => {
-    // });
+  async ngOnInit(): Promise<void> {
+    await this.initializeForm();
   }
 
-  initializeForm(): void {
+  async initializeForm(): Promise<void> {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.nullValidator]],
       password: ['', [Validators.required, Validators.nullValidator]],
     });
   }
 
-  login(formElement: FormGroupDirective): void {
+  async login(formElement: FormGroupDirective): Promise<void> {
     if (!this.loginForm.valid) {
       this.snack.open('Enter all required field', 'Ok', {duration: 3000});
     } else {
@@ -152,13 +129,13 @@ export class LoginPage implements OnInit {
     }
   }
 
-  private stopProgressAndCleanForm(formElement: FormGroupDirective): void {
+  async stopProgressAndCleanForm(formElement: FormGroupDirective): Promise<void> {
     this.showProgress = false;
     this.loginForm.reset();
     formElement.resetForm();
   }
 
-  private showMainUi(role: string, formElement: FormGroupDirective): void {
+  async showMainUi(role: string, formElement: FormGroupDirective): Promise<void> {
     if (role === 'admin') {
       this.routes.navigateByUrl('/dashboard').catch(reason => this.log.i(reason)).then(() => {
         this.loginForm.reset();
@@ -172,14 +149,14 @@ export class LoginPage implements OnInit {
     }
   }
 
-  reset($event: Event): void {
+  async reset($event: Event): Promise<void> {
     $event.preventDefault();
     $event.stopPropagation();
     if (this.loginForm.value.username) {
       this.showProgress = true;
       this.userService.resetPassword(this.loginForm.value.username).then(value => {
         this.showProgress = false;
-        this.dialog.open(ResetPasswordDialogComponent, {
+        this.dialog.open(ResetPasswordComponent, {
           data: {
             message: value && value.message ? value.message : null
           },
@@ -192,21 +169,24 @@ export class LoginPage implements OnInit {
         });
       });
     } else {
-      this.dialog.open(ResetPasswordDialogComponent, {
+      this.dialog.open(ResetPasswordComponent, {
         closeOnNavigation: true,
       });
     }
   }
 
-  showPassword($event: MouseEvent): void {
+  async showPassword($event: MouseEvent): Promise<void> {
     $event.preventDefault();
     this.showPasswordFlag = !this.showPasswordFlag;
   }
 
-  handleEnterKey($event: KeyboardEvent, formElement): void {
+  async handleEnterKey($event: KeyboardEvent, formElement): Promise<void> {
     const keyCode = $event.code;
     if (keyCode === 'Enter') {
-      this.login(formElement);
+      await this.login(formElement);
     }
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

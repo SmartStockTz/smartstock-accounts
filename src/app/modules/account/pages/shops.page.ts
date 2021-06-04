@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormBuilder} from '@angular/forms';
-import {DeviceInfoUtil, LogService, MessageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, MessageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ShopsTableOptionsComponent} from '../components/shops-table-options.component';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-shops-page',
   template: `
     <mat-sidenav-container *ngIf="!isMobile" class="match-parent">
       <mat-sidenav class="match-parent-side"
@@ -20,8 +20,8 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
 
       <mat-sidenav-content>
         <app-toolbar [heading]="'Shops'"
-                            [sidenav]="sidenav"
-                            [showProgress]="false">
+                     [sidenav]="sidenav"
+                     [showProgress]="false">
         </app-toolbar>
 
         <div class="container col-xl-9 col-lg-9 col-md-10 col-sm-11 col-12 my-users-wrapper">
@@ -115,30 +115,29 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
   `,
   styleUrls: ['../styles/users.style.scss']
 })
-export class ShopsPage extends DeviceInfoUtil implements OnInit {
+export class ShopsPage implements OnInit, OnDestroy {
 
   shopsDatasource: MatTableDataSource<ShopModel>;
   shopsTableColumns = ['name', 'appId', 'projectId', 'address', 'action'];
   shops: ShopModel[];
   currentShop: ShopModel = {applicationId: '', businessName: '', projectId: '', projectUrlId: ''};
   fetchShopsFlag = false;
-
   isMobile = false;
 
-  constructor(private readonly userService: UserService,
-              private readonly formBuilder: FormBuilder,
-              private readonly bottomSheet: MatBottomSheet,
-              private readonly logService: LogService,
-              private readonly messageService: MessageService) {
-    super();
+  constructor(public readonly userService: UserService,
+              public readonly formBuilder: FormBuilder,
+              public readonly matBottomSheet: MatBottomSheet,
+              public readonly logService: LogService,
+              public readonly deviceState: DeviceState,
+              public readonly messageService: MessageService) {
     document.title = 'SmartStock - My Shops';
   }
 
-  ngOnInit(): void {
-    this.getShops();
+  async ngOnInit(): Promise<void> {
+    await this.getShops();
   }
 
-  getShops(): void {
+  async getShops(): Promise<void> {
     this.fetchShopsFlag = true;
     this.userService.getCurrentShop().then(cShop => {
       if (cShop) {
@@ -164,35 +163,34 @@ export class ShopsPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  deleteShop(shop: ShopModel): void {
-    // this.dialog.open(UserDeleteDialogComponent, {
+  async deleteShop(shop: ShopModel): Promise<void> {
+    // this.matDialog.open(UserDeleteDialogComponent, {
     //   data: shop,
     //   disableClose: true
     // }).afterClosed().subscribe(_ => {
     //   if (_) {
     //     this.shops = this.shops.filter(value => value.projectId !== shop.projectId);
     //     this.shopsDatasource = new MatTableDataSource<ShopModel>(this.shops);
-    //     this.snack.open('User deleted', 'Ok', {
+    //     this.matSnackBar.open('User deleted', 'Ok', {
     //       duration: 2000
     //     });
     //   } else {
-    //     this.snack.open('User not deleted', 'Ok', {
+    //     this.matSnackBar.open('User not deleted', 'Ok', {
     //       duration: 2000
     //     });
     //   }
     // });
   }
 
-  // openAddShop(): void {
-  //   this.dialog.open(CreateShopDialogComponent);
-  // }
-
-  rowClicked(row: ShopModel): void {
-    this.bottomSheet.open(ShopsTableOptionsComponent, {
+  async rowClicked(row: ShopModel): Promise<void> {
+    this.matBottomSheet.open(ShopsTableOptionsComponent, {
       data: {
         shop: row
       }
     });
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }
 

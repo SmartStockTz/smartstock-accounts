@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -6,7 +6,7 @@ import {RegisterDialogComponent} from '../components/register-dialog.component';
 import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-register-page',
   template: `
     <mat-toolbar color="primary" class="mat-elevation-z2">
       <button routerLink="/" mat-icon-button>
@@ -58,26 +58,26 @@ import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
   `,
   styleUrls: ['../styles/register.style.scss']
 })
-export class RegisterPage implements OnInit {
+export class RegisterPage implements OnInit, OnDestroy {
   personalFormGroup: FormGroup;
   businessFormGroup: FormGroup;
   loginFormGroup: FormGroup;
   registerProgress = false;
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly router: Router,
-              private readonly dialog: MatDialog,
-              private readonly logger: LogService,
-              private readonly userDatabase: UserService,
-              private readonly messageService: MessageService) {
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly router: Router,
+              public readonly matDialog: MatDialog,
+              public readonly logService: LogService,
+              public readonly userDatabase: UserService,
+              public readonly messageService: MessageService) {
     document.title = 'SmartStock - Register';
   }
 
-  ngOnInit(): void {
-    this.initializeForm();
+  async ngOnInit(): Promise<void> {
+    await this.initializeForm();
   }
 
-  initializeForm(): void {
+  async initializeForm(): Promise<void> {
     this.personalFormGroup = this.formBuilder.group({
       firstname: ['', [Validators.required, Validators.nullValidator]],
       lastname: ['', [Validators.required, Validators.nullValidator]],
@@ -108,7 +108,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  openAccount(): void {
+  async openAccount(): Promise<void> {
     const valid = this.businessFormGroup.valid
       && this.personalFormGroup.valid
       && this.loginFormGroup.valid;
@@ -122,8 +122,8 @@ export class RegisterPage implements OnInit {
       this.userDatabase.register(user)
         .then(value => {
           this.registerProgress = false;
-          this.logger.i(value);
-          this.dialog.open(RegisterDialogComponent, {
+          this.logService.i(value);
+          this.matDialog.open(RegisterDialogComponent, {
             closeOnNavigation: true,
             disableClose: true,
             maxWidth: '500px',
@@ -135,9 +135,9 @@ export class RegisterPage implements OnInit {
           });
         })
         .catch(reason => {
-          this.logger.e(reason);
+          this.logService.e(reason);
           this.registerProgress = false;
-          this.dialog.open(RegisterDialogComponent, {
+          this.matDialog.open(RegisterDialogComponent, {
             closeOnNavigation: true,
             disableClose: true,
             data: {
@@ -150,5 +150,8 @@ export class RegisterPage implements OnInit {
     } else {
       this.messageService.showMobileInfoMessage('Enter all required information');
     }
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

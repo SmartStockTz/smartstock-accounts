@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserModel} from '../models/user.model';
 import {UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-profile-authentication',
+  selector: 'app-credentials',
   template: `
     <div class="profile-auth-wrapper">
       <mat-card>
@@ -66,7 +66,7 @@ import {UserService} from '@smartstocktz/core-libs';
   `,
   styleUrls: ['../styles/profile.style.scss']
 })
-export class AuthenticationComponent implements OnInit {
+export class CredentialsComponent implements OnInit, OnDestroy, AfterViewInit {
   authForm: FormGroup;
   currentUser: UserModel;
   getUserProgress = false;
@@ -74,23 +74,23 @@ export class AuthenticationComponent implements OnInit {
   showLastPassword = false;
   showPassword = false;
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly snackBar: MatSnackBar,
-              private readonly userService: UserService) {
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly snackBar: MatSnackBar,
+              public readonly userService: UserService) {
   }
 
-  ngOnInit(): void {
-    this.getCurrentUser();
+  async ngOnInit(): Promise<void> {
+    await this.getCurrentUser();
   }
 
-  private _initializeForm(user: UserModel): void {
+  async _initializeForm(user: UserModel): Promise<void> {
     this.authForm = this.formBuilder.group({
       lastPassword: [''],
       password: [''],
     });
   }
 
-  getCurrentUser(): void {
+  async getCurrentUser(): Promise<void> {
     this.getUserProgress = true;
     this.userService.currentUser().then(user => {
       this.currentUser = user;
@@ -105,7 +105,7 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
-  changePassword(): any {
+  async changePassword(): Promise<any> {
     if (this.authForm.valid) {
       this.updateUserProgress = true;
       this.userService.changePasswordFromOld({
@@ -118,14 +118,14 @@ export class AuthenticationComponent implements OnInit {
           duration: 3000
         });
         await this.userService.updateCurrentUser(user);
-        this.resetForm(true);
-      }).catch(reason => {
+        await this.resetForm(true);
+      }).catch(async reason => {
         // console.log(reason);
         this.updateUserProgress = false;
         this.snackBar.open('Fails to change password, try again or contact support', 'Ok', {
           duration: 3000
         });
-        this.resetForm(true);
+        await this.resetForm(true);
       });
     } else {
       this.snackBar.open('Please fill all required fields', 'Ok', {
@@ -134,7 +134,7 @@ export class AuthenticationComponent implements OnInit {
     }
   }
 
-  private resetForm(reset: boolean): void {
+  async resetForm(reset: boolean): Promise<void> {
     if (reset) {
       this.authForm.reset({
         lastPassword: '',
@@ -146,11 +146,17 @@ export class AuthenticationComponent implements OnInit {
     });
   }
 
-  toggleLastPasswordVisibility(): void {
+  async toggleLastPasswordVisibility(): Promise<void> {
     this.showLastPassword = !this.showLastPassword;
   }
 
-  togglePasswordVisibility(): void {
+  async togglePasswordVisibility(): Promise<void> {
     this.showPassword = !this.showPassword;
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

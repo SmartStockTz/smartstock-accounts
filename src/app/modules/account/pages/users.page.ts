@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatTableDataSource} from '@angular/material/table';
 import {FormBuilder} from '@angular/forms';
-import {DeviceInfoUtil, LogService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, UserService} from '@smartstocktz/core-libs';
 import {UserModel} from '../models/user.model';
 import {UserCreateDialogComponent} from '../components/user-create-dialog.component';
 import {UserUpdateDialogComponent} from '../components/user-update-dialog.component';
@@ -17,8 +17,8 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
       <mat-sidenav class="match-parent-side"
                    [fixedInViewport]="true"
                    #sidenav
-                   [mode]="enoughWidth()?'side':'over'"
-                   [opened]="true">
+                   [mode]="(deviceState.isSmallScreen | async)===false?'side':'over'"
+                   [opened]="(deviceState.isSmallScreen | async)===false">
         <app-drawer></app-drawer>
       </mat-sidenav>
 
@@ -90,8 +90,8 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
                     </div>
                   </td>
                 </ng-container>
-                <tr mat-header-row *matHeaderRowDef="usersTableColums"></tr>
-                <tr mat-row class="table-data-row" *matRowDef="let row; columns: usersTableColums;"></tr>
+                <tr mat-header-row *matHeaderRowDef="usersTableColumns"></tr>
+                <tr mat-row class="table-data-row" *matRowDef="let row; columns: usersTableColumns;"></tr>
               </table>
               <div *ngIf="fetchUsersFlag">
                 <mat-progress-spinner matTooltip="fetch users"
@@ -109,29 +109,28 @@ import {UserDeleteDialogComponent} from '../components/user-delete-dialog.compon
   `,
   styleUrls: ['../styles/users.style.scss']
 })
-export class UsersPage extends DeviceInfoUtil implements OnInit {
+export class UsersPage implements OnInit, OnDestroy {
 
   usersDatasource: MatTableDataSource<UserModel>;
-  usersTableColums = ['name', 'role', 'shops', 'actions'];
+  usersTableColumns = ['name', 'role', 'shops', 'actions'];
   usersArray: UserModel[];
   fetchUsersFlag = false;
-
   isMobile = false;
 
-  constructor(private readonly userService: UserService,
-              private readonly formBuilder: FormBuilder,
-              private readonly dialog: MatDialog,
-              private readonly logger: LogService,
-              private readonly snack: MatSnackBar) {
-    super();
+  constructor(public readonly userService: UserService,
+              public readonly formBuilder: FormBuilder,
+              public readonly matDialog: MatDialog,
+              public readonly logService: LogService,
+              public readonly deviceState: DeviceState,
+              public readonly matSnackBar: MatSnackBar) {
     document.title = 'SmartStock - Users';
   }
 
-  ngOnInit(): void {
-    this.getUsers();
+  async ngOnInit(): Promise<void> {
+    await this.getUsers();
   }
 
-  getUsers(): void {
+  async getUsers(): Promise<void> {
     this.fetchUsersFlag = true;
     this.userService.getAllUser({size: 1000, skip: 0}).then(data => {
       this.fetchUsersFlag = false;
@@ -139,32 +138,32 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
       this.usersDatasource = new MatTableDataSource<UserModel>(this.usersArray);
     }).catch(reason => {
       this.fetchUsersFlag = false;
-      this.logger.i(reason);
+      this.logService.i(reason);
     }).finally(() => {
       this.fetchUsersFlag = false;
     });
   }
 
-  deleteUser(element: any): void {
-    this.dialog.open(UserDeleteDialogComponent, {
+  async deleteUser(element: any): Promise<void> {
+    this.matDialog.open(UserDeleteDialogComponent, {
       data: element,
       disableClose: true
     }).afterClosed().subscribe(_ => {
       if (_) {
         this.usersArray = this.usersArray.filter(value => value.id !== element.id);
         this.usersDatasource = new MatTableDataSource<UserModel>(this.usersArray);
-        this.snack.open('User deleted', 'Ok', {
+        this.matSnackBar.open('User deleted', 'Ok', {
           duration: 2000
         });
       } else {
-        this.snack.open('User not deleted', 'Ok', {
+        this.matSnackBar.open('User not deleted', 'Ok', {
           duration: 2000
         });
       }
     });
   }
 
-  updateUserName(user, matMenu: MatMenuTrigger): void {
+  async updateUserName(user, matMenu: MatMenuTrigger): Promise<void> {
     // matMenu.toggleMenu();
     // if (user && user.value) {
     //   user.field = 'username';
@@ -172,8 +171,8 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // }
   }
 
-  updateUser(user: { id: string, value: string, field: string }): void {
-    // this.snack.open('Update in progress..', 'Ok');
+  async updateUser(user: { id: string, value: string, field: string }): Promise<void> {
+    // this.matSnackBar.open('Update in progress..', 'Ok');
     // this.userService.updateUser(user).then(data => {
     //   const editedObjectIndex = this.usersArray.findIndex(value => value.id === data.id);
     //   this.usersArray = this.usersArray.filter(value => value.id !== user.id);
@@ -184,17 +183,17 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     //   } else {
     //     console.warn('fails to update user table');
     //   }
-    //   this.snack.open('User updated', 'Ok', {
+    //   this.matSnackBar.open('User updated', 'Ok', {
     //     duration: 3000
     //   });
     // }).catch(reason => {
-    //   this.snack.open(reason && reason.message ? reason.message : 'Fail to update user', 'Ok', {
+    //   this.matSnackBar.open(reason && reason.message ? reason.message : 'Fail to update user', 'Ok', {
     //     duration: 3000
     //   });
     // });
   }
 
-  updateUserDescription(user, matMenu: MatMenuTrigger): void {
+  async updateUserDescription(user, matMenu: MatMenuTrigger): Promise<void> {
     // matMenu.toggleMenu();
     // if (user && user.value) {
     //   user.field = 'description';
@@ -202,8 +201,8 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     // }
   }
 
-  openAddUserDialog(): void {
-    this.dialog.open(UserCreateDialogComponent, {
+  async openAddUserDialog(): Promise<void> {
+    this.matDialog.open(UserCreateDialogComponent, {
       closeOnNavigation: true,
       hasBackdrop: true
     }).afterClosed().subscribe(value => {
@@ -214,10 +213,13 @@ export class UsersPage extends DeviceInfoUtil implements OnInit {
     });
   }
 
-  updatePassword(element: any): void {
-    this.dialog.open(UserUpdateDialogComponent, {
+  async updatePassword(element: any): Promise<void> {
+    this.matDialog.open(UserUpdateDialogComponent, {
       data: element
     });
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }
 

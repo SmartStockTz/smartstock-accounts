@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-billing-how-to-pay',
+  selector: 'app-how-to-pay',
   template: `
     <mat-card class="mat-elevation-z0">
       <div style="">
@@ -74,14 +74,22 @@ import {Component, Input, OnInit} from '@angular/core';
     </mat-card>
   `,
 })
-export class HowToPayComponent implements OnInit {
+export class HowToPayComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() reference = '';
   @Input() cost = '';
 
   constructor() {
   }
 
-  ngOnInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+
+  }
+
+  async ngOnDestroy(): Promise<void> {
+
+  }
+
+  async ngOnInit(): Promise<void> {
   }
 
 }

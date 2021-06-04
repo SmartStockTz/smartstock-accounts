@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
@@ -8,7 +8,7 @@ import {StorageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 
 @Component({
-  selector: 'app-choose-shop',
+  selector: 'app-choose-shop-page',
   template: `
     <div class="main">
       <div class="container_shops d-flex flex-column justify-content-start justify-content-center align-items-center">
@@ -33,14 +33,14 @@ import {ShopModel} from '../models/shop.model';
             </div>
           </div>
 
-<!--          <div class="ct_shop_profile">-->
-<!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
-<!--              <div class="d-flex justify-content-center align-items-center">-->
-<!--                <mat-icon class="add_shop_btn">add</mat-icon>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="shop_name d-flex justify-content-center">Add Shop</div>-->
-<!--          </div>-->
+          <!--          <div class="ct_shop_profile">-->
+          <!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
+          <!--              <div class="d-flex justify-content-center align-items-center">-->
+          <!--                <mat-icon class="add_shop_btn">add</mat-icon>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--            <div class="shop_name d-flex justify-content-center">Add Shop</div>-->
+          <!--          </div>-->
 
         </div>
 
@@ -49,20 +49,20 @@ import {ShopModel} from '../models/shop.model';
   `,
   styleUrls: ['../styles/shop.style.scss']
 })
-export class ChooseShopPage implements OnInit {
+export class ChooseShopPage implements OnInit, OnDestroy {
 
   shopDetails = {};
   shops: Observable<any[]>;
 
   constructor(public createShopDialog: MatDialog,
-              private readonly snackBar: MatSnackBar,
-              private readonly router: Router,
-              private readonly storageService: StorageService,
-              private readonly userDatabase: UserService) {
+              public readonly snackBar: MatSnackBar,
+              public readonly router: Router,
+              public readonly storageService: StorageService,
+              public readonly userDatabase: UserService) {
     document.title = 'SmartStock - Choose Shop';
   }
 
-  openCreateShopDialog(): void {
+  async openCreateShopDialog(): Promise<void> {
     const dialogRef = this.createShopDialog.open(CreateShopDialogComponent, {
       minWidth: 350,
       maxWidth: 600,
@@ -70,7 +70,6 @@ export class ChooseShopPage implements OnInit {
       disableClose: true,
       closeOnNavigation: true
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getShops();
@@ -80,11 +79,11 @@ export class ChooseShopPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getShops();
+  async ngOnInit(): Promise<void> {
+    await this.getShops();
   }
 
-  private getShops(): void {
+  async getShops(): Promise<void> {
     this.userDatabase.currentUser().then(user => {
       return this.userDatabase.getShops(user as any);
     }).then(shops => {
@@ -97,7 +96,7 @@ export class ChooseShopPage implements OnInit {
     });
   }
 
-  setCurrentProject(shop: ShopModel): void {
+  async setCurrentProject(shop: ShopModel): Promise<void> {
     this.userDatabase.saveCurrentShop(shop as any).then(_ => {
       this.router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
     }).catch(reason => {
@@ -105,5 +104,8 @@ export class ChooseShopPage implements OnInit {
         duration: 3000
       });
     });
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

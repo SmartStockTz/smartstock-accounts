@@ -1,19 +1,21 @@
-import {Component} from '@angular/core';
-import {DeviceInfoUtil} from '@smartstocktz/core-libs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DeviceState} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-accounts-index',
+  selector: 'app-index-page',
   template: `
     <mat-sidenav-container>
-      <mat-sidenav class="match-parent-side" #sidenav [mode]="enoughWidth()?'side': 'over'" [opened]="enoughWidth()">
+      <mat-sidenav class="match-parent-side" #sidenav
+                   [mode]="(deviceState.enoughWidth | async)===true?'side': 'over'"
+                   [opened]="(deviceState.enoughWidth | async)===true">
         <app-drawer></app-drawer>
       </mat-sidenav>
       <mat-sidenav-content style="min-height: 100vh">
         <app-toolbar searchPlaceholder="Filter product" [heading]="'Profile'"
-                            [sidenav]="sidenav"></app-toolbar>
+                     [sidenav]="sidenav"></app-toolbar>
         <div class="container col-xl-10 col-lg-10 col-sm-9 col-md-9 col-sm-12 col-10" style="padding: 16px 0">
-          <h1>Go To</h1>
-          <div class="d-flex">
+<!--          <h1 class="pl-4">Go To</h1>-->
+          <div class="d-flex flex-wrap p-4">
             <app-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
               <ng-template #profile>
                 <div routerLink="/account/profile" style="margin: 5px; cursor: pointer">
@@ -81,39 +83,23 @@ import {DeviceInfoUtil} from '@smartstocktz/core-libs';
                 </div>
               </ng-template>
             </app-libs-rbac>
-
-<!--            <app-libs-rbac [groups]="['admin', 'manager']" [component]="settings">-->
-<!--              <ng-template #settings>-->
-<!--                <div routerLink="/account/settings" style="margin: 5px; cursor: pointer">-->
-<!--                  <mat-card matRipple-->
-<!--                            style="width: 150px; height: 150px; display: flex; justify-content: center;-->
-<!--                         align-items: center; flex-direction: column">-->
-<!--                    <mat-icon color="primary" style="font-size: 60px; height: 60px; width: 60px">-->
-<!--                      settings-->
-<!--                    </mat-icon>-->
-<!--                  </mat-card>-->
-<!--                  <p>-->
-<!--                    Settings-->
-<!--                  </p>-->
-<!--                </div>-->
-<!--              </ng-template>-->
-<!--            </app-libs-rbac>-->
-
           </div>
-          <!--          <h1>Summary</h1>-->
-          <!--          <div class="row">-->
-          <!--          </div>-->
         </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
   `
 })
 
-export class IndexPage extends DeviceInfoUtil {
+export class IndexPage implements OnInit, OnDestroy {
 
-  constructor() {
-    super();
+  constructor(public readonly deviceState: DeviceState) {
     document.title = 'SmartStock - My Account';
+  }
+
+  async ngOnDestroy(): Promise<void> {
+  }
+
+  async ngOnInit(): Promise<void> {
   }
 
 }

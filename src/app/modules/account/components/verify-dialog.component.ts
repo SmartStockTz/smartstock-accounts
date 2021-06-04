@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 
 @Component({
+  selector: 'app-verify-dialog',
   template: `
     <div>
       <div mat-dialog-title>Account Verification</div>
@@ -13,13 +13,22 @@ import {MatDialogRef} from '@angular/material/dialog';
         </p>
       </div>
       <div mat-dialog-actions>
-        <button (click)="dialogRef.close()" mat-button color="primary">Close</button>
+        <button mat-dialog-close mat-button color="primary">Close</button>
       </div>
     </div>
   `,
   styleUrls: ['../styles/login.style.scss']
 })
-export class VerifyEMailDialogComponent {
-  constructor(public readonly dialogRef: MatDialogRef<VerifyEMailDialogComponent>) {
+export class VerifyDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+  constructor() {
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
+  }
+
+  async ngOnInit(): Promise<void> {
   }
 }

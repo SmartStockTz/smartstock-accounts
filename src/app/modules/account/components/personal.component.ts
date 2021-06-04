@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserModel} from '../models/user.model';
 import {UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'app-profile-personal',
+  selector: 'ap-personal',
   template: `
     <div class="profile-personal-wrapper">
       <mat-card>
@@ -70,23 +70,23 @@ import {UserService} from '@smartstocktz/core-libs';
   styleUrls: ['../styles/profile.style.scss']
 })
 
-export class PersonalComponent implements OnInit {
+export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
   personalForm: FormGroup;
   currentUser: UserModel;
   getUserProgress = false;
   updateUserProgress = false;
   usernameFormControl = new FormControl('', [Validators.nullValidator, Validators.required]);
 
-  constructor(private readonly formBuilder: FormBuilder,
-              private readonly snackBar: MatSnackBar,
-              private readonly userService: UserService) {
+  constructor(public readonly formBuilder: FormBuilder,
+              public readonly snackBar: MatSnackBar,
+              public readonly userService: UserService) {
   }
 
-  ngOnInit(): void {
-    this.getCurrentUser();
+  async ngOnInit(): Promise<void> {
+    await this.getCurrentUser();
   }
 
-  private _initializeForm(user: UserModel): void {
+  async _initializeForm(user: UserModel): Promise<void> {
     this.usernameFormControl.setValue(user.username);
     this.personalForm = this.formBuilder.group({
       firstname: [user.firstname, [Validators.nullValidator, Validators.required]],
@@ -96,7 +96,7 @@ export class PersonalComponent implements OnInit {
     });
   }
 
-  getCurrentUser(): void {
+  async getCurrentUser(): Promise<void> {
     this.getUserProgress = true;
     this.userService.currentUser().then(user => {
       this.currentUser = user;
@@ -111,7 +111,7 @@ export class PersonalComponent implements OnInit {
     });
   }
 
-  updatePersonalInformation(): void {
+  async updatePersonalInformation(): Promise<void> {
     if (this.personalForm.valid) {
       this.updateUserProgress = true;
       this.userService.updateUser(this.currentUser as any, this.personalForm.value).then(async user => {
@@ -144,5 +144,11 @@ export class PersonalComponent implements OnInit {
         duration: 3000
       });
     }
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }

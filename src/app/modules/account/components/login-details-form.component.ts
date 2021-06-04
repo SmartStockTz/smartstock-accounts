@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -29,18 +29,24 @@ import {FormGroup} from '@angular/forms';
   `,
   styleUrls: ['../styles/register.style.scss']
 })
-export class LoginDetailsFormComponent implements OnInit {
+export class LoginDetailsFormComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() loginFormGroup: FormGroup;
   showPasswordFlag = false;
 
   constructor() {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
   }
 
-  showPassword($event: MouseEvent): void {
+  async showPassword($event: MouseEvent): Promise<void> {
     $event.preventDefault();
     this.showPasswordFlag = !this.showPasswordFlag;
+  }
+
+  async ngAfterViewInit(): Promise<void> {
+  }
+
+  async ngOnDestroy(): Promise<void> {
   }
 }
