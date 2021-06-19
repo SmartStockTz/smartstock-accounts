@@ -9,37 +9,28 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
   selector: 'app-billing-page',
   template: `
-    <mat-sidenav-container class="match-parent">
-      <mat-sidenav class="match-parent-side"
-                   [fixedInViewport]="true"
-                   #sidenav
-                   [mode]="(deviceState.enoughWidth | async) ===true?'side':'over'"
-                   [opened]="(deviceState.enoughWidth | async) ===true">
+    <app-layout-sidenav
+      [leftDrawerOpened]="(deviceState.enoughWidth | async )=== true"
+      [leftDrawerMode]="(deviceState.enoughWidth | async )=== true?'side': 'over'"
+      [hasBackRoute]="true"
+      [backLink]="'/account'"
+      [heading]="'Payments'"
+      [leftDrawer]="side"
+      [body]="body">
+      <ng-template #side>
         <app-drawer></app-drawer>
-      </mat-sidenav>
+      </ng-template>
+      <ng-template #body>
+        <div [ngClass]="deviceState.isSmallScreen.value===true?'container-fluid':'container my-billing-wrapper'">
 
-      <mat-sidenav-content>
-        <app-toolbar [heading]="'Bills'"
-                     [sidenav]="sidenav"
-                     [showProgress]="false"
-                     [backLink]="'/account'"
-                     [hasBackRoute]="isMobile">
-        </app-toolbar>
-
-        <div [ngClass]="isMobile?'container-fluid':'container my-billing-wrapper'">
-
-          <div [ngClass]="isMobile?'col-12':'col-12 col-lg-10 col-xl-10 offset-xl-1 offset-lg-1 offset-md-0 offset-sm-0'">
+          <div
+            [ngClass]="deviceState.isSmallScreen.value===true?'col-12':'col-12 col-lg-10 col-xl-10 offset-xl-1 offset-lg-1 offset-md-0 offset-sm-0'">
             <div style="padding-top: 16px">
               <h2>Your Month Total Payment For All Shops</h2>
               <h1 *ngIf="!costFlag">{{monthCost | currency: 'TZS '}}</h1>
               <mat-progress-spinner color="primary" diameter="30" mode="indeterminate" *ngIf="costFlag"></mat-progress-spinner>
             </div>
             <hr>
-            <div>
-              <!--              <p style="padding: 10px 0">-->
-              <!--                Billing-->
-              <!--              </p>-->
-            </div>
 
             <div class="row" style="margin-bottom: 16px">
               <div style="margin-bottom: 8px" class="col-12 col-md-6 col-xl-6 col-sm-12 col-lg-6">
@@ -83,14 +74,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
                 </app-dash-card>
               </div>
             </div>
-
             <div>
-              <!--                            <div>-->
-              <!--                              <p style="padding: 10px 0">-->
-              <!--                                Payments-->
-              <!--                              </p>-->
-              <!--                            </div>-->
-
               <div style="margin-bottom: 16px" class="row">
                 <button *ngIf="!subscriptionFlag" (click)="refresh()" mat-stroked-button class="btn-block" color="primary">
                   Update Status
@@ -142,10 +126,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
           </div>
 
         </div>
-
-      </mat-sidenav-content>
-
-    </mat-sidenav-container>
+      </ng-template>
+    </app-layout-sidenav>
   `,
   styleUrls: ['../styles/billing.style.scss']
 })

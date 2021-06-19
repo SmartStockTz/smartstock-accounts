@@ -21,7 +21,7 @@
     "@angular/platform-browser": "~11.0.0",
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
-    "@smartstocktz/core-libs": "~0.2.10",
+    "@smartstocktz/core-libs": "~0.2.11",
     "bfastjs": "~4.2.9",
     "const": "^1.0.0",
     "ngx-bottom-nav": "^11.0.0",

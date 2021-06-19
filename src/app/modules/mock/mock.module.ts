@@ -12,6 +12,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import bfast from 'bfastjs';
 
 const routes: Routes = [
   {path: 'login', canActivate: [AuthGuard], component: LoginPage},
@@ -47,7 +48,11 @@ const routes: Routes = [
 })
 export class MockModule {
   constructor() {
-
+    bfast.init({
+      applicationId: 'smartstock_lb',
+      projectId: 'smartstock',
+      appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG'
+    });
   }// end
 }
 

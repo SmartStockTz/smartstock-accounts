@@ -2,16 +2,16 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {LogService, StorageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-create-dialog',
   template: `
-    <div style="min-width: 300px">
+    <div [style]="deviceState.isSmallScreen.value?{}: {width: '400px' }">
       <div mat-dialog-title>Create User</div>
       <div mat-dialog-content>
-        <form class="d-flex flex-column" [formGroup]="newUserForm" (ngSubmit)="createUser()">
+        <form *ngIf="newUserForm" class="d-flex flex-column" [formGroup]="newUserForm" (ngSubmit)="createUser()">
 
           <mat-form-field appearance="outline">
             <mat-label>Username</mat-label>
@@ -36,7 +36,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 
           <mat-form-field appearance="outline">
             <mat-label>Shop ( s )</mat-label>
-            <mat-select [multiple]="true" formControlName="shops">
+            <mat-select [value]="activeShop" [multiple]="true" formControlName="shops">
               <mat-option *ngFor="let shop of shops | async" [value]="shop">{{shop.businessName}}</mat-option>
             </mat-select>
             <mat-error>Shop ( s ) required</mat-error>
@@ -61,17 +61,20 @@ export class UserCreateDialogComponent implements OnInit, OnDestroy, AfterViewIn
   newUserForm: FormGroup;
   createUserProgress = false;
   shops: Observable<any[]>;
+  activeShop = {};
 
   constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly snack: MatSnackBar,
-    private readonly storageService: StorageService,
-    private readonly userService: UserService,
-    private readonly logger: LogService,
-    public dialogRef: MatDialogRef<UserCreateDialogComponent>) {
+    public readonly formBuilder: FormBuilder,
+    public readonly snack: MatSnackBar,
+    public readonly storageService: StorageService,
+    public readonly userService: UserService,
+    public readonly logger: LogService,
+    public readonly deviceState: DeviceState,
+    public readonly dialogRef: MatDialogRef<UserCreateDialogComponent>) {
   }
 
   async ngOnInit(): Promise<void> {
+    this.activeShop = await this.storageService.getActiveShop();
     await this.getShops();
     await this.initiateForm();
   }
@@ -104,10 +107,9 @@ export class UserCreateDialogComponent implements OnInit, OnDestroy, AfterViewIn
         duration: 3000
       });
     }).catch(reason => {
-      this.logger.i(reason);
+      console.log(reason);
       this.createUserProgress = false;
-      this.snack.open(reason && reason.error && reason.error.message ?
-        reason.error.message : 'User not created, try again', 'Ok', {
+      this.snack.open('User not created, try different username', 'Ok', {
         duration: 3000
       });
     }).finally(() => {

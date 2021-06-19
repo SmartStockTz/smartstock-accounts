@@ -95,9 +95,9 @@ button {
 }
 
 .ft-button {
-  height: 48px;
+  height: 36px;
   //color: white;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .table-data-row:hover {
@@ -202,4 +202,9 @@ button {
 
 div {
   outline: none !important;
+}
+
+
+ngx-bottom-nav{
+  z-index: 999896799;
 }

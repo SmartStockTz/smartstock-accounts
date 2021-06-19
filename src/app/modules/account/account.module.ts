@@ -24,6 +24,7 @@ import {ShopsTableOptionsComponent} from './components/shops-table-options.compo
 import {UserCreateDialogComponent} from './components/user-create-dialog.component';
 import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
 import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
+import {UsersComponent} from './components/users.component';
 import {VerifyDialogComponent} from './components/verify-dialog.component';
 import {BillingPage} from './pages/billing.page';
 import {ChooseShopPage} from './pages/choose-shop.page';
@@ -60,12 +61,13 @@ import {MatTableModule} from '@angular/material/table';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatLineModule} from '@angular/material/core';
 import {MatRippleModule} from '@angular/material/core';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 const routes: Routes = [
    { path: '', canActivate: [  ], component: IndexPage },
    { path: 'shop', canActivate: [ AuthenticationGuard ], component: ChooseShopPage },
    { path: 'shops', canActivate: [ AuthenticationGuard ], component: ShopsPage },
-   { path: 'shops/:shop/settingsService', canActivate: [ AuthenticationGuard ], component: SettingsPage },
+   { path: 'shops/:shop/settings', canActivate: [ AuthenticationGuard ], component: SettingsPage },
    { path: 'shops/:shop/ecommerce', canActivate: [ AuthenticationGuard ], component: EcommercePage },
    { path: 'login', canActivate: [ AuthenticatedUserGuard ], component: LoginPage },
    { path: 'register', canActivate: [ AuthenticatedUserGuard ], component: RegisterPage },
@@ -103,48 +105,50 @@ const routes: Routes = [
      UserCreateDialogComponent,
      UserDeleteDialogComponent,
      UserUpdateDialogComponent,
+     UsersComponent,
      VerifyDialogComponent,
   ],
-  imports: [
-    CommonModule,
-    {
-      ngModule: RouterModule,
-      providers: [
+    imports: [
+        CommonModule,
         {
-          multi: true,
-          provide: ROUTES,
-          useValue: routes
-        }
-      ]
-    },
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    MatCardModule,
-    LibModule,
-    MatListModule,
-    MatIconModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatExpansionModule,
-    MatStepperModule,
-    MatTooltipModule,
-    MatSidenavModule,
-    MatTabsModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatSlideToggleModule,
-    MatMenuModule,
-    MatTableModule,
-    MatChipsModule,
-    MatLineModule,
-    MatRippleModule,
-  ],
+            ngModule: RouterModule,
+            providers: [
+                {
+                    multi: true,
+                    provide: ROUTES,
+                    useValue: routes
+                }
+            ]
+        },
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        MatCardModule,
+        LibModule,
+        MatListModule,
+        MatIconModule,
+        MatDialogModule,
+        MatOptionModule,
+        MatExpansionModule,
+        MatStepperModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatTabsModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        MatMenuModule,
+        MatTableModule,
+        MatChipsModule,
+        MatLineModule,
+        MatRippleModule,
+        MatPaginatorModule,
+    ],
   exports: [
-    
+
   ],
 })
 export class AccountModule {

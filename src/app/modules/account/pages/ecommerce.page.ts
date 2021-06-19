@@ -11,17 +11,19 @@ import {EcommerceService} from '../services/ecommerce.service';
 @Component({
   selector: 'app-ecommerce-page',
   template: `
-    <app-layout-sidenav [leftDrawerOpened]="(deviceState.isSmallScreen | async)===false"
-                        [leftDrawerMode]="(deviceState.isSmallScreen | async)===false?'side':'over'"
-                        [isMobile]="false"
-                        [heading]="'E-Commerce'"
+    <app-layout-sidenav [leftDrawerOpened]="(deviceState.enoughWidth | async)===false"
+                        [leftDrawerMode]="(deviceState.enoughWidth | async)===false?'side':'over'"
+                        [hasBackRoute]="true"
+                        [heading]="'E-Commerce settings'"
+                        backLink="/account/shops"
                         [body]="body"
                         [leftDrawer]="leftDrawer">
       <ng-template #leftDrawer>
         <app-drawer></app-drawer>
       </ng-template>
       <ng-template #body>
-        <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
+        <div style="min-height: 100vh"
+             class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
           <div *ngIf="ecommerceGetProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner [diameter]="30" mode="indeterminate"
                                   [matTooltip]="'Fetch e-commerce settingsService'"
@@ -114,9 +116,7 @@ import {EcommerceService} from '../services/ecommerce.service';
                                     mode="indeterminate">
               </mat-progress-spinner>
             </button>
-
           </form>
-
         </div>
       </ng-template>
     </app-layout-sidenav>

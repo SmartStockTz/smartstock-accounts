@@ -50,10 +50,8 @@ import {UserService} from '@smartstocktz/core-libs';
             </button>
           </div>
         </form>
-
         <mat-progress-spinner *ngIf="getUserProgress" mode="indeterminate" color="primary"
                               [diameter]="25"></mat-progress-spinner>
-
         <div *ngIf="!getUserProgress && !personalForm">
           <mat-card-subtitle>
             Failure when try to fetch your personal information, try to refresh

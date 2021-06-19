@@ -4,18 +4,20 @@ import {DeviceState} from '@smartstocktz/core-libs';
 @Component({
   selector: 'app-index-page',
   template: `
-    <mat-sidenav-container>
-      <mat-sidenav class="match-parent-side" #sidenav
-                   [mode]="(deviceState.enoughWidth | async)===true?'side': 'over'"
-                   [opened]="(deviceState.enoughWidth | async)===true">
+
+    <app-layout-sidenav
+      [leftDrawerOpened]="(deviceState.enoughWidth | async )=== true"
+      [leftDrawerMode]="(deviceState.enoughWidth | async )=== true?'side': 'over'"
+      [heading]="'My Account'"
+      [leftDrawer]="side"
+      [body]="body">
+      <ng-template #side>
         <app-drawer></app-drawer>
-      </mat-sidenav>
-      <mat-sidenav-content style="min-height: 100vh">
-        <app-toolbar searchPlaceholder="Filter product" [heading]="'Profile'"
-                     [sidenav]="sidenav"></app-toolbar>
-        <div class="container col-xl-10 col-lg-10 col-sm-9 col-md-9 col-sm-12 col-10" style="padding: 16px 0">
-<!--          <h1 class="pl-4">Go To</h1>-->
-          <div class="d-flex flex-wrap p-4">
+      </ng-template>
+      <ng-template #body>
+        <div class="container col-xl-10 col-lg-10 col-sm-12  col-md-9 col-sm-12 col-12"
+             style="padding: 16px 0; min-height: 100vh">
+          <div *ngIf="(deviceState.isSmallScreen | async) === false" class="d-flex flex-wrap p-4">
             <app-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
               <ng-template #profile>
                 <div routerLink="/account/profile" style="margin: 5px; cursor: pointer">
@@ -32,7 +34,6 @@ import {DeviceState} from '@smartstocktz/core-libs';
                 </div>
               </ng-template>
             </app-libs-rbac>
-
             <app-libs-rbac [groups]="['admin','manager']" [component]="users">
               <ng-template #users>
                 <div routerLink="/account/users" style="margin: 5px; cursor: pointer">
@@ -49,7 +50,6 @@ import {DeviceState} from '@smartstocktz/core-libs';
                 </div>
               </ng-template>
             </app-libs-rbac>
-
             <app-libs-rbac [groups]="['admin']" [component]="shops">
               <ng-template #shops>
                 <div routerLink="/account/shops" style="margin: 5px; cursor: pointer">
@@ -66,7 +66,6 @@ import {DeviceState} from '@smartstocktz/core-libs';
                 </div>
               </ng-template>
             </app-libs-rbac>
-
             <app-libs-rbac [groups]="['admin']" [component]="bills">
               <ng-template #bills>
                 <div routerLink="/account/bill" style="margin: 5px; cursor: pointer">
@@ -84,9 +83,52 @@ import {DeviceState} from '@smartstocktz/core-libs';
               </ng-template>
             </app-libs-rbac>
           </div>
+
+          <mat-nav-list *ngIf="(deviceState.isSmallScreen | async) === true">
+            <app-libs-rbac [groups]="['admin','manager','user']" [component]="profile">
+              <ng-template #profile>
+                <mat-list-item routerLink="/account/profile">
+                  <mat-icon matListIcon>face</mat-icon>
+                  <h1 matLine>Profile</h1>
+                  <mat-card-subtitle matLine>Your details</mat-card-subtitle>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </ng-template>
+            </app-libs-rbac>
+            <app-libs-rbac [groups]="['admin','manager']" [component]="users">
+              <ng-template #users>
+                <mat-list-item routerLink="/account/users">
+                  <mat-icon matListIcon>supervisor_account</mat-icon>
+                  <h1 matLine>Users</h1>
+                  <mat-card-subtitle matLine>Manage shop users</mat-card-subtitle>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </ng-template>
+            </app-libs-rbac>
+            <app-libs-rbac [groups]="['admin']" [component]="shops">
+              <ng-template #shops>
+                <mat-list-item routerLink="/account/shops">
+                  <mat-icon matListIcon>store</mat-icon>
+                  <h1 matLine>Shops</h1>
+                  <mat-card-subtitle matLine>Manage your shops</mat-card-subtitle>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </ng-template>
+            </app-libs-rbac>
+            <app-libs-rbac [groups]="['admin']" [component]="bills">
+              <ng-template #bills>
+                <mat-list-item routerLink="/account/bill">
+                  <mat-icon matListIcon>payment</mat-icon>
+                  <h1 matLine>Payments</h1>
+                  <mat-card-subtitle matLine>Bills and receipts</mat-card-subtitle>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+              </ng-template>
+            </app-libs-rbac>
+          </mat-nav-list>
         </div>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+      </ng-template>
+    </app-layout-sidenav>
   `
 })
 

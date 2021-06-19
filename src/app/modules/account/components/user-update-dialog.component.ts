@@ -2,13 +2,13 @@ import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {LogService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, UserService} from '@smartstocktz/core-libs';
 import {UserModel} from '../models/user.model';
 
 @Component({
   selector: 'app-user-update-dialog',
   template: `
-    <div style="min-width: 300px">
+    <div [style]="deviceState.isSmallScreen.value?{}:{width: '400px'}">
       <h4 mat-dialog-title>Password Update for : {{data.username}}</h4>
       <form [formGroup]="updatePasswordFormGroup" (ngSubmit)="updatePassword()">
 
@@ -38,6 +38,7 @@ export class UserUpdateDialogComponent implements OnInit, OnDestroy, AfterViewIn
               public readonly snackBar: MatSnackBar,
               public readonly logger: LogService,
               public readonly userService: UserService,
+              public readonly deviceState: DeviceState,
               @Inject(MAT_DIALOG_DATA) public data: UserModel) {
   }
 

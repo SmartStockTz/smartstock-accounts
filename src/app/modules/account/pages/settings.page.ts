@@ -8,24 +8,20 @@ import {SettingsModel} from '../models/settings.model';
 @Component({
   selector: 'app-setting-page',
   template: `
-    <mat-sidenav-container class="match-parent">
-      <mat-sidenav class="match-parent-side"
-                   [fixedInViewport]="true"
-                   #sidenav
-                   [mode]="(deviceState.isSmallScreen | async)===false?'side':'over'"
-                   [opened]="(deviceState.isSmallScreen | async)===false">
+    <app-layout-sidenav
+      [leftDrawerOpened]="(deviceState.enoughWidth | async )=== true"
+      [leftDrawerMode]="(deviceState.enoughWidth | async )=== true?'side': 'over'"
+      [hasBackRoute]="true"
+      [backLink]="'/account/shops'"
+      [heading]="'General settings'"
+      [leftDrawer]="side"
+      [body]="body">
+      <ng-template #side>
         <app-drawer></app-drawer>
-      </mat-sidenav>
-
-      <mat-sidenav-content>
-        <app-toolbar [heading]="'Settings'"
-                     [sidenav]="sidenav"
-                     [hasBackRoute]="isMobile"
-                     [backLink]="'/account'"
-                     [showProgress]="false">
-        </app-toolbar>
-
-        <div class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
+      </ng-template>
+      <ng-template #body>
+        <div style="min-height: 100vh"
+             class="container d-flex flex-column justify-content-center align-items-center stock-new-wrapper">
           <div *ngIf="getSettingsProgress" style="height: 400px; display: flex; justify-content: center; align-items: center">
             <mat-progress-spinner [diameter]="30" mode="indeterminate"
                                   [matTooltip]="'Fetch settingsService'"
@@ -94,7 +90,6 @@ import {SettingsModel} from '../models/settings.model';
                 </div>
 
                 <div style="margin-top: 16px">
-                  <!--              <mat-card-subtitle>Header message</mat-card-subtitle>-->
                   <mat-form-field appearance="fill">
                     <mat-label>Header</mat-label>
                     <textarea matTooltip="This content will be shown on top of a receipt when printed"
@@ -128,15 +123,10 @@ import {SettingsModel} from '../models/settings.model';
                                     mode="indeterminate">
               </mat-progress-spinner>
             </button>
-
           </form>
-
         </div>
-      </mat-sidenav-content>
-
-    </mat-sidenav-container>
-
-    <!--<app-settings-general *ngIf="isMobile"></app-settings-general>-->
+      </ng-template>
+    </app-layout-sidenav>
   `,
   styleUrls: ['../styles/setting.style.scss']
 })
@@ -144,7 +134,6 @@ export class SettingsPage implements OnInit, OnDestroy {
   settingsForm: FormGroup;
   getSettingsProgress = false;
   saveSettingProgress = false;
-  isMobile = false;
   selectedShop = '';
   stockModules = ['@smartstocktz/stocks', '@smartstocktz/stocks-real-estate'];
   shopCurrencies = ['TZS', 'USD'];
