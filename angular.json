@@ -6,7 +6,7 @@
     "accounts": {
       "projectType": "library",
       "root": "projects/accounts",
-      "sourceRoot": "src/app/modules/account",
+      "sourceRoot": "src/app/modules/account/",
       "prefix": "lib",
       "architect": {
         "build": {
@@ -51,7 +51,7 @@
         }
       },
       "root": "projects/accounts-mock",
-      "sourceRoot": "src",
+      "sourceRoot": "src/",
       "prefix": "app",
       "architect": {
         "build": {
