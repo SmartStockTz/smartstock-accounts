@@ -125,8 +125,8 @@ import {EcommerceService} from '../services/ecommerce.service';
 })
 export class EcommercePage implements OnInit, OnDestroy {
   ecommerceForm: FormGroup;
-  ecommerceGetProgress = false;
-  ecommerceSaveProgress = false;
+  ecommerceGetProgress: boolean = false;
+  ecommerceSaveProgress: boolean = false;
   selectedShop: ShopModel;
 
   constructor(public readonly formBuilder: FormBuilder,

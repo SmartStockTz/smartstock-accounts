@@ -19,7 +19,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatSelectModule} from '@angular/material/select';
 
 const routes: Routes = [
-   { path: 'account', canActivate: [  ], loadChildren: () => import('../../projects/accounts/src/public-api').then(mod => mod.AccountModule) },
+   { path: 'account', canActivate: [  ], loadChildren: () => import('./modules/account/public').then(mod => mod.AccountModule) },
    { path: '', canActivate: [  ], loadChildren: () => import('./modules/mock/mock.module').then(mod => mod.MockModule) },
 ];
 

@@ -18,8 +18,11 @@
     "strictMetadataEmit": true,
     "enableResourceInlining": true
   },
+  "include": [
+    "../../src/app/modules/account/**.ts"
+  ],
   "exclude": [
-    "src/test.ts",
+    "../../src/app/modules/account/test.ts",
     "**/*.spec.ts"
   ]
 }

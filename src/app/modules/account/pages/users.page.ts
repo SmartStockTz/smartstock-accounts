@@ -34,6 +34,5 @@ export class UsersPage implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-
 }
 
