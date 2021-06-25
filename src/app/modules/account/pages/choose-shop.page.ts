@@ -4,7 +4,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
 import {Observable, of} from 'rxjs';
 import {Router} from '@angular/router';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, StorageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 
 @Component({
@@ -33,14 +33,14 @@ import {ShopModel} from '../models/shop.model';
             </div>
           </div>
 
-          <!--          <div class="ct_shop_profile">-->
-          <!--            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">-->
-          <!--              <div class="d-flex justify-content-center align-items-center">-->
-          <!--                <mat-icon class="add_shop_btn">add</mat-icon>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--            <div class="shop_name d-flex justify-content-center">Add Shop</div>-->
-          <!--          </div>-->
+          <div class="ct_shop_profile">
+            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">
+              <div class="d-flex justify-content-center align-items-center">
+                <mat-icon class="add_shop_btn">add</mat-icon>
+              </div>
+            </div>
+            <div class="shop_name d-flex justify-content-center">Add Shop</div>
+          </div>
 
         </div>
 
@@ -58,13 +58,14 @@ export class ChooseShopPage implements OnInit, OnDestroy {
               public readonly snackBar: MatSnackBar,
               public readonly router: Router,
               public readonly storageService: StorageService,
+              public readonly deviceState: DeviceState,
               public readonly userDatabase: UserService) {
     document.title = 'SmartStock - Choose Shop';
   }
 
   async openCreateShopDialog(): Promise<void> {
     const dialogRef = this.createShopDialog.open(CreateShopDialogComponent, {
-      minWidth: 350,
+      minWidth: this.deviceState.isSmallScreen.value ? '90%' : 350,
       maxWidth: 600,
       data: this.shopDetails,
       disableClose: true,
@@ -73,8 +74,6 @@ export class ChooseShopPage implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getShops();
-      } else {
-        // console.log('no shop to append');
       }
     });
   }
@@ -88,8 +87,7 @@ export class ChooseShopPage implements OnInit, OnDestroy {
       return this.userDatabase.getShops(user as any);
     }).then(shops => {
       this.shops = of(shops);
-    }).catch(reason => {
-      // console.log(reason);
+    }).catch(_ => {
       this.snackBar.open('Error when fetch available shops', 'Ok', {
         duration: 3000
       });

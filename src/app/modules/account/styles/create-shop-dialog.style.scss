@@ -1,9 +1,13 @@
-.create-shop-form-container{
-    display: flex;
-    flex-direction: column
+.create-shop-form-container {
+  display: flex;
+  flex-direction: column
 }
 
-.btn-create-shop{
-    /*background-color:#027206;*/
-    /*color: #ffffff*/
+.btn-create-shop {
+  /*background-color:#027206;*/
+  /*color: #ffffff*/
+}
+
+mat-form-field {
+  width: 100%;
 }

@@ -4,6 +4,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {StorageService} from '@smartstocktz/core-libs';
 import {ShopService} from '../services/shop.service';
+import {ProfileState} from '../states/profile.state';
 
 export interface DialogData {
   customer?: string;
@@ -16,53 +17,58 @@ export interface DialogData {
   template: `
     <div>
       <form [formGroup]="createShopForm" (ngSubmit)="createShop()" class="create-shop-form-container">
-        <mat-form-field appearance="" class="full-width">
-          <mat-label>Shop Name</mat-label>
-          <input matInput formControlName="businessName" placeholder="Shop Name">
-          <mat-error>Shop name required</mat-error>
-        </mat-form-field>
+        <div class="stepper-inputs">
+          <mat-form-field appearance="fill">
+            <mat-label>Business Name</mat-label>
+            <mat-icon matSuffix>business</mat-icon>
+            <input matInput class="inputs" type="text" formControlName="businessName"
+                   required>
+            <mat-error>Business name required</mat-error>
+          </mat-form-field>
 
-        <mat-form-field class="full-width">
-          <mat-label>Shop Category</mat-label>
-          <mat-select formControlName="category" class="" required="">
-            <mat-option value="artists_photographers_creative">Artists, Photographers &amp; Creative Types</mat-option>
-            <mat-option value="consultants_professionals">Consultants &amp; Professionals</mat-option>
-            <mat-option value="finance_insurance">Financial Services</mat-option>
-            <mat-option value="product_provider">General: I make or sell a PRODUCT</mat-option>
-            <mat-option value="service_provider">General: I provide a SERVICE</mat-option>
-            <mat-option value="hair_spa_aesthetics">Hair, Spa &amp; Aesthetics</mat-option>
-            <mat-option value="medical_dental_health_service">Medical, Dental, Health</mat-option>
-            <mat-option value="nonprofit_associations_groups">Non-profits, Associations &amp; Groups</mat-option>
-            <mat-option value="realestate_home">Real Estate, Construction &amp; Home Improvement</mat-option>
-            <mat-option value="retailers_and_resellers">Retailers, Resellers &amp; Sales</mat-option>
-            <mat-option value="web_media_freelancer">Web, Tech &amp; Media</mat-option>
-          </mat-select>
-          <mat-error>Choose category</mat-error>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Shop Category</mat-label>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-select formControlName="category" class="" required="">
+              <mat-option *ngFor="let category of profileState.categories | async"
+                          value="{{category.value}}">{{category.name}}</mat-option>
+            </mat-select>
+            <mat-error>Choose category</mat-error>
+          </mat-form-field>
 
-        <mat-form-field appearance="" class="full-width">
-          <mat-label>Country</mat-label>
-          <input matInput formControlName="country" placeholder="Country">
-          <mat-error>Country required</mat-error>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <mat-icon matSuffix>person_pin</mat-icon>
+            <!--          <input matInput class="inputs" type="text" formControlName="country" required>-->
+            <mat-select formControlName="country" class="" required>
+              <mat-option *ngFor="let country of profileState.countries | async" value="{{country.name}} - {{country.code}}">
+                {{country.name}}</mat-option>
+            </mat-select>
+            <mat-error>Country required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Region</mat-label>
+            <mat-icon matSuffix>person_pin</mat-icon>
+            <input matInput class="inputs" type="text" formControlName="region" required>
+            <mat-error>Region required</mat-error>
+          </mat-form-field>
 
-        <mat-form-field appearance="" class="full-width">
-          <mat-label>Region</mat-label>
-          <input matInput formControlName="region" placeholder="Region">
-          <mat-error>Region required</mat-error>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Street / Business location</mat-label>
+            <mat-icon matSuffix>person_pin</mat-icon>
+            <textarea matInput class="inputs" formControlName="street"
+                      required></textarea>
+            <mat-error>Street required</mat-error>
+          </mat-form-field>
 
-        <mat-form-field appearance="" class="full-width">
-          <mat-label>Street</mat-label>
-          <input matInput formControlName="street" placeholder="Street/ Location">
-          <mat-error>Street required</mat-error>
-        </mat-form-field>
-
+        </div>
         <div class="">
           <button [disabled]="createShopProgress" class="ft-button btn-block" color="primary" mat-raised-button>
             Create Shop
-            <mat-progress-spinner style="display: inline-block" *ngIf="createShopProgress" mode="indeterminate"
-                                  color="primary" [diameter]="20"></mat-progress-spinner>
+            <mat-progress-spinner style="display: inline-block"
+                                  *ngIf="createShopProgress" mode="indeterminate"
+                                  color="primary" [diameter]="20">
+            </mat-progress-spinner>
           </button>
         </div>
       </form>
@@ -89,6 +95,7 @@ export class CreateShopDialogComponent implements OnInit, OnDestroy, AfterViewIn
               public readonly snack: MatSnackBar,
               public readonly storageService: StorageService,
               public readonly shopService: ShopService,
+              public readonly profileState: ProfileState,
               public readonly formBuilder: FormBuilder) {
   }
 
@@ -121,12 +128,16 @@ export class CreateShopDialogComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   async ngOnInit(): Promise<void> {
+    await this.profileState.getCountries();
+    await this.profileState.getShopCategories();
     this.createShopForm = this.formBuilder.group({
       businessName: ['', [Validators.nullValidator, Validators.required]],
       country: ['', [Validators.nullValidator, Validators.required]],
       category: ['product_provider', [Validators.nullValidator, Validators.required]],
       region: ['', [Validators.nullValidator, Validators.required]],
       street: ['', [Validators.nullValidator, Validators.required]],
+      settings: [{}],
+      ecommerce: [{}],
     });
   }
 

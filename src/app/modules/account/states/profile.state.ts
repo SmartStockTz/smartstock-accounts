@@ -7,9 +7,29 @@ import {BehaviorSubject} from 'rxjs';
 
 export class ProfileState {
   countries: BehaviorSubject<any> = new BehaviorSubject(null);
+  categories: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor() {
   }// end
+
+  async getShopCategories(): Promise<any> {
+    this.categories.next([
+      {value: 'consultants_professionals', name: 'Consultants & Professionals'},
+      {value: 'finance_insurance', name: 'Financial Services'},
+      {value: 'product_provider', name: 'General: I make or sell a PRODUCT'},
+      {value: 'service_provider', name: 'General: I provide a SERVICE'},
+      {value: 'hair_spa_aesthetics', name: 'Hair, Spa & Aesthetics'},
+      {value: 'medical_dental_health_service', name: 'Medical, Dental, Health'},
+      {value: 'nonprofit_associations_groups', name: 'Non-profits, Associations & Groups'},
+      {value: 'realestate_home', name: 'Real Estate, Construction & Home Improvement'},
+      {value: 'retailers_and_resellers', name: 'Retailers, Resellers & Sales'},
+      {value: 'web_media_freelancer', name: 'Web, Tech & Media'},
+      {value: 'restaurant', name: 'Restaurant'},
+      {value: 'fast_food', name: 'Fast Food'},
+      {value: 'pharmacy', name: 'Pharmacy'},
+      {value: 'hardware', name: 'Hardware'},
+    ]);
+  }
 
   async getCountries(): Promise<any> {
     this.countries.next([

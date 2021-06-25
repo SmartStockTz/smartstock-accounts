@@ -5,6 +5,9 @@ import {DeviceState, LogService, MessageService, UserService} from '@smartstockt
 import {ShopModel} from '../models/shop.model';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ShopsTableOptionsComponent} from '../components/shops-table-options.component';
+import {UserDeleteDialogComponent} from '../components/user-delete-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-shops-page',
@@ -102,7 +105,7 @@ import {ShopsTableOptionsComponent} from '../components/shops-table-options.comp
                     <h1 matLine>{{item.businessName}}</h1>
                     <mat-card-subtitle matLine>{{item.street}}</mat-card-subtitle>
                     <mat-icon matListIcon>
-                      {{currentShop && currentShop.projectId === item.projectId?'done': 'store'}}
+                      {{currentShop && currentShop.projectId === item.projectId ? 'done' : 'store'}}
                     </mat-icon>
                     <mat-icon matSuffix>more_vert</mat-icon>
                   </mat-list-item>
@@ -130,6 +133,8 @@ export class ShopsPage implements OnInit, OnDestroy {
               public readonly matBottomSheet: MatBottomSheet,
               public readonly logService: LogService,
               public readonly deviceState: DeviceState,
+              public readonly dialog: MatDialog,
+              public readonly snack: MatSnackBar,
               public readonly messageService: MessageService) {
     document.title = 'SmartStock - My Shops';
   }
@@ -144,11 +149,8 @@ export class ShopsPage implements OnInit, OnDestroy {
       if (cShop) {
         this.currentShop = cShop as any;
       }
-    }).catch(_ => {
-    });
-    // @ts-ignore
+    }).catch(console.log);
     this.userService.currentUser().then(user => {
-      // @ts-ignore
       return this.userService.getShops(user as any);
     }).then((data: any) => {
       this.fetchShopsFlag = false;
@@ -164,28 +166,32 @@ export class ShopsPage implements OnInit, OnDestroy {
   }
 
   async deleteShop(shop: ShopModel): Promise<void> {
-    // this.matDialog.open(UserDeleteDialogComponent, {
-    //   data: shop,
-    //   disableClose: true
-    // }).afterClosed().subscribe(_ => {
-    //   if (_) {
-    //     this.shops = this.shops.filter(value => value.projectId !== shop.projectId);
-    //     this.shopsDatasource = new MatTableDataSource<ShopModel>(this.shops);
-    //     this.matSnackBar.open('User deleted', 'Ok', {
-    //       duration: 2000
-    //     });
-    //   } else {
-    //     this.matSnackBar.open('User not deleted', 'Ok', {
-    //       duration: 2000
-    //     });
-    //   }
-    // });
+    this.dialog.open(UserDeleteDialogComponent, {
+      data: shop,
+      disableClose: true
+    }).afterClosed().subscribe(_ => {
+      if (_) {
+        this.shopsDatasource.data = this.shopsDatasource.data
+          .filter(value => value.projectId !== shop.projectId);
+        this.snack.open('Shop deleted', 'Ok', {
+          duration: 2000
+        });
+      } else {
+        this.snack.open('Shop not deleted', 'Ok', {
+          duration: 2000
+        });
+      }
+    });
   }
 
   async rowClicked(row: ShopModel): Promise<void> {
     this.matBottomSheet.open(ShopsTableOptionsComponent, {
       data: {
         shop: row
+      }
+    }).afterDismissed().subscribe(value1 => {
+      if (value1 === true) {
+        this.shopsDatasource.data = this.shopsDatasource.data.filter(value => value.projectId !== row.projectId);
       }
     });
   }

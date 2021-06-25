@@ -3,10 +3,9 @@ import {SettingsModel} from './settings.model';
 
 export interface ShopModel {
   businessName?: string;
-  type?: 'PRINCIPAL' | 'SECONDARY';
   applicationId: string;
   projectId: string;
-  projectUrlId: string;
+  projectUrlId?: string;
   category?: string;
   settings?: SettingsModel;
   ecommerce?: EcommerceModel;

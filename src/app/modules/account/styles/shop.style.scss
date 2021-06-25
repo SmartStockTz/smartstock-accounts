@@ -23,7 +23,7 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 48px;
+  font-size: 32px;
   line-height: 56px;
 
   color: #FFFFFF;
@@ -58,7 +58,7 @@
 }
 
 .shop_profile:hover {
-  transform: scale(1.1);
+  //transform: scale(1.1);
   cursor: pointer;
 }
 
@@ -72,10 +72,10 @@
 }
 
 .ct_add_shop:hover {
-  transform: scale(1.1);
-  background: #FFFFFF;
+  //transform: scale(1.1);
+  //background: #FFFFFF;
   cursor: pointer;
-  color: black;
+  //color: black;
 }
 
 .add_shop_btn {
