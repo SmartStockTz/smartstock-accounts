@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 import {ShopService} from '../services/shop.service';
 
+// @dynamic
 @Component({
   selector: 'app-shop-delete-confirm-dialog',
   template: `
