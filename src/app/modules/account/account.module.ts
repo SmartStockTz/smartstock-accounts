@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes, ROUTES} from '@angular/router';
-import {ConfigService} from './services/config.service';
 import {AuthenticationGuard} from './guards/authentication.guard';
 import {AuthenticatedUserGuard} from './guards/authenticated-user.guard';
 import {AddressComponent} from './components/address.component';
@@ -61,6 +60,7 @@ import {UsersCreatePage} from './pages/users-create.page';
 import {UsersCreateFormComponent} from './components/users-create-form.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {ShopDeleteConfirmDialogComponent} from './components/shop-delete-confirm-dialog.component';
+import {AccountsNavigationService} from './services/accounts-navigation.service';
 
 const routes: Routes = [
   {path: '', canActivate: [], component: IndexPage},
@@ -155,36 +155,9 @@ const routes: Routes = [
   exports: [],
 })
 export class AccountModule {
-  constructor(private readonly configService: ConfigService) {
-    this.configService.addMenu({
-      name: 'Account',
-      link: '/account',
-      icon: 'supervisor_account',
-      roles: ['*'],
-      pages: [
-        {
-          name: 'profile',
-          roles: ['*'],
-          link: '/account/profile'
-        },
-        {
-          name: 'users',
-          roles: ['*'],
-          link: '/account/users'
-        },
-        {
-          name: 'shops',
-          roles: ['*'],
-          link: '/account/shops'
-        },
-        {
-          name: 'payments',
-          roles: ['*'],
-          link: '/account/bill'
-        }
-      ]
-    }).catch(console.log);
-    this.configService.selectedModuleName('Account').catch(console.log);
+  constructor(private readonly accNav: AccountsNavigationService) {
+    this.accNav.init();
+    this.accNav.selected();
   }// end
 }
 
