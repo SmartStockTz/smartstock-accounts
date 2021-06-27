@@ -60,15 +60,17 @@ import {UserState} from '../states/user.state';
 
         <div>
           <div *ngFor="let menu of  configService.getMenu()">
-            <h1 class="heading">{{menu.name}}</h1>
-            <mat-card>
+            <div *ngIf="menu.pages && menu.pages>0">
+              <h1 class="heading">{{menu.name}}</h1>
+              <mat-card>
               <span *ngFor="let page of menu.pages">
                 <mat-checkbox class="pageTitle" [checked]="acl[page.link]"
                               (change)="acl[page.link]=$event.checked">
                   {{page.name}}
                 </mat-checkbox>
               </span>
-            </mat-card>
+              </mat-card>
+            </div>
           </div>
         </div>
 

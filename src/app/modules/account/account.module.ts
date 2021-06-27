@@ -61,18 +61,19 @@ import {UsersCreateFormComponent} from './components/users-create-form.component
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {ShopDeleteConfirmDialogComponent} from './components/shop-delete-confirm-dialog.component';
 import {AccountsNavigationService} from './services/accounts-navigation.service';
+import {ManagerRoleGuard} from './guards/manager-role.guard';
 
 const routes: Routes = [
   {path: '', canActivate: [], component: IndexPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ChooseShopPage},
-  {path: 'shops', canActivate: [AuthenticationGuard], component: ShopsPage},
-  {path: 'shops/:shop/settings', canActivate: [AuthenticationGuard], component: SettingsPage},
-  {path: 'shops/:shop/ecommerce', canActivate: [AuthenticationGuard], component: EcommercePage},
+  {path: 'shops', canActivate: [ManagerRoleGuard], component: ShopsPage},
+  {path: 'shops/:shop/settings', canActivate: [ManagerRoleGuard], component: SettingsPage},
+  {path: 'shops/:shop/ecommerce', canActivate: [ManagerRoleGuard], component: EcommercePage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
   {path: 'bill', canActivate: [AuthenticationGuard], component: BillingPage},
-  {path: 'users', canActivate: [AuthenticationGuard], component: UsersPage},
-  {path: 'users/create', canActivate: [AuthenticationGuard], component: UsersCreatePage},
+  {path: 'users', canActivate: [ManagerRoleGuard], component: UsersPage},
+  {path: 'users/create', canActivate: [ManagerRoleGuard], component: UsersCreatePage},
   {path: 'profile', canActivate: [AuthenticationGuard], component: ProfilePage},
 ];
 

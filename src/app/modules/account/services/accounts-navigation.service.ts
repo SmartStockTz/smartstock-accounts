@@ -22,12 +22,12 @@ export class AccountsNavigationService {
         },
         {
           name: 'users',
-          roles: ['*'],
+          roles: ['manager', 'admin'],
           link: '/account/users'
         },
         {
           name: 'shops',
-          roles: ['*'],
+          roles: ['manager', 'admin'],
           link: '/account/shops'
         },
         {
