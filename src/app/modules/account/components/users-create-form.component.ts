@@ -60,7 +60,7 @@ import {UserState} from '../states/user.state';
 
         <div>
           <div *ngFor="let menu of  configService.getMenu()">
-            <div *ngIf="menu.pages && menu.pages>0">
+            <div>
               <h1 class="heading">{{menu.name}}</h1>
               <mat-card>
               <span *ngFor="let page of menu.pages">
