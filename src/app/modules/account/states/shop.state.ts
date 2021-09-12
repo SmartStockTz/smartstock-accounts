@@ -4,7 +4,7 @@ import {ShopService} from '../services/shop.service';
 
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class ShopState {
   constructor(private readonly shopService: ShopService) {

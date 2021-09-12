@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BFast} from 'bfastjs';
+import {functions} from 'bfast';
 import {StorageService} from '@smartstocktz/core-libs';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 
 export class EcommerceService {
@@ -11,7 +11,7 @@ export class EcommerceService {
   }
 
   async updateEcommerceDetails(ecommerce: any, shop: any): Promise<any> {
-    return BFast.functions().request('/ecommerce/' + shop.projectId).put(ecommerce, {
+    return functions().request('/ecommerce/' + shop.projectId).put(ecommerce, {
       headers: {}
     }).then((_: any) => {
       shop.ecommerce = ecommerce;

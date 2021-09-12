@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StorageService} from '@smartstocktz/core-libs';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticatedUserGuard implements CanActivate {
   constructor(private readonly storageService: StorageService,
+              private readonly userService: UserService,
               private readonly router: Router) {
   }
 
@@ -15,7 +16,7 @@ export class AuthenticatedUserGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise((resolve, reject) => {
-      this.storageService.getActiveUser().then(value => {
+      this.userService.currentUser().then(value => {
         if (value && value.applicationId && value.projectUrlId && value.projectId && value.role === 'admin') {
           this.router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
         } else if (value && value.applicationId && value.projectUrlId && value.projectId && value.role === 'user') {

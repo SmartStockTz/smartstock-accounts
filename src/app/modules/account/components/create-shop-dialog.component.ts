@@ -2,7 +2,7 @@ import {AfterViewInit, Component, Inject, OnDestroy, OnInit} from '@angular/core
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {StorageService} from '@smartstocktz/core-libs';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 import {ShopService} from '../services/shop.service';
 import {ProfileState} from '../states/profile.state';
 
@@ -95,6 +95,7 @@ export class CreateShopDialogComponent implements OnInit, OnDestroy, AfterViewIn
               public readonly snack: MatSnackBar,
               public readonly storageService: StorageService,
               public readonly shopService: ShopService,
+              private readonly userService: UserService,
               public readonly profileState: ProfileState,
               public readonly formBuilder: FormBuilder) {
   }
@@ -104,9 +105,9 @@ export class CreateShopDialogComponent implements OnInit, OnDestroy, AfterViewIn
       this.createShopProgress = true;
       this.shopService.createShop(this.createShopForm.value).then(async (value: any) => {
         try {
-          const user = await this.storageService.getActiveUser();
+          const user = await this.userService.currentUser();
           user.shops.push(value as any);
-          await this.storageService.saveActiveUser(user);
+          await this.userService.updateCurrentUser(user);
           this.dialogRef.close(value);
           this.snack.open('Shop created successful', 'Ok', {
             duration: 3000

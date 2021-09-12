@@ -11,10 +11,10 @@ import {EcommerceService} from '../services/ecommerce.service';
 @Component({
   selector: 'app-ecommerce-page',
   template: `
-    <app-layout-sidenav [leftDrawerOpened]="(deviceState.enoughWidth | async)===false"
-                        [leftDrawerMode]="(deviceState.enoughWidth | async)===false?'side':'over'"
+    <app-layout-sidenav [leftDrawerOpened]="(deviceState.enoughWidth | async)===true"
+                        [leftDrawerMode]="(deviceState.enoughWidth | async)===true?'side':'over'"
                         [hasBackRoute]="true"
-                        [heading]="'E-Commerce settings'"
+                        [heading]="'E-Commerce Settings'"
                         backLink="/account/shops"
                         [body]="body"
                         [leftDrawer]="leftDrawer">
@@ -125,13 +125,12 @@ import {EcommerceService} from '../services/ecommerce.service';
 })
 export class EcommercePage implements OnInit, OnDestroy {
   ecommerceForm: FormGroup;
-  ecommerceGetProgress: boolean = false;
-  ecommerceSaveProgress: boolean = false;
+  ecommerceGetProgress = false;
+  ecommerceSaveProgress = false;
   selectedShop: ShopModel;
 
   constructor(public readonly formBuilder: FormBuilder,
               public readonly snack: MatSnackBar,
-              public readonly eventApi: EventService,
               public readonly activatedRoute: ActivatedRoute,
               public readonly router: Router,
               public readonly dialog: MatDialog,
@@ -152,7 +151,7 @@ export class EcommercePage implements OnInit, OnDestroy {
         this.ecommerceGetProgress = true;
         this.userService.currentUser().then(user => {
           return this.userService.getShops(user);
-        }).then((shops: ShopModel[]) => {
+        }).then((shops: any[]) => {
           const shop = shops.filter(x => x.projectId === params.shop);
           if (shop && shop[0] && shop[0].businessName) {
             this.selectedShop = shop[0];
@@ -253,7 +252,7 @@ export class EcommercePage implements OnInit, OnDestroy {
       return this.userService.getShops(user);
     }).then(async shops => {
       selectedShop.ecommerce = ecommerceModel;
-      return this.userService.updateShops(shops.map(x => {
+      return this.userService.updateShops(shops.map((x: any) => {
           if (x.projectId === selectedShop.projectId) {
             return this.selectedShop;
           } else {

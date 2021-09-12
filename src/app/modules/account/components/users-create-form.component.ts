@@ -122,7 +122,7 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
         this.acl[y.link] = false;
       });
     });
-    this.activeShop = await this.storageService.getActiveShop();
+    this.activeShop = await this.userService.getCurrentShop();
     await this.getShops();
     await this.initiateForm();
   }

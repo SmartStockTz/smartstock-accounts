@@ -104,7 +104,7 @@ export class AddressComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async getCurrentBusiness(): Promise<any> {
     this.getBusinessProgress = true;
-    this.storageService.getActiveUser().then((user: any) => {
+    this.userService.currentUser().then((user: any) => {
       this.currentUser = user;
       this._initializeForm(this.currentUser);
       this.getBusinessProgress = false;

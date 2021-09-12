@@ -4,6 +4,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {DeviceState, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SettingsModel} from '../models/settings.model';
+import {functions} from 'bfast';
 
 @Component({
   selector: 'app-setting-page',
@@ -213,18 +214,21 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   async saveSettings(): Promise<void> {
     this.saveSettingProgress = true;
-    this.settingsService.saveSettings(this.settingsForm.value).then(_ => {
-      console.log(_);
-      this.matSnackBar.open('Settings saved', 'Ok', {duration: 3000});
-      this.saveSettingProgress = false;
-      this.eventService.broadcast(SsmEvents.SETTINGS_UPDATED);
-    }).catch(reason => {
-      console.warn(reason);
-      this.matSnackBar.open('Fails to save settingsService, try again later', 'Ok', {
-        duration: 3000
+    functions().request(`https://smartstock-faas.bfast.fahamutech.com`)
+      .put(this.settingsForm.value)
+      .then(_ => {
+        // console.log(_);
+        this.matSnackBar.open('Settings saved', 'Ok', {duration: 3000});
+        this.saveSettingProgress = false;
+        this.eventService.broadcast(SsmEvents.SETTINGS_UPDATED);
+      })
+      .catch(reason => {
+        console.warn(reason);
+        this.matSnackBar.open('Fails to save settingsService, try again later', 'Ok', {
+          duration: 3000
+        });
+        this.saveSettingProgress = false;
       });
-      this.saveSettingProgress = false;
-    });
   }
 
   async ngOnDestroy(): Promise<void> {

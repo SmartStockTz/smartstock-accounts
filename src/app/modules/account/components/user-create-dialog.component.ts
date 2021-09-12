@@ -74,7 +74,7 @@ export class UserCreateDialogComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   async ngOnInit(): Promise<void> {
-    this.activeShop = await this.storageService.getActiveShop();
+    this.activeShop = await this.userService.getCurrentShop();
     await this.getShops();
     await this.initiateForm();
   }

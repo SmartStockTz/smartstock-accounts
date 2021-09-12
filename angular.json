@@ -99,6 +99,15 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "dev": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false
             }
           }
         },
@@ -110,6 +119,9 @@
           "configurations": {
             "production": {
               "browserTarget": "accounts-mock:build:production"
+            },
+            "dev": {
+              "browserTarget": "accounts-mock:build:dev"
             }
           }
         },

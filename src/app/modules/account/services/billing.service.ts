@@ -1,20 +1,21 @@
 import {Injectable} from '@angular/core';
-import {BFast, bfast} from 'bfastjs';
-import {StorageService} from '@smartstocktz/core-libs';
+import {functions, cache} from 'bfast';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class BillingService {
 
-  constructor(private readonly storage: StorageService) {
+  constructor(private readonly storage: StorageService,
+              private readonly userService: UserService) {
   }
 
   async subscription(): Promise<any> {
-    const owner = await this.storage.getActiveUser();
-    const payment = await BFast.functions().request(`/billing/${owner.id}/subscription`).get();
+    const owner = await this.userService.currentUser();
+    const payment = await functions().request(`/billing/${owner.id}/subscription`).get();
     if (payment) {
-      bfast.cache({database: 'payment', collection: 'subscription'}).set('status', payment, {secure: true})
+      cache({database: 'payment', collection: 'subscription'}).set('status', payment, {secure: true})
         .catch(_ => {
         });
     }
@@ -22,26 +23,26 @@ export class BillingService {
   }
 
   async payByCard(data: { amount: string, reference: string, mobile: string }): Promise<string> {
-    return bfast.functions().request('https://fahamupay-faas.bfast.fahamutech.com/functions/pay/card').get({
+    return functions().request('https://fahamupay-faas.bfast.fahamutech.com/functions/pay/card').get({
       params: data
     });
   }
 
   async monthlyCost(): Promise<any> {
-    const owner = await this.storage.getActiveUser();
-    const value = await BFast.functions().request(`/billing/${owner.id}/cost`).get<{ cost: any }>();
-    value.cost = parseInt(value.cost).toFixed(0);
+    const owner = await this.userService.currentUser();
+    const value = await functions().request(`/billing/${owner.id}/cost`).get<{ cost: any }>();
+    value.cost = parseInt(value.cost, 10).toFixed(0);
     return value;
   }
 
   async getPaymentReference(): Promise<any> {
-    const owner = await this.storage.getActiveUser();
-    return BFast.functions().request(`/billing/${owner.id}/reference`).get();
+    const owner = await this.userService.currentUser();
+    return functions().request(`/billing/${owner.id}/reference`).get();
   }
 
   async getReceipt(): Promise<any[]> {
-    const owner = await this.storage.getActiveUser();
-    return BFast.functions().request(`/billing/${owner.id}/receipts`).get();
+    const owner = await this.userService.currentUser();
+    return functions().request(`/billing/${owner.id}/receipts`).get();
   }
 
 }

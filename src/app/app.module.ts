@@ -1,4 +1,4 @@
-import {bfast} from 'bfastjs';
+import {init} from 'bfast';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
@@ -17,10 +17,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatSelectModule} from '@angular/material/select';
+import {IpfsService} from '@smartstocktz/core-libs';
 
 const routes: Routes = [
-   { path: 'account', canActivate: [  ], loadChildren: () => import('./modules/account/public').then(mod => mod.AccountModule) },
-   { path: '', canActivate: [  ], loadChildren: () => import('./modules/mock/mock.module').then(mod => mod.MockModule) },
+  {path: 'account', canActivate: [], loadChildren: () => import('./modules/account/public').then(mod => mod.AccountModule)},
+  {path: '', canActivate: [], loadChildren: () => import('./modules/mock/mock.module').then(mod => mod.MockModule)},
 ];
 
 @NgModule({
@@ -46,11 +47,14 @@ const routes: Routes = [
   bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor(){
-        bfast.init({
+  constructor() {
+    IpfsService.getVersion().then(value => {
+      console.log('ipfs version is : ', value.version);
+    });
+    init({
       applicationId: 'smartstock_lb',
       projectId: 'smartstock',
     });
-    }// end
+  }// end
 }
 

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StorageService} from '@smartstocktz/core-libs';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 import {SsmEvents} from '@smartstocktz/core-libs';
 import {EventService} from '@smartstocktz/core-libs';
 
@@ -11,6 +11,7 @@ import {EventService} from '@smartstocktz/core-libs';
 export class ActiveShopGuard implements CanActivate {
   constructor(private readonly storageService: StorageService,
               private readonly eventService: EventService,
+              private readonly userService: UserService,
               private readonly router: Router) {
   }
 
@@ -19,7 +20,7 @@ export class ActiveShopGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise(async (resolve, reject) => {
       try {
-        const activeShop = await this.storageService.getActiveShop();
+        const activeShop = await this.userService.getCurrentShop();
         if (activeShop && activeShop.projectId && activeShop.applicationId) {
           resolve(true);
         } else {

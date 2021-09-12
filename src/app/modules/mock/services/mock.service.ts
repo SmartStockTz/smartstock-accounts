@@ -1,15 +1,12 @@
-import {bfast, BFast} from 'bfastjs';
 import {Injectable} from '@angular/core';
 
 
 
 @Injectable({
-    providedIn: 'any'
+    providedIn: 'root'
 })
 export class MockService {
     constructor(){
     }
-    
-    
 }
 

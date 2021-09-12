@@ -2,7 +2,7 @@ import {ConfigsService} from '@smartstocktz/core-libs';
 import {Injectable} from '@angular/core';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class ConfigService {
   constructor(private readonly configsService: ConfigsService) {
