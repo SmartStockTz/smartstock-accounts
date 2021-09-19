@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceState, EventService, SettingsService, SsmEvents, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, EventService, SsmEvents, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SettingsModel} from '../models/settings.model';
 import {functions} from 'bfast';
@@ -145,8 +145,7 @@ export class SettingsPage implements OnInit, OnDestroy {
               public readonly activatedRoute: ActivatedRoute,
               public readonly router: Router,
               public readonly userService: UserService,
-              public readonly deviceState: DeviceState,
-              public readonly settingsService: SettingsService) {
+              public readonly deviceState: DeviceState) {
     document.title = 'SmartStock - Settings';
   }
 
