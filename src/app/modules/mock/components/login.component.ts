@@ -2,7 +2,7 @@ import {auth, init} from 'bfast';
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Router} from '@angular/router';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {getDaasAddress, getFaasAddress, StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -54,7 +54,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           this.router.navigateByUrl('/account').catch(console.log);
           init({
             applicationId: user.applicationId,
-            projectId: user.projectId
+            projectId: user.projectId,
+            databaseURL: getDaasAddress(user),
+            functionsURL: getFaasAddress(user)
           }, user.projectId);
           await this.storageService.saveCurrentProjectId('0UTYLQKeifrk');
           await this.userService.saveCurrentShop(user as any);
