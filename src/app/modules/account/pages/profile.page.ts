@@ -19,7 +19,7 @@ import {DeviceState} from '@smartstocktz/core-libs';
         <div style="margin-bottom: 50px; min-height: 100vh"
              class="container col-xl-9 col-lg-9 col-sm-11 col-md-10 my-profile-wrapper">
           <h3 style="margin-top: 8px">Personal Information</h3>
-          <ap-personal></ap-personal>
+          <app-personal></app-personal>
           <h3 style="margin-top: 8px">Authentication</h3>
           <app-credentials></app-credentials>
         </div>

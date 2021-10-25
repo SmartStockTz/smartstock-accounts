@@ -5,15 +5,15 @@ import {UserModel} from '../models/user.model';
 import {UserService} from '@smartstocktz/core-libs';
 
 @Component({
-  selector: 'ap-personal',
+  selector: 'app-personal',
   template: `
     <div class="profile-personal-wrapper">
-      <mat-card>
+      <mat-card class="mat-elevation-z0 bg-transparent">
         <form *ngIf="!getUserProgress && personalForm" [formGroup]="personalForm" (ngSubmit)="updatePersonalInformation()">
           <div>
             <mat-form-field appearance="outline" class="btn-block" matTooltip="read only field">
               <mat-label>Username</mat-label>
-              <input style="color: gray" matInput [formControl]="usernameFormControl" type="text" [readonly]="true">
+              <input class="input" matInput [formControl]="usernameFormControl" type="text" [readonly]="true">
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="btn-block">
@@ -36,13 +36,20 @@ import {UserService} from '@smartstocktz/core-libs';
 
             <mat-form-field appearance="outline" class="btn-block">
               <mat-label>Email</mat-label>
-              <input style="color: gray" [readonly]="true" matInput formControlName="email" type="email">
+              <input class="input" [readonly]="true" matInput formControlName="email" type="email">
               <mat-error>email field required</mat-error>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="btn-block">
+              <mat-label>Email Notification</mat-label>
+              <input placeholder="comma separated emails" matInput formControlName="emails" type="email">
+              <mat-error>other emails for notifications</mat-error>
+            </mat-form-field>
+
           </div>
           <div>
             <button [disabled]="updateUserProgress" mat-flat-button color="primary">
-              SAVE
+              SAVE DETAILS
               <mat-progress-spinner *ngIf="updateUserProgress"
                                     style="display: inline-block" [diameter]="30"
                                     mode="indeterminate"
@@ -90,6 +97,7 @@ export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
       firstname: [user.firstname, [Validators.nullValidator, Validators.required]],
       lastname: [user.lastname, [Validators.nullValidator, Validators.required]],
       email: [user.email, [Validators.nullValidator, Validators.required]],
+      emails: [user.emails, [Validators.nullValidator, Validators.required]],
       mobile: [user.mobile, [Validators.nullValidator, Validators.required]],
     });
   }
@@ -122,6 +130,8 @@ export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
           firstname: user.firstname,
           lastname: user.lastname,
           email: user.email,
+          // @ts-ignore
+          emails: user.emails,
           mobile: user.mobile
         });
       }).catch(reason => {

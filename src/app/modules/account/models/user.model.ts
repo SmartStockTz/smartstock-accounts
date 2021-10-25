@@ -1,4 +1,5 @@
 export interface UserModel {
+  emails?: string;
   applicationId?: string;
   projectUrlId?: string;
   projectId?: string;

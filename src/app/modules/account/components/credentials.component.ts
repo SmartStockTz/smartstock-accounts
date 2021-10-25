@@ -8,7 +8,7 @@ import {UserService} from '@smartstocktz/core-libs';
   selector: 'app-credentials',
   template: `
     <div class="profile-auth-wrapper">
-      <mat-card>
+      <mat-card class="mat-elevation-z0 bg-transparent">
         <form *ngIf="!getUserProgress && authForm" [formGroup]="authForm"
               (ngSubmit)="changePassword()">
           <div>
@@ -16,7 +16,7 @@ import {UserService} from '@smartstocktz/core-libs';
             <mat-form-field appearance="outline" style="width: 100%">
               <mat-label>Last Password</mat-label>
               <input matInput formControlName="lastPassword" [type]="showLastPassword?'text':'password'">
-              <button (click)="toggleLastPasswordVisibility()" mat-icon-button matSuffix>
+              <button (click)="toggleLastPasswordVisibility($event)" mat-icon-button matSuffix>
                 <mat-icon *ngIf="showLastPassword">visibility_on</mat-icon>
                 <mat-icon *ngIf="!showLastPassword">visibility_off</mat-icon>
               </button>
@@ -26,7 +26,7 @@ import {UserService} from '@smartstocktz/core-libs';
             <mat-form-field appearance="outline" style="width: 100%">
               <mat-label>New Password</mat-label>
               <input matInput formControlName="password" type="text" [type]="showPassword?'text':'password'">
-              <button (click)="togglePasswordVisibility()" mat-icon-button matSuffix>
+              <button (click)="togglePasswordVisibility($event)" mat-icon-button matSuffix>
                 <mat-icon *ngIf="showPassword">visibility_on</mat-icon>
                 <mat-icon *ngIf="!showPassword">visibility_off</mat-icon>
               </button>
@@ -144,11 +144,13 @@ export class CredentialsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  async toggleLastPasswordVisibility(): Promise<void> {
+  async toggleLastPasswordVisibility($event): Promise<void> {
+    $event.preventDefault();
     this.showLastPassword = !this.showLastPassword;
   }
 
-  async togglePasswordVisibility(): Promise<void> {
+  async togglePasswordVisibility($event): Promise<void> {
+    $event.preventDefault();
     this.showPassword = !this.showPassword;
   }
 

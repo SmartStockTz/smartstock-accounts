@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
-import {ConfigsService, UserService} from '@smartstocktz/core-libs';
+import {NavigationService, UserService} from '@smartstocktz/core-libs';
 import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountsNavigationService {
-  constructor(private readonly configs: ConfigsService,
+  constructor(private readonly navigationService: NavigationService,
               private readonly router: Router,
               private readonly userService: UserService) {
   }
 
   init(): void {
-    this.configs.addMenu({
+    this.navigationService.addMenu({
       name: 'Account',
       link: '/account',
       icon: 'supervisor_account',
@@ -67,6 +67,6 @@ export class AccountsNavigationService {
   }
 
   selected(): void {
-    this.configs.selectedModuleName = 'Account';
+    this.navigationService.selectedModuleName = 'Account';
   }
 }

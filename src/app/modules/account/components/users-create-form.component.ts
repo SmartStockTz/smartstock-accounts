@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ConfigsService, DeviceState, LogService, StorageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, NavigationService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {Router} from '@angular/router';
 import {UserState} from '../states/user.state';
 
@@ -109,7 +109,7 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
     public readonly storageService: StorageService,
     public readonly userService: UserService,
     public readonly logger: LogService,
-    public readonly configService: ConfigsService,
+    public readonly configService: NavigationService,
     public readonly router: Router,
     public readonly userState: UserState,
     public readonly deviceState: DeviceState) {
