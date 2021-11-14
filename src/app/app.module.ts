@@ -20,8 +20,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {IpfsService} from '@smartstocktz/core-libs';
 
 const routes: Routes = [
-  {path: 'account', canActivate: [], loadChildren: () => import('./modules/account/public').then(mod => mod.AccountModule)},
   {path: '', canActivate: [], loadChildren: () => import('./modules/mock/mock.module').then(mod => mod.MockModule)},
+  {path: 'dashboard', redirectTo: 'account'},
+  {path: 'account', canActivate: [], loadChildren: () => import('./modules/account/public').then(mod => mod.AccountModule)},
 ];
 
 @NgModule({
@@ -48,12 +49,13 @@ const routes: Routes = [
 })
 export class AppModule {
   constructor() {
-    IpfsService.getVersion().then(value => {
-      console.log('ipfs version is : ', value.version);
-    });
+    // IpfsService.getVersion().then(value => {
+    //   console.log('ipfs version is : ', value.version);
+    // });
     init({
       applicationId: 'smartstock_lb',
       projectId: 'smartstock',
+      appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG'
     });
   }// end
 }

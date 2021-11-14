@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceState, EventService, FileBrowserDialogComponent, MessageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, FilesService, MessageService, UserService} from '@smartstocktz/core-libs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {EcommerceModel} from '../models/ecommerce.model';
@@ -136,6 +136,7 @@ export class EcommercePage implements OnInit, OnDestroy {
               public readonly dialog: MatDialog,
               public readonly userService: UserService,
               public readonly deviceState: DeviceState,
+              public readonly fileService: FilesService,
               public readonly messageService: MessageService,
               public readonly ecommerceService: EcommerceService) {
     document.title = 'SmartStock - E-Commerce Settings';
@@ -202,14 +203,6 @@ export class EcommercePage implements OnInit, OnDestroy {
         facebook: [ecommerce.social?.facebook],
         whatsapp: [ecommerce.social?.whatsapp],
       }),
-      // faq: [this.formBuilder.array(
-      //   ecommerce.faq?.map(x => {
-      //     return this.formBuilder.group({
-      //       question: [x.question],
-      //       answer: [x.answer],
-      //     });
-      //   })
-      // )],
     });
   }
 
@@ -230,20 +223,12 @@ export class EcommercePage implements OnInit, OnDestroy {
 
   async browseMedia(controlName: string, $event: MouseEvent): Promise<void> {
     $event.preventDefault();
-    this.userService.getCurrentShop().then(shop => {
-      this.dialog.open(FileBrowserDialogComponent, {
-        closeOnNavigation: false,
-        disableClose: true,
-        data: {
-          shop
-        }
-      }).afterClosed().subscribe(value => {
-        if (value && value.url) {
-          this.ecommerceForm.get(controlName).setValue(value.url);
-        } else {
-          this.messageService.showMobileInfoMessage('Media not selected', 2000, 'bottom');
-        }
-      });
+    this.fileService.browse().then(value => {
+      if (value && value.url) {
+        this.ecommerceForm.get(controlName).setValue(value.url);
+      } else {
+        // this.messageService.showMobileInfoMessage('Media not selected', 2000, 'bottom');
+      }
     });
   }
 

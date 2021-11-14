@@ -17,11 +17,13 @@ export class AuthenticatedUserGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise((resolve, reject) => {
       this.userService.currentUser().then(value => {
-        if (value && value.applicationId && value.projectUrlId && value.projectId && value.role === 'admin') {
+        if (value && value.role === 'admin') {
           this.router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
-        } else if (value && value.applicationId && value.projectUrlId && value.projectId && value.role === 'user') {
+        } else if (value && value.role === 'online') {
+          this.router.navigateByUrl('/').catch(reason => console.log(reason));
+        } else if (value && value.role === 'user') {
           this.router.navigateByUrl('/sale').catch(reason => console.log(reason));
-        } else if (value && value.applicationId && value.projectUrlId && value.projectId && value.role === 'manager') {
+        }else if (value && value.role === 'manager') {
           this.router.navigateByUrl('/sale').catch(reason => console.log(reason));
         } else {
           resolve(true);

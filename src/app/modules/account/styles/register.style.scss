@@ -1,11 +1,15 @@
 .main-container {
-  /*
-  height: Calc(100% - 271px);
-  */
-  height: 600px;
-  /*padding: 40px 50px;*/
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 16px 16px 100px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.main-container-element{
+  width: 100%;
+  max-width: 600px;
 }
 
 mat-toolbar {
@@ -23,21 +27,6 @@ mat-toolbar a {
   flex-direction: column;
   /*width: 400px;*/
 }
-
-/*.inputs::placeholder, .inputs:focus {*/
-/*  color: #027206;*/
-/*  border-radius: 6px;*/
-/*  border-color: #027206;*/
-/*  outline: #027206;*/
-/*}*/
-/*.inputs {*/
-/*  border: 2px solid #027206;*/
-/*  background: rgba(0, 170, 7, 0.1);*/
-/*  color: #027206;*/
-/*  padding: 10px 20px;*/
-/*  border-radius: 6px;*/
-/*  margin: 10px 0;*/
-/*}*/
 
 ::ng-deep .mat-focused .mat-form-field-label {
   /*change color of label*/
@@ -93,6 +82,51 @@ mat-toolbar a {
   margin: 0;
 }
 
-form{
+form {
   padding-top: 8px;
+  width: 100%;
+}
+
+
+.form-field {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 5px;
+}
+
+.inputs {
+  padding: 8px;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+.input-title {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+  margin-bottom: 3px;
+}
+
+.input-error {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 12px;
+  line-height: 16px;
+  color: red;
+  margin-bottom: 3px;
+}
+
+.switcher-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
 }

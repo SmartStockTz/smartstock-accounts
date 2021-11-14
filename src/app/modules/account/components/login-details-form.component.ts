@@ -5,26 +5,22 @@ import {FormGroup} from '@angular/forms';
   selector: 'app-login-details-form',
   template: `
     <form [formGroup]="loginFormGroup">
-      <div class="stepper-inputs">
-        <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
-          <mat-icon matSuffix>face</mat-icon>
-          <input matInput class="inputs" type="text"
-                 formControlName="username" required>
-          <mat-error>Username required, and must be a valid email</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Password</mat-label>
-          <input matInput class="inputs" [type]="showPasswordFlag?'text':'password'"
-                 formControlName="password" placeholder="Password" required>
-          <mat-error>Password required, and must be at least 8 character long</mat-error>
-          <button matSuffix (click)="showPassword($event)" mat-icon-button>
-            <mat-icon *ngIf="showPasswordFlag">visibility_on</mat-icon>
-            <mat-icon *ngIf="!showPasswordFlag">visibility_off</mat-icon>
-          </button>
-        </mat-form-field>
-
-      </div>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label class="input-title">Username</mat-label>
+        <input matInput type="text" autocomplete="off" formControlName="username">
+        <mat-error class="input-error">Username required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="showPasswordFlag?'text':'password'"
+               autocomplete="off"
+               formControlName="password" placeholder="Password" required>
+        <mat-error>Password required, and must be at least 8 character long</mat-error>
+        <button matSuffix (click)="showPassword($event)" mat-icon-button>
+          <mat-icon *ngIf="showPasswordFlag">visibility_on</mat-icon>
+          <mat-icon *ngIf="!showPasswordFlag">visibility_off</mat-icon>
+        </button>
+      </mat-form-field>
     </form>
   `,
   styleUrls: ['../styles/register.style.scss']

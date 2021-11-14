@@ -12,8 +12,12 @@ export class ProfileState {
   constructor() {
   }// end
 
-  async getShopCategories(): Promise<any> {
+  getShopCategories(): void {
     this.categories.next([
+      {value: 'restaurant', name: 'Restaurant'},
+      {value: 'fast_food', name: 'Fast Food'},
+      {value: 'pharmacy', name: 'Pharmacy'},
+      {value: 'hardware', name: 'Hardware'},
       {value: 'consultants_professionals', name: 'Consultants & Professionals'},
       {value: 'finance_insurance', name: 'Financial Services'},
       {value: 'product_provider', name: 'General: I make or sell a PRODUCT'},
@@ -24,15 +28,12 @@ export class ProfileState {
       {value: 'realestate_home', name: 'Real Estate, Construction & Home Improvement'},
       {value: 'retailers_and_resellers', name: 'Retailers, Resellers & Sales'},
       {value: 'web_media_freelancer', name: 'Web, Tech & Media'},
-      {value: 'restaurant', name: 'Restaurant'},
-      {value: 'fast_food', name: 'Fast Food'},
-      {value: 'pharmacy', name: 'Pharmacy'},
-      {value: 'hardware', name: 'Hardware'},
     ]);
   }
 
-  async getCountries(): Promise<any> {
+  getCountries(): void {
     this.countries.next([
+      {name: 'Tanzania, United Republic of', code: 'TZ'},
       {name: 'Afghanistan', code: 'AF'},
       {name: 'Åland Islands', code: 'AX'},
       {name: 'Albania', code: 'AL'},
@@ -246,7 +247,6 @@ export class ProfileState {
       {name: 'Syrian Arab Republic', code: 'SY'},
       {name: 'Taiwan, Province of China', code: 'TW'},
       {name: 'Tajikistan', code: 'TJ'},
-      {name: 'Tanzania, United Republic of', code: 'TZ'},
       {name: 'Thailand', code: 'TH'},
       {name: 'Timor-Leste', code: 'TL'},
       {name: 'Togo', code: 'TG'},

@@ -1,60 +1,56 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterDialogComponent} from '../components/register-dialog.component';
 import {LogService, MessageService, UserService} from '@smartstocktz/core-libs';
+import {firstValueFrom} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-register-page',
   template: `
-    <mat-toolbar color="primary" class="mat-elevation-z2">
-      <button routerLink="/" mat-icon-button>
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <span routerLink="/">SmartStock - Register</span>
-      <span style="flex: 1 1 auto"></span>
-    </mat-toolbar>
-    <div class="main-container container">
-      <div class="register-form col-xl-9 col-lg-9 col-sm-12 col-md-10 col-12 container-fluid">
-        <mat-vertical-stepper [linear]="true" #stepper>
-          <mat-step [stepControl]="personalFormGroup">
-            <ng-template matStepLabel>Fill personal details</ng-template>
-            <app-personal-details-form [personalFormGroup]="personalFormGroup">
-            </app-personal-details-form>
-          </mat-step>
-          <mat-step [stepControl]="businessFormGroup">
-            <ng-template matStepLabel>Fill your business details</ng-template>
-            <app-business-details-form [businessFormGroup]="businessFormGroup">
-            </app-business-details-form>
-          </mat-step>
-          <mat-step [stepControl]="loginFormGroup">
-            <ng-template matStepLabel>Login Information</ng-template>
-            <app-login-details-form [loginFormGroup]="loginFormGroup">
-            </app-login-details-form>
-            <div>
-              <button mat-button
-                      [disabled]="registerProgress"
-                      class="stepper-btn"
-                      matStepperPrevious>Back
-              </button>
-              <button *ngIf="!registerProgress"
-                      mat-button (click)="openAccount()"
-                      class="stepper-btn">
-                Create Account
-              </button>
-              <mat-progress-spinner style="display: inline-block"
-                                    *ngIf="registerProgress"
-                                    [matTooltip]="'create account in progress'"
-                                    [diameter]="30"
-                                    mode="indeterminate"
-                                    color="primary">
-              </mat-progress-spinner>
-            </div>
-          </mat-step>
-        </mat-vertical-stepper>
-      </div>
-    </div>
+    <app-layout-sidenav
+      heading="Register"
+      backLink="/"
+      [hasBackRoute]="true"
+      [showSearch]="false"
+      [showBottomBar]="false"
+      [body]="body">
+      <ng-template #body>
+        <div class="main-container">
+          <app-personal-details-form class="main-container-element " [personalFormGroup]="personalFormGroup">
+          </app-personal-details-form>
+          <div class="main-container-element" style="margin-top: 5px">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Do you have business?</mat-label>
+              <mat-select [formControl]="roleControl">
+                <mat-option value="online">NO</mat-option>
+                <mat-option value="admin">YES</mat-option>
+              </mat-select>
+              <mat-hint>Choose "YES" if you open account for business</mat-hint>
+            </mat-form-field>
+          </div>
+          <app-business-details-form class="main-container-element"
+                                     *ngIf="roleControl.value === 'admin'"
+                                     [businessFormGroup]="businessFormGroup">
+          </app-business-details-form>
+          <app-login-details-form class="main-container-element" [loginFormGroup]="loginFormGroup">
+          </app-login-details-form>
+          <button [disabled]="registerProgress" color="primary"
+                  mat-flat-button (click)="openAccount()" class="form-field">
+            CREATE ACCOUNT
+            <mat-progress-spinner style="display: inline-block"
+                                  *ngIf="registerProgress" [diameter]="25" mode="indeterminate" color="primary">
+            </mat-progress-spinner>
+          </button>
+          <div style="margin-top: 20px">
+            <a routerLink="/account/login">Go To Login</a>
+          </div>
+        </div>
+      </ng-template>
+    </app-layout-sidenav>
   `,
   styleUrls: ['../styles/register.style.scss']
 })
@@ -63,12 +59,15 @@ export class RegisterPage implements OnInit, OnDestroy {
   businessFormGroup: FormGroup;
   loginFormGroup: FormGroup;
   registerProgress = false;
+  roleControl = new FormControl('online');
 
   constructor(public readonly formBuilder: FormBuilder,
               public readonly router: Router,
               public readonly matDialog: MatDialog,
               public readonly logService: LogService,
-              public readonly userDatabase: UserService,
+              private readonly httpClient: HttpClient,
+              public readonly userService: UserService,
+              private readonly snack: MatSnackBar,
               public readonly messageService: MessageService) {
     document.title = 'SmartStock - Register';
   }
@@ -92,15 +91,11 @@ export class RegisterPage implements OnInit, OnDestroy {
       street: ['', [Validators.required, Validators.nullValidator]]
     });
     this.loginFormGroup = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.nullValidator, Validators.email]],
+      username: ['', [Validators.required, Validators.nullValidator]],
       password: ['', [
-        Validators.required,
-        Validators.nullValidator,
-        // Validators.pattern(new RegExp('^(?=.*[A-Z].*[A-Z])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$')),
-        Validators.minLength(8)
+        Validators.required, Validators.nullValidator, Validators.minLength(8)
       ]],
     });
-
     this.personalFormGroup.get('email').valueChanges.subscribe(value => {
       if (value) {
         this.loginFormGroup.get('username').setValue(value);
@@ -109,44 +104,62 @@ export class RegisterPage implements OnInit, OnDestroy {
   }
 
   async openAccount(): Promise<void> {
-    const valid = this.businessFormGroup.valid
+    this.personalFormGroup.markAllAsTouched();
+    this.businessFormGroup.markAllAsTouched();
+    this.loginFormGroup.markAllAsTouched();
+    const valid = (this.roleControl.value === 'online' || this.businessFormGroup.valid)
       && this.personalFormGroup.valid
       && this.loginFormGroup.valid;
     if (valid) {
       const user: any = {};
       Object.assign(user, this.personalFormGroup.value);
-      Object.assign(user, this.businessFormGroup.value);
+      if (this.roleControl.value === 'admin') {
+        Object.assign(user, this.businessFormGroup.value);
+      }
       Object.assign(user, this.loginFormGroup.value);
+      user.role = this.roleControl.value;
       delete user.confPassword;
       this.registerProgress = true;
-      this.userDatabase.register(user)
-        .then(value => {
-          this.registerProgress = false;
-          this.logService.i(value);
-          this.matDialog.open(RegisterDialogComponent, {
+      const rq = this.httpClient.post('https://smartstock-faas.bfast.fahamutech.com/functions/users/create', user);
+      firstValueFrom(rq).then(value => {
+        this.registerProgress = false;
+        if (user.role === 'admin') {
+          const d = this.matDialog.open(RegisterDialogComponent, {
             closeOnNavigation: true,
             disableClose: true,
             maxWidth: '500px',
             data: {
-              message: `Account verification email sent to this email: ${user.email}. Verify your account to be able to login`
+              message: `Account verification email sent to this email: ${user.email}.
+               Verify your account to be able to login`
             }
-          }).afterClosed().subscribe(_ => {
+          });
+          firstValueFrom(d.afterClosed()).then(_ => {
             this.router.navigateByUrl('/account/login').catch(reason => console.log(reason));
           });
-        })
-        .catch(reason => {
-          this.logService.e(reason);
-          this.registerProgress = false;
-          this.matDialog.open(RegisterDialogComponent, {
-            closeOnNavigation: true,
-            disableClose: true,
-            data: {
-              message: (reason && reason.message)
-                ? reason.message
-                : 'Your request was not successful, try again'
-            }
+        }
+        if (user.role === 'online') {
+          this.userService.updateCurrentUser(value).then(_1 => {
+            this.router.navigateByUrl('/').catch(reason => console.log(reason));
+          }).catch(reason => {
+            this.snack.open(reason && reason.message ? reason.message : reason.toString(), 'Ok', {
+              duration: 3000
+            });
           });
+        }
+      }).catch(reason => {
+        reason = reason.error;
+        console.log(reason);
+        this.registerProgress = false;
+        this.matDialog.open(RegisterDialogComponent, {
+          closeOnNavigation: true,
+          disableClose: true,
+          data: {
+            message: (reason && reason.message)
+              ? reason.message
+              : 'Your request was not successful, try again'
+          }
         });
+      });
     } else {
       this.messageService.showMobileInfoMessage('Enter all required information');
     }

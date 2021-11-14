@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LogService, UserService} from '@smartstocktz/core-libs';
 import {MatDialog} from '@angular/material/dialog';
 import {BillingService} from '../services/billing.service';
 import {ResetPasswordComponent} from '../components/reset-password.component';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -85,6 +86,7 @@ export class LoginPage implements OnInit, OnDestroy {
               public readonly dialog: MatDialog,
               public readonly billing: BillingService,
               public readonly log: LogService,
+              private readonly activatedRoute: ActivatedRoute,
               public readonly formBuilder: FormBuilder,
               public readonly userService: UserService) {
     document.title = 'SmartStock - Login';
@@ -136,17 +138,33 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   async showMainUi(role: string, formElement: FormGroupDirective): Promise<void> {
+    const queryParams = await firstValueFrom(this.activatedRoute.queryParams);
+    if (queryParams && queryParams.url) {
+      const url = decodeURIComponent(queryParams.url);
+      this.routes.navigateByUrl(url).catch(reason => this.log.i(reason)).then(() => {
+        this.loginForm.reset();
+        formElement.resetForm();
+      });
+      return;
+    }
     if (role === 'admin') {
       this.routes.navigateByUrl('/dashboard').catch(reason => this.log.i(reason)).then(() => {
         this.loginForm.reset();
         formElement.resetForm();
       });
-    } else {
-      this.routes.navigateByUrl('/sale').catch(reason => this.log.i(reason)).then(() => {
+      return;
+    }
+    if (role === 'online') {
+      this.routes.navigateByUrl('/').catch(reason => this.log.i(reason)).then(() => {
         this.loginForm.reset();
         formElement.resetForm();
       });
+      return;
     }
+    this.routes.navigateByUrl('/sale').catch(reason => this.log.i(reason)).then(() => {
+      this.loginForm.reset();
+      formElement.resetForm();
+    });
   }
 
   async reset($event: Event): Promise<void> {

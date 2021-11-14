@@ -12,11 +12,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import {init} from 'bfast';
 
 const routes: Routes = [
-  {path: 'login', canActivate: [AuthGuard], component: LoginPage},
-  {path: '', canActivate: [AuthGuard], component: WelcomePage},
+  {path: 'login', canActivate: [], component: LoginPage},
+  {path: '', canActivate: [], component: WelcomePage},
 ];
 
 @NgModule({
@@ -48,11 +47,6 @@ const routes: Routes = [
 })
 export class MockModule {
   constructor() {
-    init({
-      applicationId: 'smartstock_lb',
-      projectId: 'smartstock',
-      appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG'
-    });
   }// end
 }
 

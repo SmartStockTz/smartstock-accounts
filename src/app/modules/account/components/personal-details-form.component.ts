@@ -1,60 +1,54 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-personal-details-form',
   template: `
     <form [formGroup]="personalFormGroup">
-      <div class="stepper-inputs">
-        <mat-form-field appearance="fill">
-          <mat-label>FirstName</mat-label>
-          <mat-icon matSuffix>face</mat-icon>
-          <input matInput class="inputs" type="text" formControlName="firstname" required>
-          <mat-error>FirstName required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>LastName</mat-label>
-          <mat-icon matSuffix>face</mat-icon>
-          <input matInput class="inputs" type="text" formControlName="lastname" required>
-          <mat-error>LastName required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Email</mat-label>
-          <mat-icon matSuffix>email</mat-icon>
-          <input matInput class="inputs" type="email" formControlName="email" required>
-          <mat-error>Email required</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Mobile number</mat-label>
-          <span matPrefix>+</span>
-          <mat-icon matSuffix>phone</mat-icon>
-          <input matInput class="inputs" type="number" formControlName="mobile" required>
-          <mat-error>Mobile number required</mat-error>
-        </mat-form-field>
-
+      <div class="form-field">
+        <p class="input-title">FirstName</p>
+        <!--          <mat-icon matSuffix>face</mat-icon>-->
+        <input class="inputs" type="text" formControlName="firstname">
+        <p class="input-error" *ngIf="personalFormGroup.get('firstname').invalid && personalFormGroup.get('firstname').touched">
+          FirstName required
+        </p>
       </div>
-      <div>
-        <button mat-button class="stepper-btn" matStepperNext>Next</button>
+      <div class="form-field">
+        <p class="input-title">LastName</p>
+        <input class="inputs" type="text" formControlName="lastname">
+        <p class="input-error"
+           *ngIf="personalFormGroup.get('lastname').invalid &&
+           personalFormGroup.get('lastname').touched">
+          LastName required
+        </p>
+      </div>
+      <div class="form-field">
+        <p class="input-title">Email</p>
+        <input class="inputs" type="email" formControlName="email">
+        <p class="input-error"
+           *ngIf="personalFormGroup.get('email').invalid &&
+           personalFormGroup.get('email').touched">
+          Email required
+        </p>
+      </div>
+      <div class="form-field">
+        <p class="input-title">Mobile</p>
+        <input class="inputs" type="number" formControlName="mobile" required>
+        <p class="input-error"
+           *ngIf="personalFormGroup.get('mobile').invalid &&
+           personalFormGroup.get('mobile').touched">
+          Mobile number required
+        </p>
       </div>
     </form>
   `,
   styleUrls: ['../styles/register.style.scss']
 })
 
-export class PersonalDetailsFormComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PersonalDetailsFormComponent {
   @Input() personalFormGroup: FormGroup;
 
   constructor() {
   }
-
-  async ngOnInit(): Promise<void> {
-  }
-
-  async ngAfterViewInit(): Promise<void> {
-  }
-
-  async ngOnDestroy(): Promise<void> {
-  }
-
 
 }
