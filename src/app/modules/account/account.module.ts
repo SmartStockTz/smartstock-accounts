@@ -16,7 +16,7 @@ import {ReceiptComponent} from './components/receipt.component';
 import {RegisterDialogComponent} from './components/register-dialog.component';
 import {ResetPasswordComponent} from './components/reset-password.component';
 import {ShopLogoFormComponent} from './components/shop-logo-form.component';
-import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
+import {ShopsOptionsSheetComponent} from './components/shops-options-sheet.component';
 import {UserCreateDialogComponent} from './components/user-create-dialog.component';
 import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
 import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
@@ -62,6 +62,13 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {ShopDeleteConfirmDialogComponent} from './components/shop-delete-confirm-dialog.component';
 import {AccountsNavigationService} from './services/accounts-navigation.service';
 import {ManagerRoleGuard} from './guards/manager-role.guard';
+import {UsersContextComponent} from './components/users-context.component';
+import {UsersMobileComponent} from './components/users-mobile.component';
+import {ShopsContextComponent} from './components/shops-context.component';
+import {ShopsTableComponent} from './components/shops-table.component';
+import {ShopsOptionsComponent} from './components/shops-options.component';
+import {ShopsOptionsDialogComponent} from './components/shops-options-dialog.component';
+import {ShopsListComponent} from './components/shops-list.component';
 
 const routes: Routes = [
   {path: '', canActivate: [], component: IndexPage},
@@ -79,6 +86,13 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    UsersMobileComponent,
+    ShopsContextComponent,
+    ShopsTableComponent,
+    ShopsOptionsComponent,
+    ShopsOptionsDialogComponent,
+    ShopsListComponent,
+    UsersContextComponent,
     ShopDeleteConfirmDialogComponent,
     BillingPage,
     UsersCreateFormComponent,
@@ -105,7 +119,7 @@ const routes: Routes = [
     RegisterDialogComponent,
     ResetPasswordComponent,
     ShopLogoFormComponent,
-    ShopsTableOptionsComponent,
+    ShopsOptionsSheetComponent,
     UserCreateDialogComponent,
     UserDeleteDialogComponent,
     UserUpdateDialogComponent,

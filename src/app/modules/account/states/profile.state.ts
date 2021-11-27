@@ -278,4 +278,9 @@ export class ProfileState {
       {name: 'Zimbabwe', code: 'ZW'}
     ]);
   }
+
+  dispose(): void {
+    this.countries.next(null);
+    this.categories.next(null);
+  }
 }

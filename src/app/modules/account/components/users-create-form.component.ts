@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DeviceState, LogService, NavigationService, StorageService, UserService} from '@smartstocktz/core-libs';
 import {Router} from '@angular/router';
-import {UserState} from '../states/user.state';
+import {UsersState} from '../states/users.state';
 
 @Component({
   selector: 'app-users-crete-form',
@@ -111,7 +111,7 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
     public readonly logger: LogService,
     public readonly configService: NavigationService,
     public readonly router: Router,
-    public readonly userState: UserState,
+    public readonly userState: UsersState,
     public readonly deviceState: DeviceState) {
   }
 

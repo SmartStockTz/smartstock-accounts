@@ -119,10 +119,9 @@ export class LoginPage implements OnInit, OnDestroy {
           this.showMainUi('cashier', formElement);
         }
       }).catch(reason => {
-        this.log.i(reason);
         this.showProgress = false;
-        this.snack.open('Invalid username/password try again', 'Ok', {
-          duration: 5000
+        this.snack.open(reason.message, 'Ok', {
+          duration: 2000
         });
       }).finally(() => {
         this.billing.subscription().catch(_ => {
