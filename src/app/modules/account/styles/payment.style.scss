@@ -1,0 +1,16 @@
+.payment-container {
+  width: 100%;
+  background: #F5F5F5;
+  height: 100vh;
+  overflow: scroll;
+
+  padding: 28px 16px 100px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-container-item {
+  width: 100%;
+  max-width: 600px;
+}

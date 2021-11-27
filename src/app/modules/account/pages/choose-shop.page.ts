@@ -2,46 +2,35 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
-import {Observable, of} from 'rxjs';
+import {firstValueFrom, Observable, of} from 'rxjs';
 import {Router} from '@angular/router';
 import {DeviceState, StorageService, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import {CreateShopSheetComponent} from '../components/create-shop-sheet.component';
+import {ShopState} from '../states/shop.state';
 
 @Component({
   selector: 'app-choose-shop-page',
   template: `
     <div class="main">
-      <div class="container_shops d-flex flex-column justify-content-start justify-content-center align-items-center">
-        <div class="container_logo d-flex">
-          <div class="logo">
-            <img alt="" width="100" src="../../../../assets/img/ss_logo_white%203.svg">
-          </div>
-        </div>
-        <div style="margin-bottom: 10px" class="ct_shops_title d-flex justify-content-center">
-          Choose Shop
+      <div class="container_shops">
+        <div class="ct_shops_title">
+          Select Shop
         </div>
 
-        <div class="d-flex flex-wrap btn-block justify-content-center">
-
-          <div (click)="setCurrentProject(shop)" *ngFor="let shop of shops | async" class="ct_shop_profile">
+        <div class="shops">
+          <div (click)="setCurrentProject(shop)" *ngFor="let shop of shops" class="ct_shop_profile">
             <div matRipple class="shop_profile">
-              <mat-icon style="width: 70px; height: 70px; font-size: 70px" color="primary">store</mat-icon>
+              <img alt="logo" id="{{shop.projectId}}" (error)="hideImage(shop.projectId)" src="{{shop?.ecommerce?.logo}}">
             </div>
-            <div matTooltip="{{shop.businessName}}"
-                 class="shop_name d-flex justify-content-center">
+            <div class="shop_name">
               {{shop.businessName}}
             </div>
           </div>
-
-          <div class="ct_shop_profile">
-            <div matRipple class="ct_add_shop d-flex justify-content-center" (click)="openCreateShopDialog()">
-              <div class="d-flex justify-content-center align-items-center">
-                <mat-icon class="add_shop_btn">add</mat-icon>
-              </div>
-            </div>
-            <div class="shop_name d-flex justify-content-center">Add Shop</div>
-          </div>
-
+        </div>
+        <div matRipple class="ct_add_shop" (click)="openCreateShopDialog()">
+          <mat-icon class="add_shop_btn">add</mat-icon>
         </div>
 
       </div>
@@ -49,33 +38,25 @@ import {ShopModel} from '../models/shop.model';
   `,
   styleUrls: ['../styles/shop.style.scss']
 })
-export class ChooseShopPage implements OnInit, OnDestroy {
-
+export class ChooseShopPage implements OnInit {
   shopDetails = {};
-  shops: Observable<any[]>;
+  shops: any[];
 
-  constructor(public createShopDialog: MatDialog,
-              public readonly snackBar: MatSnackBar,
+  constructor(public readonly snackBar: MatSnackBar,
               public readonly router: Router,
               public readonly storageService: StorageService,
               public readonly deviceState: DeviceState,
+              private readonly shopState: ShopState,
               public readonly userDatabase: UserService) {
     document.title = 'SmartStock - Choose Shop';
   }
 
   async openCreateShopDialog(): Promise<void> {
-    const dialogRef = this.createShopDialog.open(CreateShopDialogComponent, {
-      minWidth: this.deviceState.isSmallScreen.value ? '90%' : 350,
-      maxWidth: 600,
-      data: this.shopDetails,
-      disableClose: true,
-      closeOnNavigation: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
+    this.shopState.addShoPopup(this.deviceState.isSmallScreen.value, this.shopDetails).then(result => {
       if (result) {
         this.getShops();
       }
-    });
+    }).catch(console.log);
   }
 
   async ngOnInit(): Promise<void> {
@@ -86,7 +67,7 @@ export class ChooseShopPage implements OnInit, OnDestroy {
     this.userDatabase.currentUser().then(user => {
       return this.userDatabase.getShops(user as any);
     }).then(shops => {
-      this.shops = of(shops);
+      this.shops = shops;
     }).catch(_ => {
       this.snackBar.open('Error when fetch available shops', 'Ok', {
         duration: 3000
@@ -97,13 +78,15 @@ export class ChooseShopPage implements OnInit, OnDestroy {
   async setCurrentProject(shop: ShopModel): Promise<void> {
     this.userDatabase.saveCurrentShop(shop as any).then(_ => {
       this.router.navigateByUrl('/dashboard').catch(reason => console.log(reason));
-    }).catch(reason => {
+    }).catch(_ => {
       this.snackBar.open('Error when trying to save your current shop', 'Ok', {
         duration: 3000
       });
     });
   }
 
-  async ngOnDestroy(): Promise<void> {
+  hideImage(projectId: any): void {
+    document.getElementById(projectId).setAttribute('src',
+      'https://ipfs.bfast.fahamutech.com/ipfs/bafybeifcn6jib6wtjqn77sardvjlbrhk6cj3km3bsvxxa3bdcdh5egsxui/sslogopng.png');
   }
 }

@@ -1,10 +1,8 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ShopState} from '../states/shop.state';
 
 import {MatTableDataSource} from '@angular/material/table';
 import {UserModel} from '../models/user.model';
-import {UserDeleteDialogComponent} from './user-delete-dialog.component';
-import {UserCreateDialogComponent} from './user-create-dialog.component';
 import {UserUpdateDialogComponent} from './user-update-dialog.component';
 import {FormBuilder} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';

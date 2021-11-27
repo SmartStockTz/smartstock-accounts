@@ -7,6 +7,10 @@ import {ShopsOptionsSheetComponent} from './shops-options-sheet.component';
 @Component({
   selector: 'app-shops-list',
   template: `
+    <mat-progress-bar *ngIf="(shopState.loadShops | async) === true"
+                      mode="indeterminate"
+                      color="primary">
+    </mat-progress-bar>
     <mat-nav-list>
       <div *ngFor="let item of shopState.shops | async">
         <mat-list-item matRipple (click)="options(item)">

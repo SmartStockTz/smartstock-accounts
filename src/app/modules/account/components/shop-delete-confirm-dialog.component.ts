@@ -20,7 +20,6 @@ import {ShopService} from '../services/shop.service';
           <button [disabled]="deleteProgress" color="primary" mat-button (click)="deleteShop(data.project_id)">
             Delete
             <mat-progress-spinner *ngIf="deleteProgress"
-                                  matTooltip="Delete in progress..."
                                   style="display: inline-block" mode="indeterminate" diameter="15"
                                   color="accent"></mat-progress-spinner>
           </button>
@@ -34,7 +33,7 @@ import {ShopService} from '../services/shop.service';
   `,
   styleUrls: ['../styles/users.style.scss']
 })
-export class ShopDeleteConfirmDialogComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ShopDeleteConfirmDialogComponent {
   deleteProgress = false;
   errorUserMessage: string;
 
@@ -52,10 +51,9 @@ export class ShopDeleteConfirmDialogComponent implements OnInit, OnDestroy, Afte
   async deleteShop(projectId: any): Promise<void> {
     this.errorUserMessage = undefined;
     this.deleteProgress = true;
-    this.shopService.deleteShop(projectId).then(value => {
+    this.shopService.deleteShop(projectId).then(_8 => {
       this.dialogRef.close(projectId);
       this.deleteProgress = false;
-      this.logger.i(value);
     }).catch(reason => {
       this.errorUserMessage = reason && reason.message ? reason.message : reason.toString();
       this.deleteProgress = false;
@@ -64,14 +62,5 @@ export class ShopDeleteConfirmDialogComponent implements OnInit, OnDestroy, Afte
 
   async cancel(): Promise<void> {
     this.dialogRef.close(null);
-  }
-
-  async ngAfterViewInit(): Promise<void> {
-  }
-
-  async ngOnDestroy(): Promise<void> {
-  }
-
-  async ngOnInit(): Promise<void> {
   }
 }

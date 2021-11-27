@@ -45,4 +45,9 @@ export class BillingService {
     return functions().request(`/billing/${owner.id}/receipts`).get();
   }
 
+  async getInvoices(): Promise<any[]> {
+    const owner = await this.userService.currentUser();
+    return functions().request(`/billing/${owner.id}/invoices`).get();
+  }
+
 }

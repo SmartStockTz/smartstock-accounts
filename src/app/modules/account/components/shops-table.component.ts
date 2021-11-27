@@ -3,8 +3,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import {ShopModel} from '../models/shop.model';
 import {firstValueFrom, Subject, takeUntil} from 'rxjs';
 import {ShopState} from '../states/shop.state';
-import {ShopsOptionsSheetComponent} from './shops-options-sheet.component';
-import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopsOptionsDialogComponent} from './shops-options-dialog.component';
 

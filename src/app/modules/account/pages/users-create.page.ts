@@ -9,17 +9,14 @@ import {DeviceState} from '@smartstocktz/core-libs';
       [leftDrawerMode]="(deviceState.enoughWidth | async) === true?'side': 'over'"
       [leftDrawerOpened]="(deviceState.enoughWidth | async) === true"
       [hasBackRoute]="true"
-      backLink="'/account/users'"
+      backLink="/account/users"
       [body]="body"
       [leftDrawer]="side">
       <ng-template #side>
         <app-drawer></app-drawer>
       </ng-template>
       <ng-template #body>
-        <div style="min-height: 100vh; margin-bottom: 100px"
-             class="container col-12 col-xl-9 col-lg-9 col-sm-10 col-md-10">
-          <app-users-crete-form></app-users-crete-form>
-        </div>
+        <app-users-crete-form></app-users-crete-form>
       </ng-template>
     </app-layout-sidenav>
   `,

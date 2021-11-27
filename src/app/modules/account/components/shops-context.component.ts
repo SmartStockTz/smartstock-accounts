@@ -1,16 +1,17 @@
 import {Component} from '@angular/core';
 import {ShopState} from '../states/shop.state';
+import {DeviceState} from '@smartstocktz/core-libs';
 
 @Component({
   selector: 'app-shops-context',
   template: `
     <div class="users-context-container">
       <div class="actions">
-        <button routerLink="/account/shop"class="action-button" mat-button>
-          Add Shop
+        <button (click)="addShop()" class="action-button" mat-button>
+          Add
         </button>
         <button routerLink="/account/shop" class="action-button" mat-button>
-          Select
+          Change
         </button>
         <button (click)="shopState.fetchShops()" class="action-button" mat-button>
           Reload
@@ -24,7 +25,16 @@ import {ShopState} from '../states/shop.state';
   `,
   styleUrls: ['../styles/table-context.style.scss']
 })
-export class ShopsContextComponent{
-  constructor(public readonly shopState: ShopState) {
+export class ShopsContextComponent {
+  constructor(public readonly shopState: ShopState,
+              private readonly deviceState: DeviceState) {
+  }
+
+  addShop(): void {
+    this.shopState.addShoPopup(this.deviceState.isSmallScreen.value, {}).then(value => {
+      if (value) {
+        this.shopState.fetchShops();
+      }
+    });
   }
 }

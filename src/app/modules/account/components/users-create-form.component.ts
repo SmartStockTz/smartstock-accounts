@@ -9,93 +9,78 @@ import {UsersState} from '../states/users.state';
 @Component({
   selector: 'app-users-crete-form',
   template: `
-    <div>
-      <form *ngIf="newUserForm" class="d-flex flex-column" [formGroup]="newUserForm" (ngSubmit)="createUser()">
-        <h1 class="heading">Details</h1>
-        <mat-card>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput type="text" formControlName="username">
-            <mat-error>Username required</mat-error>
-          </mat-form-field>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Firstname</mat-label>
-            <input matInput type="text" formControlName="firstname">
-            <mat-error>Firstname required</mat-error>
-          </mat-form-field>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Lastname</mat-label>
-            <input matInput type="text" formControlName="lastname">
-            <mat-error>Lastname required</mat-error>
-          </mat-form-field>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Password</mat-label>
-            <input autocomplete="false" matInput type="text" formControlName="password">
-            <mat-error>Password required</mat-error>
-          </mat-form-field>
-        </mat-card>
+    <div class="users-crete-container">
+      <form *ngIf="newUserForm" class="users-create-form" [formGroup]="newUserForm" (ngSubmit)="createUser()">
+        <!--        <h1 class="heading">Details</h1>-->
+        <mat-form-field class="d-block">
+          <mat-label>Username</mat-label>
+          <input matInput type="text" formControlName="username">
+          <mat-error>Username required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="d-block">
+          <mat-label>Firstname</mat-label>
+          <input matInput type="text" formControlName="firstname">
+          <mat-error>Firstname required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="d-block">
+          <mat-label>Lastname</mat-label>
+          <input matInput type="text" formControlName="lastname">
+          <mat-error>Lastname required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="d-block">
+          <mat-label>Password</mat-label>
+          <input autocomplete="false" matInput type="text" formControlName="password">
+          <mat-error>Password required</mat-error>
+        </mat-form-field>
 
-        <h1 class="heading">Shops</h1>
-        <mat-card>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Shop ( s )</mat-label>
-            <mat-select [value]="activeShop" [multiple]="true" formControlName="shops">
-              <mat-option *ngFor="let shop of shops | async" [value]="shop">{{shop.businessName}}</mat-option>
-            </mat-select>
-            <mat-error>Shop ( s ) required</mat-error>
-          </mat-form-field>
-        </mat-card>
+        <mat-form-field class="d-block">
+          <mat-label>Shop ( s )</mat-label>
+          <mat-select [value]="activeShop" [multiple]="true" formControlName="shops">
+            <mat-option *ngFor="let shop of shops | async" [value]="shop">{{shop.businessName}}</mat-option>
+          </mat-select>
+          <mat-error>Shop ( s ) required</mat-error>
+        </mat-form-field>
 
-        <h1 class="heading">Roles</h1>
-        <mat-card>
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Roles</mat-label>
-            <mat-select formControlName="role">
-              <mat-option value="manager">MANAGER</mat-option>
-              <mat-option value="user">SELLER</mat-option>
-            </mat-select>
-            <mat-error>Role required</mat-error>
-          </mat-form-field>
-        </mat-card>
+        <mat-form-field class="d-block">
+          <mat-label>Group</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="manager">MANAGER</mat-option>
+            <mat-option value="user">SELLER</mat-option>
+          </mat-select>
+          <mat-error>Group required</mat-error>
+        </mat-form-field>
 
-        <div>
-          <div *ngFor="let menu of  configService.getMenu()">
-            <div>
-              <h1 class="heading">{{menu.name}}</h1>
-              <mat-card>
+        <!--        <span class="heading-roles">Additional access ( optional )</span>-->
+        <div *ngFor="let menu of  configService.getMenu()">
+          <div>
+            <h1 class="heading">{{menu.name}}</h1>
+            <mat-card>
               <span *ngFor="let page of menu.pages">
                 <mat-checkbox class="pageTitle" [checked]="acl[page.link]"
                               (change)="acl[page.link]=$event.checked">
                   {{page.name}}
                 </mat-checkbox>
               </span>
-              </mat-card>
-            </div>
+            </mat-card>
           </div>
         </div>
 
-        <div style="padding: 8px" class="d-flex flex-nowrap">
-          <button class="buttonText ft-button" color="warn" mat-button (click)="cancel($event)">
-            Close
-          </button>
-          <span style="flex: 1 1 auto"></span>
-          <button color="primary" [disabled]="createUserProgress"
-                  mat-flat-button
-                  class="ft-button buttonText">
-            Create User Account
-            <mat-progress-spinner style="display: inline-block"
-                                  *ngIf="createUserProgress" [diameter]="20"
-                                  mode="indeterminate">
-            </mat-progress-spinner>
-          </button>
-        </div>
+        <button color="primary" [disabled]="createUserProgress"
+                mat-flat-button
+                class="buttonText">
+          Create User Account
+          <mat-progress-spinner style="display: inline-block"
+                                *ngIf="createUserProgress" [diameter]="20"
+                                mode="indeterminate">
+          </mat-progress-spinner>
+        </button>
       </form>
     </div>
   `,
   styleUrls: ['../styles/users-create.style.scss']
 })
 
-export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UsersCreateFormComponent implements OnInit {
   newUserForm: FormGroup;
   createUserProgress = false;
   shops: Observable<any[]>;
@@ -143,8 +128,8 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
 
   async createUser(): Promise<void> {
     if (!this.newUserForm.valid) {
-      this.snack.open('Please fll all details', 'Ok', {
-        duration: 3000
+      this.snack.open('Please fill all required fields', 'Ok', {
+        duration: 2000
       });
       return;
     }
@@ -163,14 +148,12 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
       value.role = this.newUserForm.value.role;
       value.acl = this.newUserForm.value.acl;
       this.snack.open('User created', 'Ok', {
-        duration: 3000
+        duration: 2000
       });
       this.router.navigateByUrl('/account/users').catch(console.log);
     }).catch(reason => {
-      console.log(reason);
-      this.createUserProgress = false;
-      this.snack.open('User not created, try different username', 'Ok', {
-        duration: 3000
+      this.snack.open(reason ? reason.message : 'User not created try different username', 'Ok', {
+        duration: 2000
       });
     }).finally(() => {
       this.createUserProgress = false;
@@ -187,15 +170,8 @@ export class UsersCreateFormComponent implements OnInit, OnDestroy, AfterViewIni
       return this.userService.getShops(user as any);
     }).then(value => {
       this.shops = of(value && Array.isArray(value) ? value : []);
-    }).catch(reason => {
-      this.logger.e(reason, 'DialogUserNewComponent:203');
+    }).catch(_ => {
       this.shops = of([]);
     });
-  }
-
-  async ngAfterViewInit(): Promise<void> {
-  }
-
-  async ngOnDestroy(): Promise<void> {
   }
 }
