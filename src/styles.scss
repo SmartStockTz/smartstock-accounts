@@ -35,7 +35,8 @@ $accounts-mock-theme: mat-light-theme((
 
 html, body {
   height: 100%;
-  background: #f5f5f5;
+  //background: #f5f5f5;
+  background: #efefef;
 }
 
 body {
@@ -186,10 +187,6 @@ button {
   height: 100vh;
 }
 
-div.mat-tab-body-wrapper {
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
-}
-
 mat-sidenav-content {
   touch-action: pan-y !important;
   background: transparent;
@@ -204,7 +201,3 @@ div {
   outline: none !important;
 }
 
-
-ngx-bottom-nav{
-  z-index: 999896799;
-}

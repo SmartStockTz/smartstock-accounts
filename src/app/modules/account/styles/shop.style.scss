@@ -4,18 +4,31 @@
 /*}*/
 
 .main {
-  background-color: #0b2e13;
-  min-height: 100vh;
+  //background-color: #0b2e13;
+  background: transparent;
+  //min-height: 100vh;
   width: 100%;
 }
 
-/* .main > .container_logo{}
- */
-
-/* Container for the shop profiles*/
-.main > .container_shops {
+.container_shops {
+  height: 100%;
+  padding-bottom: 50px;
   min-height: 100vh;
-  /*padding-top: 15%;*/
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.shops {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 900px;
+  align-items: baseline;
+  justify-content: center;
 }
 
 /* Container for the title of the shops profiles*/
@@ -23,10 +36,10 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 32px;
+  font-size: 24px;
   line-height: 56px;
-
-  color: #FFFFFF;
+  margin-bottom: 10px;
+  //color: #FFFFFF;
 }
 
 /* Container for the logo of the page*/
@@ -36,25 +49,37 @@
   padding-bottom: 24px;
 }
 
-/*Container for all shops profiles*/
-.ct_shops_profile {
-  /*margin-top: 4%*/
-}
 
-/*Container for each shop's profile*/
 .ct_shop_profile {
-  margin-right: 4%;
-}
-
-.shop_profile {
-  width: 150px;
-  height: 150px;
-  transition: all .4s ease-in-out;
-  background: #FFFFFF;
-  border-radius: 4px;
+  margin: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+.shop_profile {
+  width: 100px;
+  height: 100px;
+  transition: all .4s ease-in-out;
+  background: #FFFFFF;
+  border-radius: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    object-fit: cover;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+  }
+
+  mat-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 70px
+  }
 }
 
 .shop_profile:hover {
@@ -64,43 +89,50 @@
 
 .ct_add_shop {
   transition: all .4s ease-in-out;
-  width: 150px;
-  height: 150px;
+  //width: 100px;
+  //height: 100px;
+  border-radius: 200px;
+  //padding: 5px;
+  //background: #0b2e13;
+  width: 100px;
+  height: 100px;
 
-  background: rgba(0, 170, 7, 0.96);
-  border-radius: 4px;
+  mat-icon {
+    //color: white;
+
+  }
 }
 
 .ct_add_shop:hover {
   //transform: scale(1.1);
-  //background: #FFFFFF;
+  background: #FFFFFF;
   cursor: pointer;
-  //color: black;
+  color: black;
 }
 
 .add_shop_btn {
-  color: white;
+  //color: white;
   width: 100px;
   height: 100px;
   font-size: 100px
 }
 
 .add_shop_btn:hover {
-  width: 100px;
-  height: 100px;
-  font-size: 100px;
-  color: black;
+  //width: 100px;
+  //height: 100px;
+  //font-size: 100px;
+  color: #0b2e13;
 }
 
 .shop_name {
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  max-width: 148px;
+  max-width: 110px;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 16px;
+  //line-height: 28px;
   margin-top: 7%;
-  color: #FFFFFF;
+  //color: #FFFFFF;
   overflow: hidden;
   text-overflow: ellipsis;
 }

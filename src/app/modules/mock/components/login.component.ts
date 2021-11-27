@@ -2,9 +2,10 @@ import {auth, init} from 'bfast';
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Router} from '@angular/router';
-import {getDaasAddress, getFaasAddress, StorageService, UserService} from '@smartstocktz/core-libs';
+import {StorageService, UserService} from '@smartstocktz/core-libs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {environment} from '../../../../environments/environment';
 
 
 @Component({
@@ -55,8 +56,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           init({
             applicationId: user.applicationId,
             projectId: user.projectId,
-            databaseURL: getDaasAddress(user),
-            functionsURL: getFaasAddress(user)
+            databaseURL: `${environment.localBaseUrl}/shop/${user.projectId}/${user.applicationId}`,
+            functionsURL: `${environment.localBaseUrl}`,
+            adapters: {
+              http: 'DEFAULT',
+              cache: 'DEFAULT',
+              auth: 'DEFAULT',
+            }
           }, user.projectId);
           await this.storageService.saveCurrentProjectId('0UTYLQKeifrk');
           await this.userService.saveCurrentShop(user as any);

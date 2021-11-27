@@ -119,9 +119,9 @@ export class RegisterPage implements OnInit, OnDestroy {
       Object.assign(user, this.loginFormGroup.value);
       user.role = this.roleControl.value;
       delete user.confPassword;
+      user.mobile = user.mobile.toString();
       this.registerProgress = true;
-      const rq = this.httpClient.post('https://smartstock-faas.bfast.fahamutech.com/functions/users/create', user);
-      firstValueFrom(rq).then(value => {
+      this.userService.register(user).then(value => {
         this.registerProgress = false;
         if (user.role === 'admin') {
           const d = this.matDialog.open(RegisterDialogComponent, {

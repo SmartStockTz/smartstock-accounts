@@ -16,20 +16,19 @@ import {ReceiptComponent} from './components/receipt.component';
 import {RegisterDialogComponent} from './components/register-dialog.component';
 import {ResetPasswordComponent} from './components/reset-password.component';
 import {ShopLogoFormComponent} from './components/shop-logo-form.component';
-import {ShopsTableOptionsComponent} from './components/shops-table-options.component';
-import {UserCreateDialogComponent} from './components/user-create-dialog.component';
+import {ShopsOptionsSheetComponent} from './components/shops-options-sheet.component';
 import {UserDeleteDialogComponent} from './components/user-delete-dialog.component';
 import {UserUpdateDialogComponent} from './components/user-update-dialog.component';
 import {UsersComponent} from './components/users.component';
 import {VerifyDialogComponent} from './components/verify-dialog.component';
-import {BillingPage} from './pages/billing.page';
+import {PaymentPage} from './pages/payment.page';
 import {ChooseShopPage} from './pages/choose-shop.page';
-import {EcommercePage} from './pages/ecommerce.page';
+import {SettingsEcommercePage} from './pages/settings-ecommerce.page';
 import {IndexPage} from './pages/index.page';
 import {LoginPage} from './pages/login.page';
 import {ProfilePage} from './pages/profile.page';
 import {RegisterPage} from './pages/register.page';
-import {SettingsPage} from './pages/settings.page';
+import {SettingsGeneralPage} from './pages/settings-general.page';
 import {ShopsPage} from './pages/shops.page';
 import {UsersPage} from './pages/users.page';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -62,16 +61,31 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {ShopDeleteConfirmDialogComponent} from './components/shop-delete-confirm-dialog.component';
 import {AccountsNavigationService} from './services/accounts-navigation.service';
 import {ManagerRoleGuard} from './guards/manager-role.guard';
+import {UsersContextComponent} from './components/users-context.component';
+import {UsersMobileComponent} from './components/users-mobile.component';
+import {ShopsContextComponent} from './components/shops-context.component';
+import {ShopsTableComponent} from './components/shops-table.component';
+import {ShopsOptionsComponent} from './components/shops-options.component';
+import {ShopsOptionsDialogComponent} from './components/shops-options-dialog.component';
+import {ShopsListComponent} from './components/shops-list.component';
+import {SettingsEcommerceComponent} from './components/settings-ecommerce.component';
+import {SettingsGeneralComponent} from './components/settings-general.component';
+import {PaymentComponent} from './components/payment.component';
+import {PaymentHeaderComponent} from './components/payment-header.component';
+import {PaymentModesComponent} from './components/payment-modes.component';
+import {PaymentModesMobileComponent} from './components/payment-modes-mobile.component';
+import {CreateSecondaryShopComponent} from './components/create-secondary-shop-form.component';
+import {CreateShopSheetComponent} from './components/create-shop-sheet.component';
 
 const routes: Routes = [
   {path: '', canActivate: [], component: IndexPage},
   {path: 'shop', canActivate: [AuthenticationGuard], component: ChooseShopPage},
   {path: 'shops', canActivate: [ManagerRoleGuard], component: ShopsPage},
-  {path: 'shops/:shop/settings', canActivate: [ManagerRoleGuard], component: SettingsPage},
-  {path: 'shops/:shop/ecommerce', canActivate: [ManagerRoleGuard], component: EcommercePage},
+  {path: 'shops/:shop/settings', canActivate: [ManagerRoleGuard], component: SettingsGeneralPage},
+  {path: 'shops/:shop/ecommerce', canActivate: [ManagerRoleGuard], component: SettingsEcommercePage},
   {path: 'login', canActivate: [AuthenticatedUserGuard], component: LoginPage},
   {path: 'register', canActivate: [AuthenticatedUserGuard], component: RegisterPage},
-  {path: 'bill', canActivate: [AuthenticationGuard], component: BillingPage},
+  {path: 'bill', canActivate: [AuthenticationGuard], component: PaymentPage},
   {path: 'users', canActivate: [ManagerRoleGuard], component: UsersPage},
   {path: 'users/create', canActivate: [ManagerRoleGuard], component: UsersCreatePage},
   {path: 'profile', canActivate: [AuthenticationGuard], component: ProfilePage},
@@ -79,17 +93,24 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    UsersMobileComponent,
+    ShopsContextComponent,
+    ShopsTableComponent,
+    ShopsOptionsComponent,
+    ShopsOptionsDialogComponent,
+    ShopsListComponent,
+    UsersContextComponent,
     ShopDeleteConfirmDialogComponent,
-    BillingPage,
+    PaymentPage,
     UsersCreateFormComponent,
     UsersCreatePage,
     ChooseShopPage,
-    EcommercePage,
+    SettingsEcommercePage,
     IndexPage,
     LoginPage,
     ProfilePage,
     RegisterPage,
-    SettingsPage,
+    SettingsGeneralPage,
     ShopsPage,
     UsersPage,
     AddressComponent,
@@ -105,8 +126,15 @@ const routes: Routes = [
     RegisterDialogComponent,
     ResetPasswordComponent,
     ShopLogoFormComponent,
-    ShopsTableOptionsComponent,
-    UserCreateDialogComponent,
+    ShopsOptionsSheetComponent,
+    SettingsEcommerceComponent,
+    SettingsGeneralComponent,
+    PaymentComponent,
+    PaymentHeaderComponent,
+    PaymentModesComponent,
+    PaymentModesMobileComponent,
+    CreateSecondaryShopComponent,
+    CreateShopSheetComponent,
     UserDeleteDialogComponent,
     UserUpdateDialogComponent,
     UsersComponent,

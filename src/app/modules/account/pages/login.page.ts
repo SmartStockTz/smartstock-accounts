@@ -13,9 +13,9 @@ import {firstValueFrom} from 'rxjs';
   template: `
     <div class="login-wrapper">
       <div class="container login-sec">
-        <div class="login-title text-center">
-          Login
-        </div>
+<!--        <div class="login-title text-center">-->
+<!--          Login-->
+<!--        </div>-->
         <div class="col-sm-12 col-12 col-md-6 col-xl-4 col-lg-6 offset-xl-4 offset-lg-3 offset-md-3">
           <mat-progress-bar *ngIf="showProgress"
                             class="full-width rounded-top"
@@ -40,15 +40,17 @@ import {firstValueFrom} from 'rxjs';
                   <mat-error>Password required</mat-error>
                 </mat-form-field>
               </mat-card-content>
-              <mat-card-actions *ngIf="!showProgress">
+              <mat-card-actions >
                 <button mat-raised-button
+                        [disabled]="showProgress"
                         color="primary"
                         class="btn-block ft-button">
                   Login
                 </button>
               </mat-card-actions>
-              <mat-card-actions *ngIf="!showProgress">
+              <mat-card-actions>
                 <button routerLink="/account/register"
+                        [disabled]="showProgress"
                         (click)="$event.preventDefault()"
                         mat-raised-button
                         color="primary"
@@ -62,14 +64,14 @@ import {firstValueFrom} from 'rxjs';
       </div>
       <footer>
         <div style="display: flex; flex-direction: row; padding: 8px; align-items: center;">
-          <a *ngIf="isBrowser" style="color: white; padding: 8px" routerLink="/">
+          <a *ngIf="isBrowser" style="padding: 8px" routerLink="/">
             Go Back Home
           </a>
-          <a style="color: white; padding: 8px" href="#" (click)="reset($event)">
+          <a style=" padding: 8px" href="#" (click)="reset($event)">
             Reset Password
           </a>
         </div>
-        <p class="text-center" style="color: white; margin-top: 8px">SmartStock Company Ltd © 2021</p>
+        <p class="text-center" style=" margin-top: 8px">SmartStock Company Ltd © 2021</p>
       </footer>
     </div>
   `,
@@ -119,10 +121,9 @@ export class LoginPage implements OnInit, OnDestroy {
           this.showMainUi('cashier', formElement);
         }
       }).catch(reason => {
-        this.log.i(reason);
         this.showProgress = false;
-        this.snack.open('Invalid username/password try again', 'Ok', {
-          duration: 5000
+        this.snack.open(reason.message, 'Ok', {
+          duration: 2000
         });
       }).finally(() => {
         this.billing.subscription().catch(_ => {

@@ -5,3 +5,148 @@
 .mat-form-field {
   width: 100%;
 }
+
+.heading {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #000000;
+
+  margin: 16px 0;
+
+}
+
+.save-button {
+  width: 100%;
+}
+
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.settings-form {
+  max-width: 600px;
+  width: 100%;
+  padding: 24px 16px;
+}
+
+.shop-header-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.shop-logo {
+  width: 100px;
+  height: 100px;
+  margin-right: 24px;
+  border-radius: 200px;
+
+  background: #C4C4C4;
+}
+
+.shop-details {
+
+}
+
+.shop-details-head {
+
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 33px;
+  /* identical to box height */
+
+
+  color: #000000;
+
+  margin-bottom: 24px;
+
+}
+
+.shop-details-total-products {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: rgba(63, 63, 63);
+  margin-bottom: 16px;
+
+}
+
+.shop-details-category {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 21px;
+  /* identical to box height */
+
+
+  color: #7D7D7D;
+
+}
+
+::ng-deep {
+  .mat-form-field-flex {
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0 !important;
+  }
+}
+
+.cover {
+  width: 100%;
+  height: auto;
+  background: #C4C4C4;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  object-fit: cover;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.about{
+  margin-top: 16px;
+}
+
+.status-item {
+  padding: 8px 0;
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 4px;
+}
+
+.status-checker {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  //width: 30px;
+  //height: 30px;
+  span {
+    margin-right: 8px;
+  }
+}
+
+.status-text {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+}

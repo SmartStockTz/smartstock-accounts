@@ -1,22 +1,13 @@
-td {
-  padding: 8px;
-}
-
-.my-users-wrapper {
-  //margin-top: 24px;
-  margin-bottom: 48px;
-}
-
 td, th {
   padding: 8px !important;
 }
 
-.users-table{
+.s-table{
   background: transparent;
   width: 100%;
 }
 
-.users-table-container{
+.table-container{
   padding: 0 16px!important;
 }
 
@@ -31,8 +22,4 @@ mat-paginator{
   font-size: 14px;
   line-height: 16px;
   color: #000;
-}
-
-.users-mobile-container{
-  margin-bottom: 100px;
 }

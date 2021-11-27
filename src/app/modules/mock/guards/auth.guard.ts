@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {getDaasAddress, getFaasAddress, UserService} from '@smartstocktz/core-libs';
-import {init} from 'bfast';
+import {UserService} from '@smartstocktz/core-libs';
+import {getConfig, init} from 'bfast';
+import {environment} from '../../../../environments/environment';
+import {BFastConfig} from 'bfast/dist/lib/conf';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +24,13 @@ export class AuthGuard implements CanActivate {
           init({
             applicationId: shop.applicationId,
             projectId: shop.projectId,
-            databaseURL: getDaasAddress(shop),
-            functionsURL: getFaasAddress(shop)
+            databaseURL: `${environment.localBaseUrl}/shop/${shop.projectId}/${shop.applicationId}`,
+            functionsURL: `${environment.localBaseUrl}`,
+            adapters: {
+              http: 'DEFAULT',
+              cache: 'DEFAULT',
+              auth: 'DEFAULT',
+            }
           }, shop.projectId);
           resolve(true);
         } else {

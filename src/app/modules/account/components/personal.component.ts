@@ -7,58 +7,59 @@ import {UserService} from '@smartstocktz/core-libs';
 @Component({
   selector: 'app-personal',
   template: `
-    <div class="profile-personal-wrapper">
-      <mat-card class="mat-elevation-z0 bg-transparent">
-        <form *ngIf="!getUserProgress && personalForm" [formGroup]="personalForm" (ngSubmit)="updatePersonalInformation()">
+    <div class="my-profile-wrapper bg-transparent">
+      <div class="profile-personal-wrapper">
+        <form *ngIf="!getUserProgress && personalForm"
+              [formGroup]="personalForm"
+              (ngSubmit)="updatePersonalInformation()">
           <div>
-            <mat-form-field appearance="outline" class="btn-block" matTooltip="read only field">
+            <mat-form-field class="btn-block" matTooltip="read only field">
               <mat-label>Username</mat-label>
               <input class="input" matInput [formControl]="usernameFormControl" type="text" [readonly]="true">
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="btn-block">
+            <mat-form-field class="btn-block">
               <mat-label>First Name</mat-label>
               <input matInput formControlName="firstname" type="text">
               <mat-error>first name field required</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="btn-block">
+            <mat-form-field class="btn-block">
               <mat-label>Last Name</mat-label>
               <input matInput formControlName="lastname" type="text">
               <mat-error>last name field required</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="btn-block">
+            <mat-form-field class="btn-block">
               <mat-label>Mobile</mat-label>
               <input matInput formControlName="mobile" type="number">
               <mat-error>mobile field required</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="btn-block">
+            <mat-form-field class="btn-block">
               <mat-label>Email</mat-label>
               <input class="input" [readonly]="true" matInput formControlName="email" type="email">
               <mat-error>email field required</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="btn-block">
-              <mat-label>Email Notification</mat-label>
+            <mat-form-field class="btn-block">
+              <mat-label>Other emails</mat-label>
               <input placeholder="comma separated emails" matInput formControlName="emails" type="email">
-              <mat-error>other emails for notifications</mat-error>
+              <mat-hint>comma separated emails</mat-hint>
             </mat-form-field>
-
           </div>
-          <div>
-            <button [disabled]="updateUserProgress" mat-flat-button color="primary">
-              SAVE DETAILS
-              <mat-progress-spinner *ngIf="updateUserProgress"
-                                    style="display: inline-block" [diameter]="30"
-                                    mode="indeterminate"
-                                    color="primary"></mat-progress-spinner>
-            </button>
-          </div>
+          <button class="save-button" [disabled]="updateUserProgress" mat-flat-button color="primary">
+            SAVE DETAILS
+            <mat-progress-spinner *ngIf="updateUserProgress"
+                                  style="display: inline-block" [diameter]="30"
+                                  mode="indeterminate"
+                                  color="primary">
+            </mat-progress-spinner>
+          </button>
         </form>
         <mat-progress-spinner *ngIf="getUserProgress" mode="indeterminate" color="primary"
-                              [diameter]="25"></mat-progress-spinner>
+                              [diameter]="25">
+        </mat-progress-spinner>
         <div *ngIf="!getUserProgress && !personalForm">
           <mat-card-subtitle>
             Failure when try to fetch your personal information, try to refresh
@@ -69,13 +70,13 @@ import {UserService} from '@smartstocktz/core-libs';
             </mat-icon>
           </button>
         </div>
-      </mat-card>
+      </div>
     </div>
   `,
   styleUrls: ['../styles/profile.style.scss']
 })
 
-export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PersonalComponent implements OnInit {
   personalForm: FormGroup;
   currentUser: UserModel;
   getUserProgress = false;
@@ -88,31 +89,30 @@ export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getCurrentUser();
+    this.getCurrentUser();
   }
 
-  async _initializeForm(user: UserModel): Promise<void> {
+  initializeForm(user: UserModel): void {
     this.usernameFormControl.setValue(user.username);
     this.personalForm = this.formBuilder.group({
       firstname: [user.firstname, [Validators.nullValidator, Validators.required]],
       lastname: [user.lastname, [Validators.nullValidator, Validators.required]],
       email: [user.email, [Validators.nullValidator, Validators.required]],
-      emails: [user.emails, [Validators.nullValidator, Validators.required]],
+      emails: [user.emails, []],
       mobile: [user.mobile, [Validators.nullValidator, Validators.required]],
     });
   }
 
-  async getCurrentUser(): Promise<void> {
+  getCurrentUser(): void {
     this.getUserProgress = true;
     this.userService.currentUser().then(user => {
       this.currentUser = user;
-      this._initializeForm(this.currentUser);
+      this.initializeForm(this.currentUser);
       this.getUserProgress = false;
-    }).catch(reason => {
-      // console.log(reason);
+    }).catch(_ => {
       this.getUserProgress = false;
       this.snackBar.open('Error when trying get your details', 'Ok', {
-        duration: 3000
+        duration: 2000
       });
     });
   }
@@ -120,7 +120,7 @@ export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
   async updatePersonalInformation(): Promise<void> {
     if (this.personalForm.valid) {
       this.updateUserProgress = true;
-      this.userService.updateUser(this.currentUser as any, this.personalForm.value).then(async user => {
+      this.userService.updateUser(this.currentUser, this.personalForm.value).then(async user => {
         this.updateUserProgress = false;
         this.snackBar.open('Your personal information is updated', 'Ok', {
           duration: 3000
@@ -149,14 +149,8 @@ export class PersonalComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     } else {
       this.snackBar.open('Please fill all required fields', 'Ok', {
-        duration: 3000
+        duration: 2000
       });
     }
-  }
-
-  async ngAfterViewInit(): Promise<void> {
-  }
-
-  async ngOnDestroy(): Promise<void> {
   }
 }
