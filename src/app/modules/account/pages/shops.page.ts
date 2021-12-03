@@ -1,13 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {FormBuilder} from '@angular/forms';
-import {DeviceState, LogService, MessageService, UserService} from '@smartstocktz/core-libs';
+import {Component, OnInit} from '@angular/core';
+import {DeviceState} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
-import {MatBottomSheet} from '@angular/material/bottom-sheet';
-import {ShopsOptionsSheetComponent} from '../components/shops-options-sheet.component';
-import {UserDeleteDialogComponent} from '../components/user-delete-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {ShopState} from '../states/shop.state';
 
 @Component({

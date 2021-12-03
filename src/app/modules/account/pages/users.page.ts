@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {DeviceState} from '@smartstocktz/core-libs';
 import {ShopState} from '../states/shop.state';
 import {UsersState} from '../states/users.state';

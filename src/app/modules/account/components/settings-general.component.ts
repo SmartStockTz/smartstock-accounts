@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SettingsModel} from '../models/settings.model';
-import {EventService, SsmEvents, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ShopState} from '../states/shop.state';
@@ -69,7 +69,6 @@ export class SettingsGeneralComponent implements OnInit {
 
   constructor(public readonly formBuilder: FormBuilder,
               public readonly matSnackBar: MatSnackBar,
-              public readonly eventService: EventService,
               public readonly activatedRoute: ActivatedRoute,
               public readonly router: Router,
               private readonly settingsService: SettingsService,

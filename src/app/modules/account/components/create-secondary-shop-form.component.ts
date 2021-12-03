@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 import {ShopService} from '../services/shop.service';
 import {ProfileState} from '../states/profile.state';
 
@@ -63,12 +63,6 @@ export interface DialogData {
         </mat-progress-spinner>
       </button>
     </form>
-
-    <!--    <div style="margin-top: 6px">-->
-    <!--      <button class="btn-block" mat-button color="primary" (click)="closeDialog($event)">-->
-    <!--        Close-->
-    <!--      </button>-->
-    <!--    </div>-->
   `,
   styleUrls: ['../styles/create-shop-dialog.style.scss', '../styles/login.style.scss'],
   providers: [
@@ -82,7 +76,6 @@ export class CreateSecondaryShopComponent implements OnInit {
   createShopProgress = false;
 
   constructor(public readonly snack: MatSnackBar,
-              public readonly storageService: StorageService,
               public readonly shopService: ShopService,
               private readonly userService: UserService,
               public readonly profileState: ProfileState,

@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes, ROUTES} from '@angular/router';
-
-import {AuthGuard} from './guards/auth.guard';
 import {LoginComponent} from './components/login.component';
 import {LoginPage} from './pages/login.page';
 import {WelcomePage} from './pages/welcome.page';

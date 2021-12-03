@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserModel} from '../models/user.model';
@@ -120,7 +120,7 @@ export class PersonalComponent implements OnInit {
   async updatePersonalInformation(): Promise<void> {
     if (this.personalForm.valid) {
       this.updateUserProgress = true;
-      this.userService.updateUser(this.currentUser, this.personalForm.value).then(async user => {
+      this.userService.updateUser(this.currentUser as any, this.personalForm.value).then(async user => {
         this.updateUserProgress = false;
         this.snackBar.open('Your personal information is updated', 'Ok', {
           duration: 3000
