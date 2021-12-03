@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ProfileState} from '../states/profile.state';
 
 import {FormGroup} from '@angular/forms';

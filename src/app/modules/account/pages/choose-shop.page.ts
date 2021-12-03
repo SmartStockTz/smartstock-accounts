@@ -1,13 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CreateShopDialogComponent} from '../components/create-shop-dialog.component';
-import {firstValueFrom, Observable, of} from 'rxjs';
 import {Router} from '@angular/router';
-import {DeviceState, StorageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
-import {MatBottomSheet} from '@angular/material/bottom-sheet';
-import {CreateShopSheetComponent} from '../components/create-shop-sheet.component';
 import {ShopState} from '../states/shop.state';
 
 @Component({
@@ -44,7 +39,6 @@ export class ChooseShopPage implements OnInit {
 
   constructor(public readonly snackBar: MatSnackBar,
               public readonly router: Router,
-              public readonly storageService: StorageService,
               public readonly deviceState: DeviceState,
               private readonly shopState: ShopState,
               public readonly userDatabase: UserService) {

@@ -1,17 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
-import {SsmEvents} from '@smartstocktz/core-libs';
-import {EventService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActiveShopGuard implements CanActivate {
-  constructor(private readonly storageService: StorageService,
-              private readonly eventService: EventService,
-              private readonly userService: UserService,
+  constructor(private readonly userService: UserService,
               private readonly router: Router) {
   }
 
@@ -24,12 +20,10 @@ export class ActiveShopGuard implements CanActivate {
         if (activeShop && activeShop.projectId && activeShop.applicationId) {
           resolve(true);
         } else {
-          this.eventService.broadcast(SsmEvents.ACTIVE_SHOP_REMOVE);
           this.router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
           reject(false);
         }
       } catch (e) {
-        this.eventService.broadcast(SsmEvents.ACTIVE_SHOP_REMOVE);
         this.router.navigateByUrl('/account/shop').catch(reason => console.log(reason));
         reject(false);
       }

@@ -4,7 +4,7 @@ import {UserModel} from '../models/user.model';
 import {ShopModel} from '../models/shop.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 
 
 @Component({
@@ -85,7 +85,6 @@ export class AddressComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(public readonly formBuilder: FormBuilder,
               public readonly matSnackBar: MatSnackBar,
-              public readonly storageService: StorageService,
               public readonly userService: UserService) {
   }
 

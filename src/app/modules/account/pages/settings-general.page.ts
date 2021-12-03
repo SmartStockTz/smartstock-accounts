@@ -1,10 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceState, EventService, SsmEvents, UserService} from '@smartstocktz/core-libs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SettingsModel} from '../models/settings.model';
-import {functions} from 'bfast';
+import {Component, OnDestroy} from '@angular/core';
+import {DeviceState} from '@smartstocktz/core-libs';
 
 @Component({
   selector: 'app-setting-general-page',

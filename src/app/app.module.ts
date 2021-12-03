@@ -52,11 +52,10 @@ export class AppModule {
     init({
       applicationId: 'smartstock_lb',
       projectId: 'smartstock',
-      appPassword: 'ZMUGVn72o3yd8kSbMGhfWpI80N9nA2IHjxWKlAhG',
-      databaseURL: `${environment.localBaseUrl}`,
-      functionsURL: `${environment.localBaseUrl}`,
+      // databaseURL: `${environment.localBaseUrl}`,
+      // functionsURL: `${environment.localBaseUrl}`,
       adapters: {
-        http: c => new AngularHttpService(this.httpClient)
+        // http: c => new AngularHttpService(this.httpClient)
       }
     });
   }// end

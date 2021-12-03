@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticatedUserGuard implements CanActivate {
-  constructor(private readonly storageService: StorageService,
-              private readonly userService: UserService,
+  constructor(private readonly userService: UserService,
               private readonly router: Router) {
   }
 

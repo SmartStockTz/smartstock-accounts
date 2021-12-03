@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {functions, cache} from 'bfast';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BillingService {
 
-  constructor(private readonly storage: StorageService,
-              private readonly userService: UserService) {
+  constructor(private readonly userService: UserService) {
   }
 
   async subscription(): Promise<any> {

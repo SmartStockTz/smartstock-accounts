@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {functions} from 'bfast';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 
 @Injectable({

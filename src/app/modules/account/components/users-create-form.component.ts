@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DeviceState, LogService, NavigationService, StorageService, UserService} from '@smartstocktz/core-libs';
+import {DeviceState, LogService, NavigationService, UserService} from '@smartstocktz/core-libs';
 import {Router} from '@angular/router';
 import {UsersState} from '../states/users.state';
 
@@ -91,7 +91,6 @@ export class UsersCreateFormComponent implements OnInit {
   constructor(
     public readonly formBuilder: FormBuilder,
     public readonly snack: MatSnackBar,
-    public readonly storageService: StorageService,
     public readonly userService: UserService,
     public readonly logger: LogService,
     public readonly configService: NavigationService,

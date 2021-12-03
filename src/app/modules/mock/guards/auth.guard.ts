@@ -2,9 +2,8 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {UserService} from '@smartstocktz/core-libs';
-import {getConfig, init} from 'bfast';
+import {init} from 'bfast';
 import {environment} from '../../../../environments/environment';
-import {BFastConfig} from 'bfast/dist/lib/conf';
 
 @Injectable({
   providedIn: 'root'

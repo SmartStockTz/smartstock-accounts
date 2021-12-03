@@ -2,7 +2,7 @@ import {auth, init} from 'bfast';
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Router} from '@angular/router';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../../environments/environment';
@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(public readonly formBuilder: FormBuilder,
               public readonly router: Router,
-              public readonly storageService: StorageService,
               public readonly userService: UserService,
               public readonly snack: MatSnackBar) {
   }
@@ -64,7 +63,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
               auth: 'DEFAULT',
             }
           }, user.projectId);
-          await this.storageService.saveCurrentProjectId('0UTYLQKeifrk');
           await this.userService.saveCurrentShop(user as any);
         })
         .catch(reason => {

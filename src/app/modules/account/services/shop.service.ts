@@ -2,7 +2,7 @@ import {functions} from 'bfast';
 import {Injectable} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
-import {StorageService, UserService} from '@smartstocktz/core-libs';
+import {UserService} from '@smartstocktz/core-libs';
 import {ShopModel} from '../models/shop.model';
 
 
