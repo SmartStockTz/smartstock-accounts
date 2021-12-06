@@ -22,7 +22,7 @@
     "@angular/platform-browser": "~13.0.1",
     "@angular/platform-browser-dynamic": "~13.0.1",
     "@angular/router": "~13.0.1",
-    "@smartstocktz/core-libs": "^0.5.0",
+    "@smartstocktz/core-libs": "^0.5.1",
     "bfast": "^6.0.0-alpha.17",
     "comlink": "^4.3.1",
     "ngx-infinite-scroll": "^10.0.1",
