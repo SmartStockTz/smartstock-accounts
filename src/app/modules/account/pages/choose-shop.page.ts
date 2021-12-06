@@ -24,9 +24,9 @@ import {ShopState} from '../states/shop.state';
             </div>
           </div>
         </div>
-        <div matRipple class="ct_add_shop" (click)="openCreateShopDialog()">
-          <mat-icon class="add_shop_btn">add</mat-icon>
-        </div>
+<!--        <div matRipple class="ct_add_shop" (click)="openCreateShopDialog()">-->
+<!--          <mat-icon class="add_shop_btn">add</mat-icon>-->
+<!--        </div>-->
 
       </div>
     </div>
