@@ -1,10 +1,10 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {functions} from 'bfast';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MobilePaymentModel} from '../models/mobile-payment.model';
-import {CostModel} from '../models/cost.model';
-import {BillingState} from '../states/billing.state';
-import {Subject, takeUntil} from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { functions } from 'bfast';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MobilePaymentModel } from '../models/mobile-payment.model';
+import { CostModel } from '../models/cost.model';
+import { BillingState } from '../states/billing.state';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-payment-modes',
@@ -15,22 +15,14 @@ import {Subject, takeUntil} from 'rxjs';
     </div>
     <mat-tab-group class="t" mat-align-tabs="center">
 
-      <mat-tab label="Mobile">
+      <mat-tab label="Mitandao ya simu">
         <div style="margin-bottom: 24px"></div>
         <app-payment-modes-mobile [mode]="mobile" *ngFor="let mobile of mobileModes"></app-payment-modes-mobile>
       </mat-tab>
 
-      <mat-tab label="Visa / MasterCard">
-        <div class="card-container">
-          <div class="invoice-number card-item">Total</div>
-          <div class="invoice-number-body card-item">Tsh {{cost.cost | number}}</div>
-          <button [disabled]="loadCardUrl" (click)="payCard()" class="card-item" color="primary" mat-flat-button>
-            Pay with VISA / Mastercard
-            <mat-progress-spinner *ngIf="loadCardUrl" diameter="20" color="primary"
-                                  mode="indeterminate" style="display: inline-block">
-            </mat-progress-spinner>
-          </button>
-        </div>
+      <mat-tab label="Benki">
+        <div style="margin-bottom: 24px"></div>
+        <app-payment-modes-mobile [mode]="benki" *ngFor="let benki of benkiModes"></app-payment-modes-mobile>
       </mat-tab>
 
     </mat-tab-group>
@@ -39,15 +31,16 @@ import {Subject, takeUntil} from 'rxjs';
 })
 
 export class PaymentModesComponent implements OnInit, OnDestroy {
-  cost: CostModel = {cost: 0, mode: 12};
-  reference = '';
+  cost: CostModel = { cost: 0, mode: 12 };
+  reference = '6829508';
   link = '';
   loadCardUrl = false;
-  mobileModes: MobilePaymentModel[];
+  mobileModes: MobilePaymentModel[] = [];
+  benkiModes: MobilePaymentModel[] = [];
   private destroyer = new Subject();
 
   constructor(private readonly snack: MatSnackBar,
-              private readonly billingState: BillingState) {
+    private readonly billingState: BillingState) {
   }
 
   ngOnInit(): void {
@@ -55,80 +48,69 @@ export class PaymentModesComponent implements OnInit, OnDestroy {
       next: value => {
         this.cost = value;
         this.mobileModes = this.getModes();
+        this.benkiModes = this.getBenkiModes();
       }
     });
     this.billingState.reference.pipe(takeUntil(this.destroyer)).subscribe({
       next: value => {
         this.reference = value;
         this.mobileModes = this.getModes();
+        this.benkiModes = this.getBenkiModes();
       }
     });
     this.mobileModes = this.getModes();
+    this.benkiModes = this.getBenkiModes();
+  }
+
+  private getBenkiModes() {
+    return [
+      {
+        name: 'BENKI ZOTE',
+        logo: 'https://smartstock-daas.bfast.fahamutech.com/storage/smartstock_lb/file/d028828e-add6-4590-b6a1-0627a837ebe1/thumbnail?width=132',
+        total: this.cost.cost,
+        reference: this.reference,
+        instructions: [
+          '1. Fungua menu ya huduma za kifedha.',
+          '2. Chagua Tuma Pesa.',
+          '3. Chagua kwenda mitandao ya simu.',
+          '4. Chagua Tigo Pesa.',
+          '5. Ingiza <b>6829508</b> kama namba ya simu.',
+          `6. Ingiza <b>${this.cost.cost}</b> kama kiasi.`,
+          '7. Weka namba ya siri kusibitisha, jina litakuja SMARTSTOCK COMPANY LIMITED.'
+        ].join('<br>')
+      }
+    ]
   }
 
   private getModes(): any[] {
     return [
-      {
-        name: 'M-PESA',
-        logo: 'https://smartstock-daas.bfast.fahamutech.com/storage/smartstock_lb/file/716e2e54-739d-495c-9500-4c3d4c16ff8b/thumbnail?width=132',
-        total: this.cost.cost,
-        reference: this.reference,
-        instructions: [
-          '1. Piga *150*00#',
-          '2. Chagua namba 4',
-          '3. Chagua namba 4',
-          '4. Weka <b>400700</b> kama namba ya kampuni',
-          `5. Weka <b>${this.reference}</b> kama kumbukumbu namba`,
-          `6. Weka <b>${this.cost.cost}</b> kama kiasi`,
-          '7. Weka namba ya siri',
-          '8. Jina kampuni litatokea MLIPA, Thibitisha'
-        ].join('<br>')
-      },
       {
         name: 'TIGO-PESA',
         logo: 'https://smartstock-daas.bfast.fahamutech.com/storage/smartstock_lb/file/d028828e-add6-4590-b6a1-0627a837ebe1/thumbnail?width=132',
         total: this.cost.cost,
         reference: this.reference,
         instructions: [
-          '1. Piga *150*01#',
-          '2. Chagua namba 4',
-          '3. Chagua namba 3',
-          '4. Weka <b>400700</b> kama namba ya kampuni',
-          `5. Weka <b>${this.reference}</b> kama kumbukumbu namba`,
-          `6. Weka <b>${this.cost.cost}</b> kama kiasi`,
-          '7. Weka namba ya siri'
+          '1. Ingia kwenye menu ya Tigo Pesa, *150*01#',
+          '2. Chagua 5 "Lipa kwa simu".',
+          '3. Chagua namaba 1 "kwa Tigo Pesa".',
+          '3. Weka <b>6829508</b> kama lipa namba.',
+          `4. Weka <b>${this.cost.cost}</b> kama kiasi.`,
+          '5. Jina litakuja SMARTSTOCK COMPANY LIMITED, weka namba ya siri kusibitisha.',
         ].join('<br>')
       },
       {
-        name: 'HALO-PESA',
+        name: 'MITANDAO MINGINE',
         logo: 'https://smartstock-daas.bfast.fahamutech.com/storage/smartstock_lb/file/4885b5d1-f2df-4a2b-833c-eb7857763429/thumbnail?width=132',
         total: this.cost.cost,
         reference: this.reference,
         instructions: [
-          '1. Piga *150*88#',
-          '2. Chagua namba 4',
-          '3. Chagua namba 3',
-          '4. Weka <b>400700</b> kama namba ya kampuni',
-          `5. Weka <b>${this.reference}</b> kama kumbukumbu namba`,
-          `6. Weka <b>${this.cost.cost}</b> kama kiasi`,
-          '7. Weka namba ya siri',
-          '8. Thibitisha'
-        ].join('<br>')
-      },
-      {
-        name: 'AIRTEL-MONEY',
-        logo: 'https://smartstock-daas.bfast.fahamutech.com/storage/smartstock_lb/file/6130c062-f6fd-4617-8ee8-9adac4b9a830/thumbnail?width=132',
-        total: this.cost.cost,
-        reference: this.reference,
-        instructions: [
-          '1. Piga *150*60#',
-          '2. Chagua namba 5',
-          '3. Chagua namba 4',
-          '4. Weka <b>400700</b> kama namba ya kampuni',
-          `5. Weka <b>${this.cost.cost}</b> kama kiasi`,
-          `6. Weka <b>${this.reference}</b> kama kumbukumbu namba`,
-          '7. Weka namba ya siri',
-          '8. Thibitisha'
+          'Piga menu yako ya huduma za kifedha.',
+          '1. Chagua tuma pesa.',
+          '2. Chagua kwenda mitandao mingine.',
+          '3. Chagua Tigo Pesa.',
+          '4. Ingiza <b>6829508</b> kama namba ya simu.',
+          `5. Ingiza <b>${this.cost.cost}</b> kama kiasi.`,
+          '6. Ingiza namba ya siri, jina litakuja SMARTSTOCK COMPANY LIMITED.',
         ].join('<br>')
       }
     ];

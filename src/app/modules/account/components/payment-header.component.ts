@@ -4,12 +4,16 @@ import {SubscriptionModel} from '../models/subscription.model';
 import {CostModel} from '../models/cost.model';
 import {BillingState} from '../states/billing.state';
 import {Subject, takeUntil} from 'rxjs';
+import { FormControl, Validators } from '@angular/forms';
+import { UserService } from '@smartstocktz/core-libs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { functions } from 'bfast';
 
 @Component({
   selector: 'app-payment-header',
   template: `
     <div class="line">
-      <span class="invoice-number">Reference #</span>
+      <span class="invoice-number">Lipa namba (Tigopesa)</span>
       <span class="line-space"></span>
       <span class="invoice-number">Status</span>
     </div>
@@ -53,6 +57,16 @@ import {Subject, takeUntil} from 'rxjs';
         <tr mat-row *matRowDef="let row; columns: columns;"></tr>
       </table>
     </div>
+    <div class="reference-container">
+      <p class="reference-instruction-text">Ukimaliza weka kumbukumbu namba apo chini. Kisha bofya thibitisha malipo.</p>
+      <div class="reference-input-container">
+        <input placeholder="Kumbumbuku namba" class="reference-input" type="text" [formControl]="referenceControl">
+      </div>
+      <button (click)="confirmPayment()" [disabled]="confirmOnProgress" mat-button class="reference-confirm-button" >
+        <span *ngIf="!confirmOnProgress" class="reference-confirm-text">Thibitisha malipo.</span>
+        <span *ngIf="confirmOnProgress" class="reference-confirm-text">Subiri...</span>
+      </button>
+    </div>
   `,
   styleUrls: ['../styles/order-header.style.scss']
 })
@@ -60,14 +74,21 @@ import {Subject, takeUntil} from 'rxjs';
 export class PaymentHeaderComponent implements OnInit, OnDestroy {
   @Input() subs: SubscriptionModel;
   @Input() cost: CostModel;
-  @Input() reference = '';
+  @Input() reference = '6829508';
   costDataSource = new MatTableDataSource([]);
   columns: string[] = ['cost', 'fee', 'total'];
+  referenceControl = new FormControl("", [
+    Validators.nullValidator,
+    Validators.minLength(1)
+  ]);
+  confirmOnProgress = false;
   private interval: NodeJS.Timeout;
   loading = false;
   private destroyer = new Subject();
 
-  constructor(private readonly billingState: BillingState) {
+  constructor(private readonly billingState: BillingState,
+              private readonly userService: UserService,
+              private readonly snack: MatSnackBar) {
   }
 
   refresh(): void {
@@ -82,6 +103,8 @@ export class PaymentHeaderComponent implements OnInit, OnDestroy {
     });
     if (this.subs.subscription === false) {
       this.startTimer(60);
+    }else{
+      clearInterval(this.interval)
     }
     this.updateTable();
   }
@@ -114,6 +137,40 @@ export class PaymentHeaderComponent implements OnInit, OnDestroy {
         this.refresh();
       }
     }, 1000);
+  }
+
+  async confirmPayment(): Promise<void> {
+    // console.log(this.referenceControl.value)
+    // if(!this.referenceControl.valid){
+    //   return
+    // }
+    this.confirmOnProgress = true;
+    // let shop;
+    // this.userService.getCurrentShop().then(_shop=>{
+    //   if(!_shop){
+    //     throw {message: "no active shop"}
+    //   }
+    //   shop = _shop
+    this.userService.currentUser().then(u=>{
+      if(u && u.id)return u.id
+      else return null
+    })
+    .then(uid=>{
+      if(uid){
+        return functions().request(`/billing/${uid}/payment`).post({
+          reference: this.referenceControl.value
+        });
+      }
+    })
+    .catch(r=>{
+      // console.log(r);
+      this.snack.open(r && r.message?r.message:"Unknown error",'Ok',{
+        duration: 2000
+      });
+    }).finally(()=>{
+      this.confirmOnProgress = false;
+      this.refresh();
+    })
   }
 
   ngOnDestroy(): void {

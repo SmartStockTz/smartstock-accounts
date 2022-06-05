@@ -1,6 +1,6 @@
 {
   "name": "smartstock-accounts",
-  "version": "0.2.3",
+  "version": "0.5.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -c dev accounts-mock",

@@ -132,3 +132,65 @@
 .card-item {
   margin-bottom: 5px;
 }
+
+
+.reference-instruction-text {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #000000;
+}
+
+.reference-input-container{
+  width: 100%;
+  // max-width: 400px;
+height: 48px;
+
+background: #fff;
+border-radius: 4px;
+border: solid #868686 1px;
+padding: 8px;
+}
+
+.reference-input{
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: #000;
+  outline: none;
+  height: 100%;
+  font-size: 16px;
+}
+
+.reference-container{
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.reference-confirm-button{
+  margin: 16px 0 0 0;
+  // height: 38px;
+  width: 100%;
+border: 2px solid #015b04;
+border-radius: 2px;
+text-align: center;
+cursor: pointer;
+}
+
+.reference-confirm-text{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 21px;
+/* identical to box height */
+
+
+// color: #000000;
+
+}

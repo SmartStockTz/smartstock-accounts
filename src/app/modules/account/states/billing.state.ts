@@ -9,8 +9,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class BillingState {
   loading = new BehaviorSubject(false);
   subs = new BehaviorSubject({subscription: false, balance: 0, reason: 'N/A'});
-  cost = new BehaviorSubject({mode: 12, cost: 0});
-  reference = new BehaviorSubject('');
+  cost = new BehaviorSubject({mode: 1, cost: 10000});
+  reference = new BehaviorSubject('6829508');
 
   constructor(private readonly billingService: BillingService,
               private readonly snack: MatSnackBar) {
@@ -25,7 +25,7 @@ export class BillingState {
       this.cost.next(c);
       return this.billingService.getPaymentReference();
     }).then(r => {
-      this.reference.next(r.reference);
+      this.reference.next(r.reference&&r.reference!==''?r.reference:'6829508');
     }).catch(reason => {
       this.snack.open(reason ? reason.message : 'Fail to process payments', 'Ok', {
         duration: 2000
