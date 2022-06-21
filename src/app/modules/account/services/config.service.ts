@@ -1,12 +1,11 @@
-import {NavigationService} from '@smartstocktz/core-libs';
-import {Injectable} from '@angular/core';
+import { NavigationService } from "smartstock-core";
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ConfigService {
-  constructor(private readonly navigationService: NavigationService) {
-  } // end
+  constructor(private readonly navigationService: NavigationService) {} // end
 
   async addMenu(menu: any): Promise<any> {
     this.navigationService.addMenu(menu);

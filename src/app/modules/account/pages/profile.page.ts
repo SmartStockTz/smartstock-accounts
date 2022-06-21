@@ -1,17 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DeviceState} from '@smartstocktz/core-libs';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { DeviceState } from "smartstock-core";
 
 @Component({
-  selector: 'app-profile-page',
+  selector: "app-profile-page",
   template: `
     <app-layout-sidenav
-      [leftDrawerOpened]="(deviceState.enoughWidth | async )=== true"
-      [leftDrawerMode]="(deviceState.enoughWidth | async )=== true?'side': 'over'"
+      [leftDrawerOpened]="(deviceState.enoughWidth | async) === true"
+      [leftDrawerMode]="
+        (deviceState.enoughWidth | async) === true ? 'side' : 'over'
+      "
       [hasBackRoute]="true"
       [backLink]="'/account'"
       [heading]="'Profile'"
       [leftDrawer]="side"
-      [body]="body">
+      [body]="body"
+    >
       <ng-template #side>
         <app-drawer></app-drawer>
       </ng-template>
@@ -23,9 +26,7 @@ import {DeviceState} from '@smartstocktz/core-libs';
   styleUrls: []
 })
 export class ProfilePage {
-
   constructor(public readonly deviceState: DeviceState) {
-    document.title = 'SmartStock - Profile';
+    document.title = "SmartStock - Profile";
   }
-
 }

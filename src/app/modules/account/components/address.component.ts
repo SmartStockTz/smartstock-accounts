@@ -4,7 +4,7 @@ import {UserModel} from '../models/user.model';
 import {ShopModel} from '../models/shop.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '@smartstocktz/core-libs';
+import {UserService} from 'smartstock-core';
 
 
 @Component({
