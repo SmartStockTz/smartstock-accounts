@@ -1,6 +1,9 @@
 {
   "name": "smartstock-accounts",
   "version": "1.0.0",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "repository": {
     "url": "git://github.com/smartstocktz/smartstock-accounts.git"
   },
