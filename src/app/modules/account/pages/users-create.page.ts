@@ -1,17 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DeviceState} from '@smartstocktz/core-libs';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { DeviceState } from "smartstock-core";
 
 @Component({
-  selector: 'app-create-user-page',
+  selector: "app-create-user-page",
   template: `
     <app-layout-sidenav
       [heading]="'Create User'"
-      [leftDrawerMode]="(deviceState.enoughWidth | async) === true?'side': 'over'"
+      [leftDrawerMode]="
+        (deviceState.enoughWidth | async) === true ? 'side' : 'over'
+      "
       [leftDrawerOpened]="(deviceState.enoughWidth | async) === true"
       [hasBackRoute]="true"
       backLink="/account/users"
       [body]="body"
-      [leftDrawer]="side">
+      [leftDrawer]="side"
+    >
       <ng-template #side>
         <app-drawer></app-drawer>
       </ng-template>
@@ -22,14 +25,10 @@ import {DeviceState} from '@smartstocktz/core-libs';
   `,
   styleUrls: []
 })
-
 export class UsersCreatePage implements OnInit, OnDestroy {
-  constructor(public readonly deviceState: DeviceState) {
-  }
+  constructor(public readonly deviceState: DeviceState) {}
 
-  async ngOnDestroy(): Promise<void> {
-  }
+  async ngOnDestroy(): Promise<void> {}
 
-  async ngOnInit(): Promise<void> {
-  }
+  async ngOnInit(): Promise<void> {}
 }

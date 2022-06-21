@@ -1,17 +1,20 @@
-import {Component, OnDestroy} from '@angular/core';
-import {DeviceState} from '@smartstocktz/core-libs';
+import { Component, OnDestroy } from "@angular/core";
+import { DeviceState } from "smartstock-core";
 
 @Component({
-  selector: 'app-setting-general-page',
+  selector: "app-setting-general-page",
   template: `
     <app-layout-sidenav
-      [leftDrawerOpened]="(deviceState.enoughWidth | async )=== true"
-      [leftDrawerMode]="(deviceState.enoughWidth | async )=== true?'side': 'over'"
+      [leftDrawerOpened]="(deviceState.enoughWidth | async) === true"
+      [leftDrawerMode]="
+        (deviceState.enoughWidth | async) === true ? 'side' : 'over'
+      "
       [hasBackRoute]="true"
       [backLink]="'/account/shops'"
       [heading]="'General settings'"
       [leftDrawer]="side"
-      [body]="body">
+      [body]="body"
+    >
       <ng-template #side>
         <app-drawer></app-drawer>
       </ng-template>
@@ -20,14 +23,12 @@ import {DeviceState} from '@smartstocktz/core-libs';
       </ng-template>
     </app-layout-sidenav>
   `,
-  styleUrls: ['../styles/setting.style.scss']
+  styleUrls: ["../styles/setting.style.scss"]
 })
 export class SettingsGeneralPage implements OnDestroy {
-
   constructor(public readonly deviceState: DeviceState) {
-    document.title = 'SmartStock - Settings';
+    document.title = "SmartStock - Settings";
   }
 
-  async ngOnDestroy(): Promise<void> {
-  }
+  async ngOnDestroy(): Promise<void> {}
 }

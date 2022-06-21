@@ -1,16 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DeviceState} from '@smartstocktz/core-libs';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { DeviceState } from "smartstock-core";
 
 @Component({
-  selector: 'app-settings-ecommerce-page',
+  selector: "app-settings-ecommerce-page",
   template: `
-    <app-layout-sidenav [leftDrawerOpened]="(deviceState.enoughWidth | async)===true"
-                        [leftDrawerMode]="(deviceState.enoughWidth | async)===true?'side':'over'"
-                        [hasBackRoute]="true"
-                        [heading]="'E-Commerce'"
-                        backLink="/account/shops"
-                        [body]="body"
-                        [leftDrawer]="leftDrawer">
+    <app-layout-sidenav
+      [leftDrawerOpened]="(deviceState.enoughWidth | async) === true"
+      [leftDrawerMode]="
+        (deviceState.enoughWidth | async) === true ? 'side' : 'over'
+      "
+      [hasBackRoute]="true"
+      [heading]="'E-Commerce'"
+      backLink="/account/shops"
+      [body]="body"
+      [leftDrawer]="leftDrawer"
+    >
       <ng-template #leftDrawer>
         <app-drawer></app-drawer>
       </ng-template>
@@ -19,17 +23,14 @@ import {DeviceState} from '@smartstocktz/core-libs';
       </ng-template>
     </app-layout-sidenav>
   `,
-  styleUrls: ['../styles/setting.style.scss']
+  styleUrls: ["../styles/setting.style.scss"]
 })
 export class SettingsEcommercePage implements OnInit, OnDestroy {
-
   constructor(public readonly deviceState: DeviceState) {
-    document.title = 'SmartStock - E-Commerce Settings';
+    document.title = "SmartStock - E-Commerce Settings";
   }
 
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
