@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {ShopService} from '../services/shop.service';
 
 @Component({
@@ -17,7 +17,7 @@ import {ShopService} from '../services/shop.service';
 })
 export class CreateShopDialogComponent {
 
-  createShopForm: FormGroup;
+  createShopForm: UntypedFormGroup;
   createShopProgress = false;
 
   constructor(public dialogRef: MatDialogRef<CreateShopDialogComponent>,

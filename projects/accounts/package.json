@@ -1,14 +1,13 @@
 {
   "name": "smartstock-accounts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "url": "git://github.com/smartstocktz/smartstock-accounts.git"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "dependencies": {
     "tslib": "^2.0.0"
   }

@@ -58,7 +58,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "projects/accounts-mock/tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -133,7 +134,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "projects/accounts-mock/tsconfig.worker.json"
           }
         },
         "e2e": {
@@ -153,6 +155,5 @@
   },
   "cli": {
     "analytics": "be859128-bac2-46bd-9bc5-e522b1ba8727"
-  },
-  "defaultProject": "accounts"
+  }
 }

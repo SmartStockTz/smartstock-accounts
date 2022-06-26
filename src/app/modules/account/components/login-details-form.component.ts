@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login-details-form',
@@ -26,7 +26,7 @@ import {FormGroup} from '@angular/forms';
   styleUrls: ['../styles/register.style.scss']
 })
 export class LoginDetailsFormComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() loginFormGroup: FormGroup;
+  @Input() loginFormGroup: UntypedFormGroup;
   showPasswordFlag = false;
 
   constructor() {

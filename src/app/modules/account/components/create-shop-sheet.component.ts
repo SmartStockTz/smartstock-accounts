@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {ShopService} from '../services/shop.service';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 
@@ -16,7 +16,7 @@ import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom
   ]
 })
 export class CreateShopSheetComponent {
-  createShopForm: FormGroup;
+  createShopForm: UntypedFormGroup;
   createShopProgress = false;
 
   constructor(public dialogRef: MatBottomSheetRef<CreateShopSheetComponent>,

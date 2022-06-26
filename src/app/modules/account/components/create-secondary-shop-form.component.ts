@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { UserService } from "smartstock-core";
 import { ShopService } from "../services/shop.service";
 import { ProfileState } from "../states/profile.state";
@@ -109,7 +109,7 @@ export interface DialogData {
 export class CreateSecondaryShopComponent implements OnInit {
   @Input() data: DialogData;
   @Output() done = new EventEmitter();
-  createShopForm: FormGroup;
+  createShopForm: UntypedFormGroup;
   createShopProgress = false;
 
   constructor(
@@ -117,7 +117,7 @@ export class CreateSecondaryShopComponent implements OnInit {
     public readonly shopService: ShopService,
     private readonly userService: UserService,
     public readonly profileState: ProfileState,
-    public readonly formBuilder: FormBuilder
+    public readonly formBuilder: UntypedFormBuilder
   ) {}
 
   async createShop(): Promise<void> {

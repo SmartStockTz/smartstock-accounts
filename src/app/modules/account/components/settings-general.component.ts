@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { SettingsModel } from "../models/settings.model";
 import { UserService } from "smartstock-core";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -96,13 +96,13 @@ import { ShopModel } from "../models/shop.model";
   styleUrls: ["../styles/setting.style.scss"]
 })
 export class SettingsGeneralComponent implements OnInit {
-  settingsForm: FormGroup;
+  settingsForm: UntypedFormGroup;
   getSettingsProgress = false;
   saveSettingProgress = false;
   selectedShop: ShopModel;
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly matSnackBar: MatSnackBar,
     public readonly activatedRoute: ActivatedRoute,
     public readonly router: Router,

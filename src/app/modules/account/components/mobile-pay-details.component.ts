@@ -10,7 +10,7 @@ import {
   MAT_BOTTOM_SHEET_DATA,
   MatBottomSheetRef
 } from "@angular/material/bottom-sheet";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { BillingService } from "../services/billing.service";
 import { LogService } from "smartstock-core";
 
@@ -130,7 +130,7 @@ export class MobilePayDetailsComponent
   confirmPaymentFlag = false;
   amountToPay = 0;
   reference: string;
-  amountControl = new FormControl(this.amountToPay, [
+  amountControl = new UntypedFormControl(this.amountToPay, [
     Validators.nullValidator,
     Validators.required,
     Validators.min(1)

@@ -4,7 +4,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserService } from "smartstock-core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { environment } from "../../../../environments/environment";
 
 @Component({
@@ -45,11 +45,11 @@ import { environment } from "../../../../environments/environment";
   styleUrls: []
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   isLogin = false;
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly router: Router,
     public readonly userService: UserService,
     public readonly snack: MatSnackBar

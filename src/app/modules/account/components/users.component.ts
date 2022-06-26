@@ -4,7 +4,7 @@ import { ShopState } from "../states/shop.state";
 import { MatTableDataSource } from "@angular/material/table";
 import { UserModel } from "../models/user.model";
 import { UserUpdateDialogComponent } from "./user-update-dialog.component";
-import { FormBuilder } from "@angular/forms";
+import { UntypedFormBuilder } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { DeviceState } from "smartstock-core";
@@ -84,7 +84,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild("paginator") matPaginator: MatPaginator;
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly matDialog: MatDialog,
     public readonly deviceState: DeviceState,
     public readonly matSnackBar: MatSnackBar,

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ShopModel } from "../models/shop.model";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -125,14 +125,14 @@ import { ShopState } from "../states/shop.state";
   styleUrls: ["../styles/setting.style.scss"]
 })
 export class SettingsEcommerceComponent implements OnInit, OnDestroy {
-  ecommerceForm: FormGroup;
+  ecommerceForm: UntypedFormGroup;
   ecommerceGetProgress = false;
   ecommerceSaveProgress = false;
   selectedShop: ShopModel;
   private destroyer = new Subject();
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly snack: MatSnackBar,
     public readonly activatedRoute: ActivatedRoute,
     public readonly router: Router,

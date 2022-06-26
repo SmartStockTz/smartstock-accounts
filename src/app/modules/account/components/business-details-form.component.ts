@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ProfileState} from '../states/profile.state';
 
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 
 @Component({
@@ -61,7 +61,7 @@ import {FormGroup} from '@angular/forms';
   styleUrls: ['../styles/register.style.scss']
 })
 export class BusinessDetailsFormComponent implements OnInit, OnDestroy, AfterViewInit {
-  @Input() businessFormGroup: FormGroup;
+  @Input() businessFormGroup: UntypedFormGroup;
 
   constructor(public readonly profileState: ProfileState) {
   }
