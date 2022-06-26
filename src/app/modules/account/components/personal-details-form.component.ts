@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-personal-details-form',
@@ -46,7 +46,7 @@ import {FormGroup} from '@angular/forms';
 })
 
 export class PersonalDetailsFormComponent {
-  @Input() personalFormGroup: FormGroup;
+  @Input() personalFormGroup: UntypedFormGroup;
 
   constructor() {
   }

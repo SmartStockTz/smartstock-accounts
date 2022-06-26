@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { Observable, of } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import {
@@ -110,7 +110,7 @@ import { UsersState } from "../states/users.state";
   styleUrls: ["../styles/users-create.style.scss"]
 })
 export class UsersCreateFormComponent implements OnInit {
-  newUserForm: FormGroup;
+  newUserForm: UntypedFormGroup;
   createUserProgress = false;
   shops: Observable<any[]>;
   activeShop = {};
@@ -118,7 +118,7 @@ export class UsersCreateFormComponent implements OnInit {
   selectedUser = null;
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly snack: MatSnackBar,
     public readonly userService: UserService,
     public readonly logger: LogService,

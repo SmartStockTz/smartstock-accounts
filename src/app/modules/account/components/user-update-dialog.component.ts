@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { DeviceState, LogService, UserService } from "smartstock-core";
@@ -51,12 +51,12 @@ import { UserModel } from "../models/user.model";
 })
 export class UserUpdateDialogComponent
   implements OnInit, OnDestroy, AfterViewInit {
-  updatePasswordFormGroup: FormGroup;
+  updatePasswordFormGroup: UntypedFormGroup;
   updateProgress = false;
 
   constructor(
     public dialogRef: MatDialogRef<UserUpdateDialogComponent>,
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly snackBar: MatSnackBar,
     public readonly logger: LogService,
     public readonly userService: UserService,

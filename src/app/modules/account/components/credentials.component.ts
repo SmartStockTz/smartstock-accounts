@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { UserModel } from "../models/user.model";
 import { UserService } from "smartstock-core";
@@ -99,7 +99,7 @@ import { UserService } from "smartstock-core";
   styleUrls: ["../styles/profile.style.scss"]
 })
 export class CredentialsComponent implements OnInit, OnDestroy, AfterViewInit {
-  authForm: FormGroup;
+  authForm: UntypedFormGroup;
   currentUser: UserModel;
   getUserProgress = false;
   updateUserProgress = false;
@@ -107,7 +107,7 @@ export class CredentialsComponent implements OnInit, OnDestroy, AfterViewInit {
   showPassword = false;
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly snackBar: MatSnackBar,
     public readonly userService: UserService
   ) {}

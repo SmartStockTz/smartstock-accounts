@@ -4,7 +4,7 @@ import { SubscriptionModel } from "../models/subscription.model";
 import { CostModel } from "../models/cost.model";
 import { BillingState } from "../states/billing.state";
 import { Subject, takeUntil } from "rxjs";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { UserService } from "smartstock-core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { functions } from "bfast";
@@ -117,7 +117,7 @@ export class PaymentHeaderComponent implements OnInit, OnDestroy {
   @Input() reference = "6829508";
   costDataSource = new MatTableDataSource([]);
   columns: string[] = ["cost", "fee", "total"];
-  referenceControl = new FormControl("", [
+  referenceControl = new UntypedFormControl("", [
     Validators.nullValidator,
     Validators.minLength(1)
   ]);

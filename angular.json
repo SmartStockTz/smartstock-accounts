@@ -51,13 +51,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -126,13 +121,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.spec.json",
             "karmaConfig": "projects/accounts-mock/karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
@@ -153,6 +143,5 @@
   },
   "cli": {
     "analytics": "be859128-bac2-46bd-9bc5-e522b1ba8727"
-  },
-  "defaultProject": "accounts"
+  }
 }

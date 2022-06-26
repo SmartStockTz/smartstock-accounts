@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormGroup,
   FormGroupDirective,
   Validators
 } from "@angular/forms";
@@ -116,7 +116,7 @@ import { firstValueFrom } from "rxjs";
 })
 export class LoginPage implements OnInit, OnDestroy {
   showProgress = false;
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   showPasswordFlag = false;
   isBrowser = true;
 
@@ -127,7 +127,7 @@ export class LoginPage implements OnInit, OnDestroy {
     public readonly billing: BillingService,
     public readonly log: LogService,
     private readonly activatedRoute: ActivatedRoute,
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly userService: UserService
   ) {
     document.title = "SmartStock - Login";

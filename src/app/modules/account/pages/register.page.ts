@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators
 } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -79,14 +79,14 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["../styles/register.style.scss"]
 })
 export class RegisterPage implements OnInit, OnDestroy {
-  personalFormGroup: FormGroup;
-  businessFormGroup: FormGroup;
-  loginFormGroup: FormGroup;
+  personalFormGroup: UntypedFormGroup;
+  businessFormGroup: UntypedFormGroup;
+  loginFormGroup: UntypedFormGroup;
   registerProgress = false;
-  roleControl = new FormControl("online");
+  roleControl = new UntypedFormControl("online");
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly router: Router,
     public readonly matDialog: MatDialog,
     public readonly logService: LogService,

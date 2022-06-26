@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validators
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -112,17 +112,17 @@ import { UserService } from "smartstock-core";
   styleUrls: ["../styles/profile.style.scss"]
 })
 export class PersonalComponent implements OnInit {
-  personalForm: FormGroup;
+  personalForm: UntypedFormGroup;
   currentUser: UserModel;
   getUserProgress = false;
   updateUserProgress = false;
-  usernameFormControl = new FormControl("", [
+  usernameFormControl = new UntypedFormControl("", [
     Validators.nullValidator,
     Validators.required
   ]);
 
   constructor(
-    public readonly formBuilder: FormBuilder,
+    public readonly formBuilder: UntypedFormBuilder,
     public readonly snackBar: MatSnackBar,
     public readonly userService: UserService
   ) {}

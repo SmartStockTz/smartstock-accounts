@@ -3,7 +3,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {UserModel} from '../models/user.model';
 import {ShopModel} from '../models/shop.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {UserService} from 'smartstock-core';
 
 
@@ -76,14 +76,14 @@ import {UserService} from 'smartstock-core';
 })
 export class AddressComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  businessForm: FormGroup;
+  businessForm: UntypedFormGroup;
   currentUser: UserModel;
   currentShop: ShopModel;
   getBusinessProgress = false;
   updateBusinessProgress = false;
-  businessFormControl = new FormControl('', [Validators.nullValidator, Validators.required]);
+  businessFormControl = new UntypedFormControl('', [Validators.nullValidator, Validators.required]);
 
-  constructor(public readonly formBuilder: FormBuilder,
+  constructor(public readonly formBuilder: UntypedFormBuilder,
               public readonly matSnackBar: MatSnackBar,
               public readonly userService: UserService) {
   }
