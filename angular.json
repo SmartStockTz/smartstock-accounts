@@ -51,15 +51,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "webWorkerTsConfig": "projects/accounts-mock/tsconfig.worker.json"
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -127,15 +121,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/accounts-mock/tsconfig.spec.json",
             "karmaConfig": "projects/accounts-mock/karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "webWorkerTsConfig": "projects/accounts-mock/tsconfig.worker.json"
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
+            "scripts": []
           }
         },
         "e2e": {
